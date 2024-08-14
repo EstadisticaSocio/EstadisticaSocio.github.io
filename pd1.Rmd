@@ -1,10 +1,19 @@
 ---
 title: "Práctica dirigida 1"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 3
+    theme: flatly
+    highlight: textmate
+    always_allow_html: yes
 ---
 
-**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**
 
-## Curso: SOC294 - Estadística para el análisis sociológico 1 \| Semestre 2024 - 2 <br>
+Curso: SOC294 - Estadística para el análisis sociológico 1 Semestre 2024 - 2
 
 ## Introducción a R
-

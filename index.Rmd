@@ -1,5 +1,15 @@
 ---
 title: "Inicio"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 3
+    theme: flatly
+    highlight: textmate
+    always_allow_html: yes
 ---
 
 ```{=html}
