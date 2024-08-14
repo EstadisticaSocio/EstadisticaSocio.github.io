@@ -2,4 +2,20 @@
 title: "Inicio"
 ---
 
-Hello, Website!
+```{=html}
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14 px;
+}
+</style>
+```
+::: custom-text
+Bienvenidos al curso "Estadística para el Análisis Sociológico 1". 
+:::
+
+
+
