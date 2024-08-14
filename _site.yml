@@ -1,0 +1,9 @@
+name: "Estadistica para análisis sociológico 1"
+output_dir: "."
+navbar:
+  title: "Material para pds"
+  left:
+    - text: "Inicio"
+      href: index.html
+    - text: "Práctica dirigida 1"
+      href: pd1.html
