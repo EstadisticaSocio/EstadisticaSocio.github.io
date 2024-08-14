@@ -14,6 +14,8 @@ output:
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**
 
-Curso: SOC294 - Estadística para el análisis sociológico 1 Semestre 2024 - 2
+Curso: SOC294 - Estadística para el análisis sociológico 1
+
+Semestre 2024 - 2
 
 ## Introducción a R
