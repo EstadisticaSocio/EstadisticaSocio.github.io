@@ -110,22 +110,22 @@ Si se lee de izquierda a derecha, la línea de comando puede explicarse como sig
 
     ```
 
--   table: S
+-   table: Utiliza factores de clasificación para construir una tabla de los recuentos en cada combinación de niveles de factores.
 
     ```{r}
-
+table(iris$Species)
     ```
 
--   mean: S
+-   mean: La media aritmética de un conjunto de datos
 
     ```{r}
-
+mean(iris$Sepal.Length)
     ```
 
--   sum: S
+-   sum: La suma de todos los valores dentro de un cojunto de datos
 
     ```{r}
-
+sum(iris$Petal.Length)
     ```
 
 # **4. Apliquemos lo aprendido**
@@ -171,15 +171,18 @@ Usemos los códigos que acabamos de aprender
 S
 
 ```{r}
-#table(P42_1)
+#"table" para conocer la distribución del porcentaje de cobertura del servicio de recojo de basura en el distrito
+table(data$P42_1)
 ```
 
 ```{r}
-#mean(P41_1)
+#"mean" para saber el promedio diario de residuos sólidos de basura en kilogramos de todos los distritos
+mean(data$P41_1, na.rm = TRUE)
 ```
 
 ```{r}
-#sum(P41_1)
+#"sum" para sumar la cantidad diaria promedio de residuos de basura en kilogramos de todos los distritos
+sum(data$P41_1, na.rm = TRUE)
 ```
 
 ## 4.1 Tidyverse
@@ -206,6 +209,11 @@ Instalando el paquete de tidyverse te incluye los 8 paquetes. Pero, eso sí, tom
 
 El paquete dplyr es el más útil en R para la manipulación de datos, una de las ventajas es que se pueda usar el pipe para combinar diferentes funciones en R. Para no tener que escribirlo, se genera mediante Ctlr + shift + M. En pocas palabras, reemplaza la "," para concatenar(unir) varios comandos.
 
+```{r}
+library(dplyr)
+```
+
+
 Revisemos alguno de sus comandos:
 
 -   select
@@ -217,11 +225,13 @@ Revisemos alguno de sus comandos:
 -   summarise
 
     ```{r}
-    #summarise( which_max(P41_1))
+#"sumamarise" es una función que se utiliza para crear resúmenes estadísticos de un conjunto de datos. En este caso, para conocer la cantidad máxima de basura producida y la fila (observación) que la ha producido.
+summarise(data, max_basura = max(P41_1, na.rm = TRUE), fila_max_basura = which.max(P41_1))
     ```
 
 -   filter
 
     ```{r}
-    #filter(P43_7 Si)
+#"filter" se utiliza para crear un subconjunto de datos de determinadas filas que cumplan con una condición dada. Específicamente, deseamos quedarnos con los casos que Sí informen un Plan de Valorización de Residuos Sólidos Orgánicos
+filter(data, P43_6 == "6")
     ```
