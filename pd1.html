@@ -35,6 +35,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -344,8 +345,211 @@ div.tocify {
 <p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong></p>
 <p>Curso: SOC294 - Estadística para el análisis sociológico 1</p>
 <p>Semestre 2024 - 2</p>
-<div id="introducción-a-r" class="section level2">
-<h2>Introducción a R</h2>
+<div id="qué-es-r" class="section level1">
+<h1><strong>1. ¿Qué es R?</strong></h1>
+<p>R es un lenguaje de programación y un entorno de software libre y de
+código abierto utilizado para análisis estadístico y visualización de
+datos. Fue desarrollado por Ross Ihaka y Robert Gentleman en la
+Universidad de Auckland, Nueva Zelanda, en 1993. Desde entonces, ha sido
+ampliamente adoptado por la comunidad científica y empresarial como una
+herramienta esencial para el análisis y la visualización de datos.</p>
+<p>R cuenta con una amplia variedad de paquetes y bibliotecas que
+permiten el análisis estadístico, la minería de datos, el aprendizaje
+automático, la visualización de datos y la generación de informes.
+Además, su sintaxis es relativamente sencilla, lo que facilita su
+aprendizaje y uso para personas con distintos niveles de experiencia en
+programación, lo cual ha significado su uso en diversos rubros.</p>
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/ZCQHm63xc4s" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+<hr />
+<p><a id='part2'></a></p>
+</div>
+<div id="qué-podemos-hacer-con-r" class="section level1">
+<h1><strong>2. ¿Qué podemos hacer con R?</strong></h1>
+<p><img src="QphacerR1.png" /></p>
+<p><img src="QphacerR2.png" /></p>
+<p><img src="QphacerR3.png" /></p>
+<p><img src="QphacerR4.png" /></p>
+<hr />
+<p><a id='part3'></a></p>
+</div>
+<div id="conceptos-básicos-para-programar-en-r" class="section level1">
+<h1><strong>3. Conceptos básicos para programar en R</strong></h1>
+<p>Instalar <a href="http://www.r-project.org">R</a></p>
+<p>Instalar <a href="https://posit.co/downloads/">RStudio</a></p>
+<div id="usando-r" class="section level3">
+<h3>Usando R</h3>
+<p><img src="PrograR.png" /></p>
+<div id="configurar-el-directorio-de-trabajo" class="section level4">
+<h4><strong>3.1. Configurar el directorio de trabajo</strong></h4>
+<p>R funciona como un entorno temporal de trabajo, lo que quiere decir
+que el usuario va agregando datos y objetos. Sin embargo, si los
+análisis no son guardados se deberán repetir las instrucciones para
+obtener otra vez el resultado. Por esta razón, es preciso configurar una
+carpeta predeterminada en nuestro ordenador, donde el programa buscará
+los archivos a ejecutar y guardará los archivos a conservar con
+cambios.</p>
+<p>Para ver nuestro lugar de trabajo actual escribimos el siguiente
+comando (escriba el código en la consola, ya que si lo ejecuta desde
+este Rmd, obtendrá el lugar donde se encuentra este archivo):</p>
+<pre class="r"><code>getwd() #para saber en qué carpeta está el archivo</code></pre>
+<pre><code>## [1] &quot;/Users/Karina/EstadisticaSocio.github.io&quot;</code></pre>
+<p>Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú
+<strong>“Session” &gt; “Set Working Directory” &gt; “Choose
+Directory”</strong>. Esto abrirá una ventana emergente, donde buscaremos
+la carpeta en la cual vamos a trabajar, la ubicamos y seleccionamos
+“Open”. Para verificar el cambio volvemos a digitar la función
+<strong>“getwd()”</strong> en la consola.</p>
+</div>
+<div id="sintaxis-y-objetos-en-r" class="section level4">
+<h4><strong>3.2. Sintaxis y objetos en R</strong></h4>
+<p>El uso de R es bastante intuitivo y sigue un patrón lógico. Está
+compuesto de códigos y la combinación de estos códigos genera una
+sintaxis. Asimismo, R guarda la información de nuestras observaciones y
+variables a través de objetos.</p>
+<p>En un sentido global, la estructura general de una sintaxis puede
+resumirse como sigue: a un objeto dado se le asigna el resultado de una
+función, que a su vez se ejecuta sobre un conjunto de datos
+especificado, con una serie de configuraciones particulares. Veamos el
+siguiente ejemplo ficticio.</p>
+<p><img src="Sintax.png" /></p>
+<p>Si se lee de izquierda a derecha, la línea de comando puede
+explicarse como sigue:</p>
+<ul>
+<li><p>Primero se indica un objeto a crear, con el nombre que ustedes
+definan.</p></li>
+<li><p>Luego se indica el asignador, que expresa que todo lo que esté a
+la derecha de la flecha se guardará en el objeto creado a la izquierda.
+El asignador puede ser “&lt;-” o también “=”, para motivos del curso
+usaremos este último.</p></li>
+<li><p>Luego viene la función que en este caso permite leer archivos
+tipo Microsoft Excel. R trabaja con funciones que están dentro de
+“paquetes” que la comunidad va desarrollando. Podemos hacer nuestras
+operaciones con diversas funciones, y no hay una sola forma de hacerlo.
+Si se trata de funciones que no están predeterminadas en R, debemos
+instalar el paquete que las contiene con el comando
+“install.packages()”, y antes de ejecutarla debemos abrir la libreria
+con el comando “library()”</p></li>
+<li><p>Luego de la función, se abre un paréntesis que contiene los
+argumentos: instrucciones que especifican ciertos detalles de lo que
+queramos que la función realice. Los argumentos pueden escribirse de
+distintas maneras y va a depender de lo que queramos hacer. En nuestro
+ejemplo: El primer argumento indica la información a leer, en este caso
+indica un archivo de tipo Excel (extensión xlsx). El segundo argumento
+indica la hoja del archivo a leer. El tercer argumento indica qué
+columnas se leerán de forma específica (en este caso, las primeras
+diez).</p>
+<p>3.2.1 Las funciones más usadas</p>
+<p>Explicar estructura data $ variable</p></li>
+<li><p>names: textito de explicación</p>
+<pre class="r"><code>names(iris)</code></pre>
+<pre><code>## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre></li>
+<li><p>str:</p></li>
+<li><p>class:</p></li>
+<li><p>table: S</p></li>
+<li><p>mean: S</p></li>
+<li><p>sum: S</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="apliquemos-lo-aprendido" class="section level1">
+<h1><strong>4. Apliquemos lo aprendido</strong></h1>
+<p>Antes de aplicar los códigos revisados, debemos importar la base de
+datos a usar en R. Para eso debemos asegurarnos de dos cosas:</p>
+<ol style="list-style-type: decimal">
+<li>Que la base de datos se encuentra en el directorio de trabajo
+(carpeta indicada líneas arriba).</li>
+<li>Haber llamado a la librería que nos permitirá abrir la base de
+datos. En este curso usaremos “rio”, esta librería o paquete admite una
+amplia variedad de formatos (xlsx, sav, dta, etc.) con el mismo comando:
+import.</li>
+</ol>
+<p>Para esta sesión, trabajaremos con Registro Nacional de
+Municipalidades (RENAMU). Pequeño texto sobre renamu: Sebastian</p>
+<pre class="r"><code>library(rio)
+data = import(&quot;RENAMU_RESIDUOS.xlsx&quot;)</code></pre>
+<p><img src="diccionario_pd1.png" /></p>
+<p>Para abrir la base usamos dos líneas de código. La primera indica el
+llamado del paquete rio. Sin llamar al paquete no se podrá solicitar el
+uso de la función de este. Haciendo la analogía a la imagen anterior, no
+puedes usar una herramienta (comando) sin seleccionar y abrir antes la
+caja que la contiene.</p>
+<p>La segunda línea de código tiene 4 elementos</p>
+<ol style="list-style-type: decimal">
+<li>data: Este es el nombre del <strong>objeto</strong> en R. En este
+caso este objeto es una base. Siempre que importemos debemos asignarle
+un nombre para luego poder referirnos a este en el código.</li>
+<li>= : Es el asignador, sin este símbolo no podré decirle qué contendrá
+el objeto “data”. También es común usar “&lt;-”</li>
+<li>import(): Es la función. Es lo que contiene las directrices que le
+indica a R qué debe hacer. Esta función tiene como único argumento
+fundamental el nombre del archivo a importar.</li>
+<li>“RENAMU_RESIDUOS.xlsx”: Es el nombre del archivo dentro de tu
+computadora. Este nombre va entre comillas siempre entre comillas. Para
+R, cada texto del código tiene una utilidad, si el nombre del archivo no
+tiene comillas, el programa interpretará que es una función y al no
+encontrarla arrojará error.</li>
+</ol>
+<p>Usemos los códigos que acabamos de aprender</p>
+<pre class="r"><code>#names</code></pre>
+<pre class="r"><code>#str</code></pre>
+<pre class="r"><code>#class(P40_1)</code></pre>
+<p>S</p>
+<pre class="r"><code>#table(P42_1)</code></pre>
+<pre class="r"><code>#mean(P41_1)</code></pre>
+<pre class="r"><code>#sum(P41_1)</code></pre>
+<div id="tidyverse" class="section level2">
+<h2>4.1 Tidyverse</h2>
+<p>Agregar loguito</p>
+<p>Tidyverse es un conjunto de de paquetes de R para ciencia de datos,
+nos ayuda a trabajar las bases de datos. Ha sido desarrollado por
+RStudio.</p>
+<ul>
+<li><p><strong>Es consistente</strong> : Todos los paquetes tienen una
+misma estructura</p></li>
+<li><p><strong>Concatenable</strong>: Siempre se pueden unir pequeñas
+partes para resolverlos</p></li>
+<li><p><strong>Funcional</strong>: Como casi todo R, promueve la
+programación</p></li>
+</ul>
+<p>Para cada paso de tratamiento de datos existe un paquete, se puede
+pasar desde cargar/importar los datos, limpiarlos, transformarlos,
+visualizar, modelarlos y finalmente comunicarlos.</p>
+<p>Para importar datos tenemos readr, haven y readxl. Para limpiar los
+datos usamos tidyr, para transformar los datos se usa dyplr, que lo
+veremos a continuación, para modelar se usa purr o broom, para
+visualizar se usa ggplot2. Finalmente, para comunicar se usa knitr para
+publicar los resultados por html, pdf, ppt. y rmarkdown es la estructura
+de knitr.</p>
+<p>Algunos les gusta usarlo porque facilita el análisis y manipulación
+de datos y es más rápido, pero, por otro lado, tiene otra lógica en la
+programación. En vez de usar “,” para diferenciar entre comandos, usar
+%&gt;%.</p>
+<p>Instalando el paquete de tidyverse te incluye los 8 paquetes. Pero,
+eso sí, toma más tiempo de lo debido. Por eso, en esta ocasión, se ha
+descargado los que necesitaremos ahora</p>
+<div id="dplyr" class="section level3">
+<h3>4.1.1 Dplyr</h3>
+<p>El paquete dplyr es el más útil en R para la manipulación de datos,
+una de las ventajas es que se pueda usar el pipe para combinar
+diferentes funciones en R. Para no tener que escribirlo, se genera
+mediante Ctlr + shift + M. En pocas palabras, reemplaza la “,” para
+concatenar(unir) varios comandos.</p>
+<p>Revisemos alguno de sus comandos:</p>
+<ul>
+<li><p>select</p>
+<pre class="r"><code>#Seleccionar solo las P41_1 y  P43_algo</code></pre></li>
+<li><p>summarise</p>
+<pre class="r"><code>#summarise( which_max(P41_1))</code></pre></li>
+<li><p>filter</p>
+<pre class="r"><code>#filter(P43_7 Si)</code></pre></li>
+</ul>
+</div>
+</div>
 </div>
 
 

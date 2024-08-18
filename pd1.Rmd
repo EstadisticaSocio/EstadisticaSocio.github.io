@@ -142,6 +142,9 @@ library(rio)
 data = import("RENAMU_RESIDUOS.xlsx")
 ```
 
+![](diccionario_pd1.png)
+
+
 Para abrir la base usamos dos líneas de código. La primera indica el llamado del paquete rio. Sin llamar al paquete no se podrá solicitar el uso de la función de este. Haciendo la analogía a la imagen anterior, no puedes usar una herramienta (comando) sin seleccionar y abrir antes la caja que la contiene.
 
 La segunda línea de código tiene 4 elementos
