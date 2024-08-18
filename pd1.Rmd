@@ -90,37 +90,39 @@ Si se lee de izquierda a derecha, la línea de comando puede explicarse como sig
 
     3.2.1 Las funciones más usadas
 
+    Explicar estructura data \$ variable
+
 -   names: textito de explicación
 
     ```{r}
-
+    names(iris)
     ```
 
--   str
+-   str:
 
     ```{r}
 
     ```
 
--   class
+-   class:
 
     ```{r}
 
     ```
 
--   table
+-   table: S
 
     ```{r}
 
     ```
 
--   mean
+-   mean: S
 
     ```{r}
 
     ```
 
--   sum
+-   sum: S
 
     ```{r}
 
@@ -128,33 +130,56 @@ Si se lee de izquierda a derecha, la línea de comando puede explicarse como sig
 
 # **4. Apliquemos lo aprendido**
 
-Importar base de datos
+Antes de aplicar los códigos revisados, debemos importar la base de datos a usar en R. Para eso debemos asegurarnos de dos cosas:
 
-Agregar imagen de diccionario de datos
+1.  Que la base de datos se encuentra en el directorio de trabajo (carpeta indicada líneas arriba).
+2.  Haber llamado a la librería que nos permitirá abrir la base de datos. En este curso usaremos "rio", esta librería o paquete admite una amplia variedad de formatos (xlsx, sav, dta, etc.) con el mismo comando: import.
 
-Pequeño texto sobre renamu
+Para esta sesión, trabajaremos con Registro Nacional de Municipalidades (RENAMU). Pequeño texto sobre renamu: Sebastian
 
 ```{r}
-
+library(rio)
+data = import("RENAMU_RESIDUOS.xlsx")
 ```
 
-Explicación del código
+Para abrir la base usamos dos líneas de código. La primera indica el llamado del paquete rio. Sin llamar al paquete no se podrá solicitar el uso de la función de este. Haciendo la analogía a la imagen anterior, no puedes usar una herramienta (comando) sin seleccionar y abrir antes la caja que la contiene.
+
+La segunda línea de código tiene 4 elementos
+
+1.  data: Este es el nombre del **objeto** en R. En este caso este objeto es una base. Siempre que importemos debemos asignarle un nombre para luego poder referirnos a este en el código.
+2.  = : Es el asignador, sin este símbolo no podré decirle qué contendrá el objeto "data". También es común usar "\<-"
+3.  import(): Es la función. Es lo que contiene las directrices que le indica a R qué debe hacer. Esta función tiene como único argumento fundamental el nombre del archivo a importar.
+4.  "RENAMU_RESIDUOS.xlsx": Es el nombre del archivo dentro de tu computadora. Este nombre va entre comillas siempre entre comillas. Para R, cada texto del código tiene una utilidad, si el nombre del archivo no tiene comillas, el programa interpretará que es una función y al no encontrarla arrojará error.
 
 Usemos los códigos que acabamos de aprender
 
-\-
+```{r}
+#names
+```
 
-\-
+```{r}
+#str
+```
 
-\-
+```{r}
+#class(P40_1)
+```
 
-\-
+S
 
-\-
+```{r}
+#table(P42_1)
+```
 
-\-
+```{r}
+#mean(P41_1)
+```
 
-4.1 Tidyverse
+```{r}
+#sum(P41_1)
+```
+
+## 4.1 Tidyverse
 
 Agregar loguito
 
@@ -170,30 +195,30 @@ Para cada paso de tratamiento de datos existe un paquete, se puede pasar desde c
 
 Para importar datos tenemos readr, haven y readxl. Para limpiar los datos usamos tidyr, para transformar los datos se usa dyplr, que lo veremos a continuación, para modelar se usa purr o broom, para visualizar se usa ggplot2. Finalmente, para comunicar se usa knitr para publicar los resultados por html, pdf, ppt. y rmarkdown es la estructura de knitr.
 
-Algunos les gusta usarlo porque facilita el análisis y manipulación de datos y es más rápido, pero, por otro lado, tiene otra lógica en la programación. En vez de usar \",\" para diferenciar entre comandos, usar %\>%.
+Algunos les gusta usarlo porque facilita el análisis y manipulación de datos y es más rápido, pero, por otro lado, tiene otra lógica en la programación. En vez de usar "," para diferenciar entre comandos, usar %\>%.
 
 Instalando el paquete de tidyverse te incluye los 8 paquetes. Pero, eso sí, toma más tiempo de lo debido. Por eso, en esta ocasión, se ha descargado los que necesitaremos ahora
 
-4.1.1 Dplyr
+### 4.1.1 Dplyr
 
-El paquete dplyr es el más útil en R para la manipulación de datos, una de las ventajas es que se pueda usar el pipe para combinar diferentes funciones en R. Para no tener que escribirlo, se genera mediante Ctlr + shift + M. En pocas palabras, reemplaza la \",\" para concatenar(unir) varios comandos.
+El paquete dplyr es el más útil en R para la manipulación de datos, una de las ventajas es que se pueda usar el pipe para combinar diferentes funciones en R. Para no tener que escribirlo, se genera mediante Ctlr + shift + M. En pocas palabras, reemplaza la "," para concatenar(unir) varios comandos.
 
 Revisemos alguno de sus comandos:
 
 -   select
 
     ```{r}
-
+    #Seleccionar solo las P41_1 y  P43_algo
     ```
 
 -   summarise
 
     ```{r}
-
+    #summarise( which_max(P41_1))
     ```
 
 -   filter
 
     ```{r}
-
+    #filter(P43_7 Si)
     ```
