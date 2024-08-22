@@ -90,9 +90,9 @@ Si se lee de izquierda a derecha, la línea de comando puede explicarse como sig
 
     3.2.1 Las funciones más usadas
 
-    Explicar estructura data \$ variable
+Para estos ejemplos usaremos una base de datos precargada en R llamada iris. En esta se muestran datos sobre flores.
 
--   names: textito de explicación
+-   names: lo usamos cuando queremos conocer los nombres de las variables que componen la base de datos. Solo necesita un argumento básico: el nombre de la data.
 
     ```{r}
     names(iris)
@@ -122,7 +122,7 @@ table(iris$Species)
 mean(iris$Sepal.Length)
     ```
 
--   sum: La suma de todos los valores dentro de un cojunto de datos
+-   sum: La suma de todos los valores dentro de un conjunto de datos
 
     ```{r}
 sum(iris$Petal.Length)
@@ -133,13 +133,14 @@ sum(iris$Petal.Length)
 Antes de aplicar los códigos revisados, debemos importar la base de datos a usar en R. Para eso debemos asegurarnos de dos cosas:
 
 1.  Que la base de datos se encuentra en el directorio de trabajo (carpeta indicada líneas arriba).
-2.  Haber llamado a la librería que nos permitirá abrir la base de datos. En este curso usaremos "rio", esta librería o paquete admite una amplia variedad de formatos (xlsx, sav, dta, etc.) con el mismo comando: import.
+2.  Haber llamado a la librería que nos permitirá abrir la base de datos. En este curso usaremos "rio", esta librería o paquete admite una amplia variedad de formatos (xlsx, sav, dta, etc.) usando el mismo comando: import.
 
 Para esta sesión, trabajaremos con Registro Nacional de Municipalidades (RENAMU). Pequeño texto sobre renamu: Sebastian
 
 ```{r}
 library(rio)
 data = import("RENAMU_RESIDUOS.xlsx")
+row.names(data)<- data[,1]
 ```
 
 ![](diccionario_pd1.png)
@@ -168,7 +169,7 @@ Usemos los códigos que acabamos de aprender
 #class(P40_1)
 ```
 
-S
+
 
 ```{r}
 #"table" para conocer la distribución del porcentaje de cobertura del servicio de recojo de basura en el distrito
@@ -209,29 +210,72 @@ Instalando el paquete de tidyverse te incluye los 8 paquetes. Pero, eso sí, tom
 
 El paquete dplyr es el más útil en R para la manipulación de datos, una de las ventajas es que se pueda usar el pipe para combinar diferentes funciones en R. Para no tener que escribirlo, se genera mediante Ctlr + shift + M. En pocas palabras, reemplaza la "," para concatenar(unir) varios comandos.
 
-```{r}
+```{r, message = FALSE, warning=FALSE}
 library(dplyr)
 ```
 
 
 Revisemos alguno de sus comandos:
 
--   select
+- rename: Nos ayuda a cambiarle de nombre a una variable. Debemos indicar primero el nuevo nombre, el asignador "=" seguido del nombre original de la variable a cambiar.
+
+Cambiemos el nombre de la variable P41_1 a recojo_diario_kg
+```{r}
+data = data %>% 
+  rename(recojo_diario_kg = P41_1)
+```
+
+Ahora tu, practica cambiando el nombre de la variable P42_1 a porcen_cobertura
+
+-   select: esta función permite seleccionar algunas variables de la base de datos o en caso contrario, dejar algunas variables por fuera de la misma al anteponer un símbolo menos antes (-variable)
+
+```{r}
+ejemplo = data %>% 
+  select(recojo_diario_kg,P43_3,P43_4,P43_5)
+```
+
+Ahora tu, practica seleccionando las variables Tipomuni y P44_1. Recuerda que cada una debe ir separada de una coma (,) 
+
+-   summarise: es una función que se utiliza para crear resúmenes estadísticos de un conjunto de datos. Summarise necesita de dos argumentos b+as
 
     ```{r}
-    #Seleccionar solo las P41_1 y  P43_algo
+data %>% 
+summarise(promedio = mean(recojo_diario_kg, na.rm = TRUE))
     ```
 
--   summarise
+
+-   filter: se utiliza para crear un subconjunto de datos de determinadas filas que cumplan con una condición dada. Específicamente, deseamos quedarnos con los casos que Sí informen un Plan de Valorización de Residuos Sólidos Orgánicos
 
     ```{r}
-#"sumamarise" es una función que se utiliza para crear resúmenes estadísticos de un conjunto de datos. En este caso, para conocer la cantidad máxima de basura producida y la fila (observación) que la ha producido.
-summarise(data, max_basura = max(P41_1, na.rm = TRUE), fila_max_basura = which.max(P41_1))
+data %>% 
+filter(P43_6 == "6")
     ```
 
--   filter
+4.2 ¿Cuál es la municipalidad distrital con mayor promedio diario de recojo de residuos sólidos?
 
-    ```{r}
-#"filter" se utiliza para crear un subconjunto de datos de determinadas filas que cumplan con una condición dada. Específicamente, deseamos quedarnos con los casos que Sí informen un Plan de Valorización de Residuos Sólidos Orgánicos
-filter(data, P43_6 == "6")
-    ```
+Para responder esta pregunta necesitamos concatenar dos funciones 1. filter y 2. summarise
+```{r}
+data %>% 
+  filter(Tipomuni == 2) %>% 
+  filter(recojo_diario_kg == max(recojo_diario_kg,na.rm = T))
+```
+
+4.3 ¿Cuál es la municipalidad distrital de Loreto que recoge en promedio una mayor cantidad de residuos sólidos?
+
+```{r}
+data %>% 
+  filter(Departamento == "Loreto"&Tipomuni == 2) %>% 
+    summarise(maximo = which.max(recojo_diario_kg))
+
+```
+
+4.4 ¿Cuál es la municipalidad provincial de Lima Región con el menor promedio de residuos sólidos recogidos al dia?
+
+```{r}
+data %>% 
+  filter(Tipomuni == 1 & Departamento == "LIMA") %>% 
+  select(Provincia,recojo_diario_kg) %>% 
+  summarise(minimo=min(recojo_diario_kg))
+```
+
+
