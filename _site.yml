@@ -5,7 +5,5 @@ navbar:
   left:
     - text: "Inicio"
       href: index.html
-    - text: "Sesión teórica 1"
-      href: clase1.html
     - text: "Práctica dirigida 1"
       href: pd1.html
