@@ -442,16 +442,55 @@ indica un archivo de tipo Excel (extensión xlsx). El segundo argumento
 indica la hoja del archivo a leer. El tercer argumento indica qué
 columnas se leerán de forma específica (en este caso, las primeras
 diez).</p>
-<p>3.2.1 Las funciones más usadas</p>
-<p>Explicar estructura data $ variable</p></li>
-<li><p>names: textito de explicación</p>
+<p>3.2.1 Las funciones más usadas</p></li>
+</ul>
+<p>Para estos ejemplos usaremos una base de datos precargada en R
+llamada iris. En esta se muestran datos sobre flores.</p>
+<ul>
+<li><p>names: lo usamos cuando queremos conocer los nombres de las
+variables que componen la base de datos. Solo necesita un argumento
+básico: el nombre de la datam en este caso: iris</p>
 <pre class="r"><code>names(iris)</code></pre>
 <pre><code>## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre></li>
-<li><p>str:</p></li>
-<li><p>class:</p></li>
-<li><p>table: S</p></li>
-<li><p>mean: S</p></li>
-<li><p>sum: S</p></li>
+<li><p>str: se usa para conocer la estructura de un objeto, te brinda el
+tipo y un vistazo de los valores. Solo se necesita el nomre del objeto
+como argumento.</p>
+<pre class="r"><code>str(iris)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre></li>
+<li><p>class:se usa cuando se quiere saber solo de qué tipo de objeto se
+trata. Solo se necesita el nombre del objeto como argumento, este puede
+ser una variable, un vector, o una base de datos.</p>
+<pre class="r"><code>class(iris)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre></li>
+</ul>
+<p>Para las siguientes funciones debemos hacer referencia a una variable
+en específico como mínimo. En el lenguaje de base de R, se usa el
+símbolo “$” para indicar que cierta variable es parte de la base de
+datos. Si no usamos el símbolo, R busca a esta variable como un objeto
+independiente, y de no encontrarlo saldrá error. La estructura es
+“data$nombredevariable”</p>
+<ul>
+<li><p>table: Utiliza factores de clasificación para construir una tabla
+de los recuentos en cada combinación de niveles de factores. Es decir,
+te muestra una tabla de frecuencias. Se necesita como argumento por lo
+menos a una variable.</p>
+<pre class="r"><code>table(iris$Species)</code></pre>
+<pre><code>## 
+##     setosa versicolor  virginica 
+##         50         50         50</code></pre></li>
+<li><p>mean: La media aritmética (promedio) de un conjunto de datos. Se
+necesita como argumento a una variable de tipo numérica.</p>
+<pre class="r"><code>mean(iris$Sepal.Length)</code></pre>
+<pre><code>## [1] 5.843333</code></pre></li>
+<li><p>sum: La suma de todos los valores dentro de un conjunto de datos.
+Se necesita como argumento una variable de tipo numérica.</p>
+<pre class="r"><code>sum(iris$Petal.Length)</code></pre>
+<pre><code>## [1] 563.7</code></pre></li>
 </ul>
 </div>
 </div>
@@ -465,13 +504,14 @@ datos a usar en R. Para eso debemos asegurarnos de dos cosas:</p>
 (carpeta indicada líneas arriba).</li>
 <li>Haber llamado a la librería que nos permitirá abrir la base de
 datos. En este curso usaremos “rio”, esta librería o paquete admite una
-amplia variedad de formatos (xlsx, sav, dta, etc.) con el mismo comando:
-import.</li>
+amplia variedad de formatos (xlsx, sav, dta, etc.) usando el mismo
+comando: import.</li>
 </ol>
 <p>Para esta sesión, trabajaremos con Registro Nacional de
 Municipalidades (RENAMU). Pequeño texto sobre renamu: Sebastian</p>
 <pre class="r"><code>library(rio)
-data = import(&quot;RENAMU_RESIDUOS.xlsx&quot;)</code></pre>
+data = import(&quot;RENAMU_RESIDUOS.xlsx&quot;)
+row.names(data)&lt;- data[,1]</code></pre>
 <p><img src="diccionario_pd1.png" /></p>
 <p>Para abrir la base usamos dos líneas de código. La primera indica el
 llamado del paquete rio. Sin llamar al paquete no se podrá solicitar el
@@ -495,16 +535,54 @@ tiene comillas, el programa interpretará que es una función y al no
 encontrarla arrojará error.</li>
 </ol>
 <p>Usemos los códigos que acabamos de aprender</p>
-<pre class="r"><code>#names</code></pre>
-<pre class="r"><code>#str</code></pre>
-<pre class="r"><code>#class(P40_1)</code></pre>
-<p>S</p>
-<pre class="r"><code>#table(P42_1)</code></pre>
-<pre class="r"><code>#mean(P41_1)</code></pre>
-<pre class="r"><code>#sum(P41_1)</code></pre>
+<p>Busquemos los nombres de las variables que componen la base de
+datos</p>
+<pre class="r"><code>names(data)</code></pre>
+<pre><code>##  [1] &quot;idmunici&quot;     &quot;Ubigeo&quot;       &quot;Departamento&quot; &quot;Provincia&quot;    &quot;Distrito&quot;    
+##  [6] &quot;Tipomuni&quot;     &quot;P40_1&quot;        &quot;P41_1&quot;        &quot;P42_1&quot;        &quot;P43_3&quot;       
+## [11] &quot;P43_4&quot;        &quot;P43_5&quot;        &quot;P43_6&quot;        &quot;P44_1&quot;</code></pre>
+<p>Examinemos la estructura de esta base de datos</p>
+<pre class="r"><code>str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    1891 obs. of  14 variables:
+##  $ idmunici    : chr  &quot;010101&quot; &quot;010102&quot; &quot;010103&quot; &quot;010104&quot; ...
+##  $ Ubigeo      : chr  &quot;010101&quot; &quot;010102&quot; &quot;010103&quot; &quot;010104&quot; ...
+##  $ Departamento: chr  &quot;AMAZONAS&quot; &quot;AMAZONAS&quot; &quot;AMAZONAS&quot; &quot;AMAZONAS&quot; ...
+##  $ Provincia   : chr  &quot;CHACHAPOYAS&quot; &quot;CHACHAPOYAS&quot; &quot;CHACHAPOYAS&quot; &quot;CHACHAPOYAS&quot; ...
+##  $ Distrito    : chr  &quot;CHACHAPOYAS&quot; &quot;ASUNCION&quot; &quot;BALSAS&quot; &quot;CHETO&quot; ...
+##  $ Tipomuni    : num  1 2 2 2 2 2 2 2 2 2 ...
+##  $ P40_1       : num  1 4 2 4 3 4 3 3 3 2 ...
+##  $ P41_1       : num  25800 40 20 240 100 282 115 200 2800 300 ...
+##  $ P42_1       : num  4 2 3 4 3 4 3 4 4 3 ...
+##  $ P43_3       : num  0 0 0 NA 3 NA NA NA 3 0 ...
+##  $ P43_4       : num  0 0 0 NA 0 NA NA NA 0 0 ...
+##  $ P43_5       : num  5 0 0 NA 0 NA NA NA 0 0 ...
+##  $ P43_6       : num  6 0 0 NA 0 NA NA NA 0 0 ...
+##  $ P44_1       : num  2 2 2 2 2 2 2 2 1 1 ...</code></pre>
+<p>Revisemos qué tipo de variable es la variable frecuencia de recojo de
+residuos sólidos.</p>
+<pre class="r"><code>class(data$P40_1)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<p>Analicemos la distribución del porcentaje de cobertura del servicio
+de recojo de basura en el distrito</p>
+<pre class="r"><code>table(data$P42_1)</code></pre>
+<pre><code>## 
+##   1   2   3   4 
+##  44 166 663 971</code></pre>
+<p>Calculemos el promedio diario de residuos sólidos de basura en
+kilogramos de todos los distritos</p>
+<pre class="r"><code>mean(data$P41_1)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>En este caso, el primer resultado es NA. Esto se debe a la presencia
+de valores perdidos en la variable. Para omitirlos en el cálculo podemos
+usar dentro del paréntesis el comando: na.rm = TRUE.</p>
+<pre class="r"><code>mean(data$P41_1, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 13595.51</code></pre>
+<p>Calculemos la suma diaria promedio de residuos de basura en
+kilogramos de todos los distritos</p>
+<pre class="r"><code>sum(data$P41_1, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 25070120</code></pre>
 <div id="tidyverse" class="section level2">
 <h2>4.1 Tidyverse</h2>
-<p>Agregar loguito</p>
 <p>Tidyverse es un conjunto de de paquetes de R para ciencia de datos,
 nos ayuda a trabajar las bases de datos. Ha sido desarrollado por
 RStudio.</p>
@@ -539,15 +617,162 @@ una de las ventajas es que se pueda usar el pipe para combinar
 diferentes funciones en R. Para no tener que escribirlo, se genera
 mediante Ctlr + shift + M. En pocas palabras, reemplaza la “,” para
 concatenar(unir) varios comandos.</p>
+<pre class="r"><code>library(dplyr)</code></pre>
 <p>Revisemos alguno de sus comandos:</p>
 <ul>
-<li><p>select</p>
-<pre class="r"><code>#Seleccionar solo las P41_1 y  P43_algo</code></pre></li>
-<li><p>summarise</p>
-<pre class="r"><code>#summarise( which_max(P41_1))</code></pre></li>
-<li><p>filter</p>
-<pre class="r"><code>#filter(P43_7 Si)</code></pre></li>
+<li>rename: Nos ayuda a cambiarle de nombre a una variable. Debemos
+indicar primero el nuevo nombre, el asignador “=” seguido del nombre
+original de la variable a cambiar.</li>
 </ul>
+<p>Cambiemos el nombre de la variable P41_1 a recojo_diario_kg</p>
+<pre class="r"><code>data = data %&gt;% 
+  rename(recojo_diario_kg = P41_1)</code></pre>
+<p>Ahora tú, practica cambiando el nombre de la variable P42_1 a
+porcen_cobertura</p>
+<ul>
+<li>select: esta función permite seleccionar algunas variables de la
+base de datos o en caso contrario, dejar algunas variables por fuera de
+la misma al anteponer un símbolo menos antes (-variable)</li>
+</ul>
+<pre class="r"><code>ejemplo = data %&gt;% 
+  select(recojo_diario_kg,P43_3,P43_4,P43_5)</code></pre>
+<p>Ahora tú, practica seleccionando las variables Tipomuni y P44_1.
+Recuerda que cada una debe ir separada de una coma (,)</p>
+<ul>
+<li><p>summarise: es una función que se utiliza para crear resúmenes
+estadísticos de un conjunto de datos. Summarise necesita de dos
+argumentos b+as</p>
+<pre class="r"><code>data %&gt;% 
+summarise(promedio = mean(recojo_diario_kg, na.rm = TRUE))</code></pre>
+<pre><code>##   promedio
+## 1 13595.51</code></pre></li>
+<li><p>filter: se utiliza para crear un subconjunto de datos de
+determinadas filas que cumplan con una condición dada. Específicamente,
+deseamos quedarnos con los casos que Sí informen un Plan de Valorización
+de Residuos Sólidos Orgánicos</p>
+<pre class="r"><code>data %&gt;% 
+filter(P43_6 == &quot;6&quot;)</code></pre>
+<pre><code>##        idmunici Ubigeo  Departamento        Provincia
+## 010101   010101 010101      AMAZONAS      CHACHAPOYAS
+## 021401   021401 021401        ANCASH            OCROS
+## 040409   040409 040409      AREQUIPA         CASTILLA
+## 070101   070101 070101        CALLAO           CALLAO
+## 070103   070103 070103        CALLAO           CALLAO
+## 070106   070106 070106        CALLAO           CALLAO
+## 070107   070107 070107        CALLAO           CALLAO
+## 150101   150101 150101          LIMA             LIMA
+## 150103   150103 150103          LIMA             LIMA
+## 150110   150110 150110          LIMA             LIMA
+## 150111   150111 150111          LIMA             LIMA
+## 150112   150112 150112          LIMA             LIMA
+## 150114   150114 150114          LIMA             LIMA
+## 150115   150115 150115          LIMA             LIMA
+## 150116   150116 150116          LIMA             LIMA
+## 150117   150117 150117          LIMA             LIMA
+## 150118   150118 150118          LIMA             LIMA
+## 150119   150119 150119          LIMA             LIMA
+## 150122   150122 150122          LIMA             LIMA
+## 150123   150123 150123          LIMA             LIMA
+## 150128   150128 150128          LIMA             LIMA
+## 150130   150130 150130          LIMA             LIMA
+## 150131   150131 150131          LIMA             LIMA
+## 150142   150142 150142          LIMA             LIMA
+## 150703   150703 150703          LIMA       HUAROCHIRI
+## 170101   170101 170101 MADRE DE DIOS        TAMBOPATA
+## 211101   211101 211101          PUNO        SAN ROMAN
+## 250101   250101 250101       UCAYALI CORONEL PORTILLO
+## 250301   250301 250301       UCAYALI       PADRE ABAD
+## 250401   250401 250401       UCAYALI            PURUS
+##                          Distrito Tipomuni P40_1 recojo_diario_kg P42_1 P43_3
+## 010101                CHACHAPOYAS        1     1            25800     4     0
+## 021401                      OCROS        1     3              800     4     0
+## 040409                  ORCOPAMPA        2     1             2114     4     3
+## 070101                     CALLAO        1     1           742834     4     0
+## 070103 CARMEN DE LA LEGUA REYNOSO        2     1            54126     4     3
+## 070106                 VENTANILLA        2     1           323825     4     0
+## 070107                    MI PERÚ        2     1            34162     4     3
+## 150101                       LIMA        1     1           412876     4     3
+## 150103                        ATE        2     1           652468     4     0
+## 150110                      COMAS        2     1           570230     4     3
+## 150111                EL AGUSTINO        2     1           274410     4     3
+## 150112              INDEPENDENCIA        2     1           246640     4     0
+## 150114                  LA MOLINA        2     1           157889     4     3
+## 150115                LA VICTORIA        2     1           363171     4     0
+## 150116                      LINCE        2     1            66260     4     3
+## 150117                 LOS OLIVOS        2     1           370000     4     3
+## 150118                 LURIGANCHO        2     1           160000     4     0
+## 150119                      LURIN        2     1           182940     4     3
+## 150122                 MIRAFLORES        2     1           178907     4     0
+## 150123                 PACHACAMAC        2     2            83490     3     0
+## 150128                      RIMAC        2     1           217261     4     0
+## 150130                  SAN BORJA        2     1           110592     4     3
+## 150131                 SAN ISIDRO        2     1           140000     4     3
+## 150142          VILLA EL SALVADOR        2     1           368255     4     3
+## 150703                CALLAHUANCA        2     2              160     4     3
+## 170101                  TAMBOPATA        1     2            80500     4     3
+## 211101                    JULIACA        1     1           200000     3     0
+## 250101                   CALLERIA        1     1           200000     3     0
+## 250301                 PADRE ABAD        1     1            14400     4     0
+## 250401                      PURUS        1     1              400     3     0
+##        P43_4 P43_5 P43_6 P44_1
+## 010101     0     5     6     2
+## 021401     0     0     6     1
+## 040409     0     5     6     1
+## 070101     0     5     6     1
+## 070103     0     0     6     1
+## 070106     0     5     6     1
+## 070107     0     5     6     1
+## 150101     0     5     6     1
+## 150103     0     5     6     1
+## 150110     4     5     6     1
+## 150111     0     5     6     1
+## 150112     0     0     6     1
+## 150114     0     5     6     1
+## 150115     0     0     6     1
+## 150116     0     5     6     1
+## 150117     0     5     6     1
+## 150118     0     5     6     1
+## 150119     0     5     6     1
+## 150122     0     5     6     1
+## 150123     0     5     6     1
+## 150128     0     5     6     1
+## 150130     0     5     6     1
+## 150131     0     5     6     1
+## 150142     0     5     6     1
+## 150703     0     5     6     2
+## 170101     4     5     6     2
+## 211101     0     0     6     2
+## 250101     0     5     6     2
+## 250301     0     0     6     2
+## 250401     0     5     6     2</code></pre></li>
+</ul>
+<p>4.2 ¿Cuál es la municipalidad distrital con mayor promedio diario de
+recojo de residuos sólidos?</p>
+<p>Para responder esta pregunta necesitamos concatenar dos funciones 1.
+filter y 2. summarise</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Tipomuni == 2) %&gt;% 
+  filter(recojo_diario_kg == max(recojo_diario_kg,na.rm = T))</code></pre>
+<pre><code>##        idmunici Ubigeo Departamento Provincia               Distrito Tipomuni
+## 150132   150132 150132         LIMA      LIMA SAN JUAN DE LURIGANCHO        2
+##        P40_1 recojo_diario_kg P42_1 P43_3 P43_4 P43_5 P43_6 P44_1
+## 150132     1          1026525     4     0     0     5     0     1</code></pre>
+<p>4.3 ¿Cuál es la municipalidad distrital de Loreto que recoge en
+promedio una mayor cantidad de residuos sólidos?</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Departamento == &quot;LORETO&quot;&amp;Tipomuni == 2) %&gt;% 
+    select(Provincia,recojo_diario_kg) %&gt;% 
+    filter(recojo_diario_kg == max(recojo_diario_kg,na.rm = T))</code></pre>
+<pre><code>##        Provincia recojo_diario_kg
+## 160113    MAYNAS            80000</code></pre>
+<p>4.4 ¿Cuál es la municipalidad provincial de Lima Región con el menor
+promedio de residuos sólidos recogidos al dia?</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Tipomuni == 1 &amp; Departamento == &quot;LIMA&quot;) %&gt;% 
+  select(Provincia,recojo_diario_kg) %&gt;% 
+  filter(recojo_diario_kg==min(recojo_diario_kg,na.rm = T))</code></pre>
+<pre><code>##        Provincia recojo_diario_kg
+## 151001    YAUYOS             1500</code></pre>
 </div>
 </div>
 </div>

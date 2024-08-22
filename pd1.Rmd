@@ -92,37 +92,37 @@ Si se lee de izquierda a derecha, la línea de comando puede explicarse como sig
 
 Para estos ejemplos usaremos una base de datos precargada en R llamada iris. En esta se muestran datos sobre flores.
 
--   names: lo usamos cuando queremos conocer los nombres de las variables que componen la base de datos. Solo necesita un argumento básico: el nombre de la data.
+-   names: lo usamos cuando queremos conocer los nombres de las variables que componen la base de datos. Solo necesita un argumento básico: el nombre de la datam en este caso: iris
 
     ```{r}
     names(iris)
     ```
 
--   str:
-
+-   str: se usa para conocer la estructura de un objeto, te brinda el tipo y un vistazo de los valores. Solo se necesita el nomre del objeto como argumento.
     ```{r}
-
+str(iris)
     ```
 
--   class:
-
+-   class:se usa cuando se quiere saber solo de qué tipo de objeto se trata. Solo se necesita el nombre del objeto como argumento, este puede ser una variable, un vector, o una base de datos. 
     ```{r}
-
+class(iris)
     ```
 
--   table: Utiliza factores de clasificación para construir una tabla de los recuentos en cada combinación de niveles de factores.
+Para las siguientes funciones debemos hacer referencia a una variable en específico como mínimo. En el lenguaje de base de R, se usa el símbolo "\$" para indicar que cierta variable es parte de la base de datos. Si no usamos el símbolo, R busca a esta variable como un objeto independiente, y de no encontrarlo saldrá error. La estructura es "data\$nombredevariable"
+
+-   table: Utiliza factores de clasificación para construir una tabla de los recuentos en cada combinación de niveles de factores. Es decir, te muestra una tabla de frecuencias. Se necesita como argumento por lo menos a una variable.
 
     ```{r}
 table(iris$Species)
     ```
 
--   mean: La media aritmética de un conjunto de datos
+-   mean: La media aritmética (promedio) de un conjunto de datos. Se necesita como argumento a una variable de tipo numérica.
 
     ```{r}
 mean(iris$Sepal.Length)
     ```
 
--   sum: La suma de todos los valores dentro de un conjunto de datos
+-   sum: La suma de todos los valores dentro de un conjunto de datos. Se necesita como argumento una variable de tipo numérica. 
 
     ```{r}
 sum(iris$Petal.Length)
@@ -157,38 +157,42 @@ La segunda línea de código tiene 4 elementos
 
 Usemos los códigos que acabamos de aprender
 
+Busquemos los nombres de las variables que componen la base de datos
 ```{r}
-#names
+names(data)
 ```
 
+Examinemos la estructura de esta base de datos
 ```{r}
-#str
+str(data)
 ```
 
+Revisemos qué tipo de variable es la variable frecuencia de recojo de residuos sólidos.
 ```{r}
-#class(P40_1)
+class(data$P40_1)
 ```
 
-
-
+Analicemos la distribución del porcentaje de cobertura del servicio de recojo de basura en el distrito
 ```{r}
-#"table" para conocer la distribución del porcentaje de cobertura del servicio de recojo de basura en el distrito
 table(data$P42_1)
 ```
 
+Calculemos el promedio diario de residuos sólidos de basura en kilogramos de todos los distritos
 ```{r}
-#"mean" para saber el promedio diario de residuos sólidos de basura en kilogramos de todos los distritos
+mean(data$P41_1)
+```
+En este caso, el primer resultado es NA. Esto se debe a la presencia de valores perdidos en la variable. Para omitirlos en el cálculo podemos usar dentro del paréntesis el comando: na.rm = TRUE.
+
+```{r}
 mean(data$P41_1, na.rm = TRUE)
 ```
 
+Calculemos la suma diaria promedio de residuos de basura en kilogramos de todos los distritos
 ```{r}
-#"sum" para sumar la cantidad diaria promedio de residuos de basura en kilogramos de todos los distritos
 sum(data$P41_1, na.rm = TRUE)
 ```
 
 ## 4.1 Tidyverse
-
-Agregar loguito
 
 Tidyverse es un conjunto de de paquetes de R para ciencia de datos, nos ayuda a trabajar las bases de datos. Ha sido desarrollado por RStudio.
 
@@ -225,7 +229,7 @@ data = data %>%
   rename(recojo_diario_kg = P41_1)
 ```
 
-Ahora tu, practica cambiando el nombre de la variable P42_1 a porcen_cobertura
+Ahora tú, practica cambiando el nombre de la variable P42_1 a porcen_cobertura
 
 -   select: esta función permite seleccionar algunas variables de la base de datos o en caso contrario, dejar algunas variables por fuera de la misma al anteponer un símbolo menos antes (-variable)
 
@@ -234,7 +238,7 @@ ejemplo = data %>%
   select(recojo_diario_kg,P43_3,P43_4,P43_5)
 ```
 
-Ahora tu, practica seleccionando las variables Tipomuni y P44_1. Recuerda que cada una debe ir separada de una coma (,) 
+Ahora tú, practica seleccionando las variables Tipomuni y P44_1. Recuerda que cada una debe ir separada de una coma (,) 
 
 -   summarise: es una función que se utiliza para crear resúmenes estadísticos de un conjunto de datos. Summarise necesita de dos argumentos b+as
 
@@ -242,7 +246,6 @@ Ahora tu, practica seleccionando las variables Tipomuni y P44_1. Recuerda que ca
 data %>% 
 summarise(promedio = mean(recojo_diario_kg, na.rm = TRUE))
     ```
-
 
 -   filter: se utiliza para crear un subconjunto de datos de determinadas filas que cumplan con una condición dada. Específicamente, deseamos quedarnos con los casos que Sí informen un Plan de Valorización de Residuos Sólidos Orgánicos
 
@@ -264,8 +267,9 @@ data %>%
 
 ```{r}
 data %>% 
-  filter(Departamento == "Loreto"&Tipomuni == 2) %>% 
-    summarise(maximo = which.max(recojo_diario_kg))
+  filter(Departamento == "LORETO"&Tipomuni == 2) %>% 
+    select(Provincia,recojo_diario_kg) %>% 
+    filter(recojo_diario_kg == max(recojo_diario_kg,na.rm = T))
 
 ```
 
@@ -275,7 +279,7 @@ data %>%
 data %>% 
   filter(Tipomuni == 1 & Departamento == "LIMA") %>% 
   select(Provincia,recojo_diario_kg) %>% 
-  summarise(minimo=min(recojo_diario_kg))
+  filter(recojo_diario_kg==min(recojo_diario_kg,na.rm = T))
 ```
 
 
