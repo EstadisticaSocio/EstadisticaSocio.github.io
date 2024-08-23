@@ -515,8 +515,7 @@ y de Centros Poblados. Se espera elaborar indicadores municipales que
 apoyen la gestión regional y local en la planificación y en la toma de
 decisiones informadas.</p>
 <pre class="r"><code>library(rio)
-data = import(&quot;RENAMU_RESIDUOS.xlsx&quot;)
-row.names(data)&lt;- data[,1]</code></pre>
+data = import(&quot;RENAMU_RESIDUOS.xlsx&quot;)</code></pre>
 <p><img src="diccionario_pd1.png" /></p>
 <p>Para abrir la base usamos dos líneas de código. La primera indica el
 llamado del paquete rio. Sin llamar al paquete no se podrá solicitar el
@@ -657,99 +656,68 @@ deseamos quedarnos con los casos que Sí informen un Plan de Valorización
 de Residuos Sólidos Orgánicos</p>
 <pre class="r"><code>data %&gt;% 
 filter(P43_6 == &quot;6&quot;)</code></pre>
-<pre><code>##        idmunici Ubigeo  Departamento        Provincia
-## 010101   010101 010101      AMAZONAS      CHACHAPOYAS
-## 021401   021401 021401        ANCASH            OCROS
-## 040409   040409 040409      AREQUIPA         CASTILLA
-## 070101   070101 070101        CALLAO           CALLAO
-## 070103   070103 070103        CALLAO           CALLAO
-## 070106   070106 070106        CALLAO           CALLAO
-## 070107   070107 070107        CALLAO           CALLAO
-## 150101   150101 150101          LIMA             LIMA
-## 150103   150103 150103          LIMA             LIMA
-## 150110   150110 150110          LIMA             LIMA
-## 150111   150111 150111          LIMA             LIMA
-## 150112   150112 150112          LIMA             LIMA
-## 150114   150114 150114          LIMA             LIMA
-## 150115   150115 150115          LIMA             LIMA
-## 150116   150116 150116          LIMA             LIMA
-## 150117   150117 150117          LIMA             LIMA
-## 150118   150118 150118          LIMA             LIMA
-## 150119   150119 150119          LIMA             LIMA
-## 150122   150122 150122          LIMA             LIMA
-## 150123   150123 150123          LIMA             LIMA
-## 150128   150128 150128          LIMA             LIMA
-## 150130   150130 150130          LIMA             LIMA
-## 150131   150131 150131          LIMA             LIMA
-## 150142   150142 150142          LIMA             LIMA
-## 150703   150703 150703          LIMA       HUAROCHIRI
-## 170101   170101 170101 MADRE DE DIOS        TAMBOPATA
-## 211101   211101 211101          PUNO        SAN ROMAN
-## 250101   250101 250101       UCAYALI CORONEL PORTILLO
-## 250301   250301 250301       UCAYALI       PADRE ABAD
-## 250401   250401 250401       UCAYALI            PURUS
-##                          Distrito Tipomuni P40_1 recojo_diario_kg P42_1 P43_3
-## 010101                CHACHAPOYAS        1     1            25800     4     0
-## 021401                      OCROS        1     3              800     4     0
-## 040409                  ORCOPAMPA        2     1             2114     4     3
-## 070101                     CALLAO        1     1           742834     4     0
-## 070103 CARMEN DE LA LEGUA REYNOSO        2     1            54126     4     3
-## 070106                 VENTANILLA        2     1           323825     4     0
-## 070107                    MI PERÚ        2     1            34162     4     3
-## 150101                       LIMA        1     1           412876     4     3
-## 150103                        ATE        2     1           652468     4     0
-## 150110                      COMAS        2     1           570230     4     3
-## 150111                EL AGUSTINO        2     1           274410     4     3
-## 150112              INDEPENDENCIA        2     1           246640     4     0
-## 150114                  LA MOLINA        2     1           157889     4     3
-## 150115                LA VICTORIA        2     1           363171     4     0
-## 150116                      LINCE        2     1            66260     4     3
-## 150117                 LOS OLIVOS        2     1           370000     4     3
-## 150118                 LURIGANCHO        2     1           160000     4     0
-## 150119                      LURIN        2     1           182940     4     3
-## 150122                 MIRAFLORES        2     1           178907     4     0
-## 150123                 PACHACAMAC        2     2            83490     3     0
-## 150128                      RIMAC        2     1           217261     4     0
-## 150130                  SAN BORJA        2     1           110592     4     3
-## 150131                 SAN ISIDRO        2     1           140000     4     3
-## 150142          VILLA EL SALVADOR        2     1           368255     4     3
-## 150703                CALLAHUANCA        2     2              160     4     3
-## 170101                  TAMBOPATA        1     2            80500     4     3
-## 211101                    JULIACA        1     1           200000     3     0
-## 250101                   CALLERIA        1     1           200000     3     0
-## 250301                 PADRE ABAD        1     1            14400     4     0
-## 250401                      PURUS        1     1              400     3     0
-##        P43_4 P43_5 P43_6 P44_1
-## 010101     0     5     6     2
-## 021401     0     0     6     1
-## 040409     0     5     6     1
-## 070101     0     5     6     1
-## 070103     0     0     6     1
-## 070106     0     5     6     1
-## 070107     0     5     6     1
-## 150101     0     5     6     1
-## 150103     0     5     6     1
-## 150110     4     5     6     1
-## 150111     0     5     6     1
-## 150112     0     0     6     1
-## 150114     0     5     6     1
-## 150115     0     0     6     1
-## 150116     0     5     6     1
-## 150117     0     5     6     1
-## 150118     0     5     6     1
-## 150119     0     5     6     1
-## 150122     0     5     6     1
-## 150123     0     5     6     1
-## 150128     0     5     6     1
-## 150130     0     5     6     1
-## 150131     0     5     6     1
-## 150142     0     5     6     1
-## 150703     0     5     6     2
-## 170101     4     5     6     2
-## 211101     0     0     6     2
-## 250101     0     5     6     2
-## 250301     0     0     6     2
-## 250401     0     5     6     2</code></pre></li>
+<pre><code>##    idmunici Ubigeo  Departamento        Provincia                   Distrito
+## 1    010101 010101      AMAZONAS      CHACHAPOYAS                CHACHAPOYAS
+## 2    021401 021401        ANCASH            OCROS                      OCROS
+## 3    040409 040409      AREQUIPA         CASTILLA                  ORCOPAMPA
+## 4    070101 070101        CALLAO           CALLAO                     CALLAO
+## 5    070103 070103        CALLAO           CALLAO CARMEN DE LA LEGUA REYNOSO
+## 6    070106 070106        CALLAO           CALLAO                 VENTANILLA
+## 7    070107 070107        CALLAO           CALLAO                    MI PERÚ
+## 8    150101 150101          LIMA             LIMA                       LIMA
+## 9    150103 150103          LIMA             LIMA                        ATE
+## 10   150110 150110          LIMA             LIMA                      COMAS
+## 11   150111 150111          LIMA             LIMA                EL AGUSTINO
+## 12   150112 150112          LIMA             LIMA              INDEPENDENCIA
+## 13   150114 150114          LIMA             LIMA                  LA MOLINA
+## 14   150115 150115          LIMA             LIMA                LA VICTORIA
+## 15   150116 150116          LIMA             LIMA                      LINCE
+## 16   150117 150117          LIMA             LIMA                 LOS OLIVOS
+## 17   150118 150118          LIMA             LIMA                 LURIGANCHO
+## 18   150119 150119          LIMA             LIMA                      LURIN
+## 19   150122 150122          LIMA             LIMA                 MIRAFLORES
+## 20   150123 150123          LIMA             LIMA                 PACHACAMAC
+## 21   150128 150128          LIMA             LIMA                      RIMAC
+## 22   150130 150130          LIMA             LIMA                  SAN BORJA
+## 23   150131 150131          LIMA             LIMA                 SAN ISIDRO
+## 24   150142 150142          LIMA             LIMA          VILLA EL SALVADOR
+## 25   150703 150703          LIMA       HUAROCHIRI                CALLAHUANCA
+## 26   170101 170101 MADRE DE DIOS        TAMBOPATA                  TAMBOPATA
+## 27   211101 211101          PUNO        SAN ROMAN                    JULIACA
+## 28   250101 250101       UCAYALI CORONEL PORTILLO                   CALLERIA
+## 29   250301 250301       UCAYALI       PADRE ABAD                 PADRE ABAD
+## 30   250401 250401       UCAYALI            PURUS                      PURUS
+##    Tipomuni P40_1 recojo_diario_kg P42_1 P43_3 P43_4 P43_5 P43_6 P44_1
+## 1         1     1            25800     4     0     0     5     6     2
+## 2         1     3              800     4     0     0     0     6     1
+## 3         2     1             2114     4     3     0     5     6     1
+## 4         1     1           742834     4     0     0     5     6     1
+## 5         2     1            54126     4     3     0     0     6     1
+## 6         2     1           323825     4     0     0     5     6     1
+## 7         2     1            34162     4     3     0     5     6     1
+## 8         1     1           412876     4     3     0     5     6     1
+## 9         2     1           652468     4     0     0     5     6     1
+## 10        2     1           570230     4     3     4     5     6     1
+## 11        2     1           274410     4     3     0     5     6     1
+## 12        2     1           246640     4     0     0     0     6     1
+## 13        2     1           157889     4     3     0     5     6     1
+## 14        2     1           363171     4     0     0     0     6     1
+## 15        2     1            66260     4     3     0     5     6     1
+## 16        2     1           370000     4     3     0     5     6     1
+## 17        2     1           160000     4     0     0     5     6     1
+## 18        2     1           182940     4     3     0     5     6     1
+## 19        2     1           178907     4     0     0     5     6     1
+## 20        2     2            83490     3     0     0     5     6     1
+## 21        2     1           217261     4     0     0     5     6     1
+## 22        2     1           110592     4     3     0     5     6     1
+## 23        2     1           140000     4     3     0     5     6     1
+## 24        2     1           368255     4     3     0     5     6     1
+## 25        2     2              160     4     3     0     5     6     2
+## 26        1     2            80500     4     3     4     5     6     2
+## 27        1     1           200000     3     0     0     0     6     2
+## 28        1     1           200000     3     0     0     5     6     2
+## 29        1     1            14400     4     0     0     0     6     2
+## 30        1     1              400     3     0     0     5     6     2</code></pre></li>
 </ul>
 <p>4.2 ¿Cuál es la municipalidad distrital con mayor promedio diario de
 recojo de residuos sólidos?</p>
@@ -758,26 +726,26 @@ filter y 2. summarise</p>
 <pre class="r"><code>data %&gt;% 
   filter(Tipomuni == 2) %&gt;% 
   filter(recojo_diario_kg == max(recojo_diario_kg,na.rm = T))</code></pre>
-<pre><code>##        idmunici Ubigeo Departamento Provincia               Distrito Tipomuni
-## 150132   150132 150132         LIMA      LIMA SAN JUAN DE LURIGANCHO        2
-##        P40_1 recojo_diario_kg P42_1 P43_3 P43_4 P43_5 P43_6 P44_1
-## 150132     1          1026525     4     0     0     5     0     1</code></pre>
+<pre><code>##   idmunici Ubigeo Departamento Provincia               Distrito Tipomuni P40_1
+## 1   150132 150132         LIMA      LIMA SAN JUAN DE LURIGANCHO        2     1
+##   recojo_diario_kg P42_1 P43_3 P43_4 P43_5 P43_6 P44_1
+## 1          1026525     4     0     0     5     0     1</code></pre>
 <p>4.3 ¿Cuál es la municipalidad distrital de Loreto que recoge en
 promedio una mayor cantidad de residuos sólidos?</p>
 <pre class="r"><code>data %&gt;% 
   filter(Departamento == &quot;LORETO&quot;&amp;Tipomuni == 2) %&gt;% 
     select(Provincia,recojo_diario_kg) %&gt;% 
     filter(recojo_diario_kg == max(recojo_diario_kg,na.rm = T))</code></pre>
-<pre><code>##        Provincia recojo_diario_kg
-## 160113    MAYNAS            80000</code></pre>
+<pre><code>##   Provincia recojo_diario_kg
+## 1    MAYNAS            80000</code></pre>
 <p>4.4 ¿Cuál es la municipalidad provincial de Lima Región con el menor
 promedio de residuos sólidos recogidos al dia?</p>
 <pre class="r"><code>data %&gt;% 
   filter(Tipomuni == 1 &amp; Departamento == &quot;LIMA&quot;) %&gt;% 
   select(Provincia,recojo_diario_kg) %&gt;% 
   filter(recojo_diario_kg==min(recojo_diario_kg,na.rm = T))</code></pre>
-<pre><code>##        Provincia recojo_diario_kg
-## 151001    YAUYOS             1500</code></pre>
+<pre><code>##   Provincia recojo_diario_kg
+## 1    YAUYOS             1500</code></pre>
 </div>
 </div>
 </div>

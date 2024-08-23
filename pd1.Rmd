@@ -140,7 +140,6 @@ Para esta sesión, trabajaremos con Registro Nacional de Municipalidades (RENAMU
 ```{r}
 library(rio)
 data = import("RENAMU_RESIDUOS.xlsx")
-row.names(data)<- data[,1]
 ```
 
 ![](diccionario_pd1.png)
