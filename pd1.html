@@ -645,7 +645,8 @@ Recuerda que cada una debe ir separada de una coma (,)</p>
 <ul>
 <li><p>summarise: es una función que se utiliza para crear resúmenes
 estadísticos de un conjunto de datos. Summarise necesita de dos
-argumentos b+as</p>
+argumentos básicos: el dato que queremos obtener (promedio, conteo,
+minimo, maximo) y la variable de la que lo queremos obtener</p>
 <pre class="r"><code>data %&gt;% 
 summarise(promedio = mean(recojo_diario_kg, na.rm = TRUE))</code></pre>
 <pre><code>##   promedio
