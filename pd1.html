@@ -508,7 +508,12 @@ amplia variedad de formatos (xlsx, sav, dta, etc.) usando el mismo
 comando: import.</li>
 </ol>
 <p>Para esta sesión, trabajaremos con Registro Nacional de
-Municipalidades (RENAMU). Pequeño texto sobre renamu: Sebastian</p>
+Municipalidades (RENAMU). El RENAMU es un registro a cargo del Instituto
+Nacional de Estadística e Informática (INEI) con el objetivo de contar
+con datos estadísticos de las Municipalidades Provinciales, Distritales
+y de Centros Poblados. Se espera elaborar indicadores municipales que
+apoyen la gestión regional y local en la planificación y en la toma de
+decisiones informadas.</p>
 <pre class="r"><code>library(rio)
 data = import(&quot;RENAMU_RESIDUOS.xlsx&quot;)
 row.names(data)&lt;- data[,1]</code></pre>
