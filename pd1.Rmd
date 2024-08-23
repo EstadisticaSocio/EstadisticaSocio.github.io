@@ -135,7 +135,7 @@ Antes de aplicar los códigos revisados, debemos importar la base de datos a usa
 1.  Que la base de datos se encuentra en el directorio de trabajo (carpeta indicada líneas arriba).
 2.  Haber llamado a la librería que nos permitirá abrir la base de datos. En este curso usaremos "rio", esta librería o paquete admite una amplia variedad de formatos (xlsx, sav, dta, etc.) usando el mismo comando: import.
 
-Para esta sesión, trabajaremos con Registro Nacional de Municipalidades (RENAMU). Pequeño texto sobre renamu: Sebastian
+Para esta sesión, trabajaremos con Registro Nacional de Municipalidades (RENAMU). El RENAMU es un registro a cargo del Instituto Nacional de Estadística e Informática (INEI) con el objetivo de contar con datos estadísticos de las Municipalidades Provinciales, Distritales y de Centros Poblados. Se espera elaborar indicadores municipales que apoyen la gestión regional y local en la planificación y en la toma de decisiones informadas.
 
 ```{r}
 library(rio)
