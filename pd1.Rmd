@@ -92,13 +92,13 @@ Si se lee de izquierda a derecha, la línea de comando puede explicarse como sig
 
 Para estos ejemplos usaremos una base de datos precargada en R llamada iris. En esta se muestran datos sobre flores.
 
--   names: lo usamos cuando queremos conocer los nombres de las variables que componen la base de datos. Solo necesita un argumento básico: el nombre de la datam en este caso: iris
+-   names: lo usamos cuando queremos conocer los nombres de las variables que componen la base de datos. Solo necesita un argumento básico: el nombre de la data en este caso: iris
 
     ```{r}
     names(iris)
     ```
 
--   str: se usa para conocer la estructura de un objeto, te brinda el tipo y un vistazo de los valores. Solo se necesita el nomre del objeto como argumento.
+-   str: se usa para conocer la estructura de un objeto, te brinda el tipo y un vistazo de los valores. Solo se necesita el nombre del objeto como argumento.
     ```{r}
 str(iris)
     ```
@@ -239,7 +239,7 @@ ejemplo = data %>%
 
 Ahora tú, practica seleccionando las variables Tipomuni y P44_1. Recuerda que cada una debe ir separada de una coma (,) 
 
--   summarise: es una función que se utiliza para crear resúmenes estadísticos de un conjunto de datos. Summarise necesita de dos argumentos b+as
+-   summarise: es una función que se utiliza para crear resúmenes estadísticos de un conjunto de datos. Summarise necesita de dos argumentos básicos: el dato que queremos obtener (promedio, conteo, minimo, maximo) y la variable de la que lo queremos obtener
 
     ```{r}
 data %>% 
