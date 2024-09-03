@@ -66,32 +66,40 @@ knitr::include_graphics("pd2_GrafTipoVar.png")
 </style>
 ```
 ::: custom-text
-Agregar pregunta de investigación 🤔
-
-¿Cuál es la distribución y dinámica de las manifestaciones sociales en el Perú?
+::: custom-text
+¿Cuál es la distribución y dinámica de las manifestaciones sociales en el Perú? 🤔
+:::
 :::
 
-Texto sobre la data
+Para la sesión de hoy se usará la **"Base de eventos de protesta (1980 - 2023)",** agregada a nivel regional. Esta fue inicialmente creada por Moisés Arce, profesor de la Universidad de Tulane, y recientemente actualizada por la Escuela de Gobierno y Políticas Públicas de la PUCP. Esta base es un aporte para estudiar y comprender mejor la dinámica de la conflictividad popular en el Perú desde 1980 hasta la actualidad. Encuentra más información y la base de datos original en el siguiente [link](https://democracia-gobernabilidad.pucp.edu.pe/participaci%C3%B3n/protestas-sociales).
+
+```{r,message=FALSE,warning=FALSE}
+library(rio)
+data = import("pd2_Protestas.xlsx")
+```
 
 Agregar diccionario
 
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
-##knitr::include_graphics("Diccionario-enades.png") 
+knitr::include_graphics("pd2_diccionario.png") 
 ```
 
-4.1 ¿Cómo se distribuye (%) las protestas en el Perú a nivel regional?
+## 4.1 ¿Cómo se distribuye (%) las protestas en el Perú a nivel regional?
 
 Abrimos la librería dplyr
-```{r}
+
+```{r, warning=FALSE,message=FALSE}
 library(dplyr)
 ```
 
 Comprobamos el tipo de variable que queremos utilizar
+
 ```{r}
 class(data$Región)
 ```
 
 Creamos un summarise donde se encuentre la región y su frecuencia
+
 ```{r}
 data %>% 
   group_by(Región) %>% 
@@ -99,6 +107,7 @@ data %>%
 ```
 
 Es posible crear una table que incluya tanto frecuencias como porcentajes añadiendo una línea al comando anterior. Además, para poder representar los resultados en un gráfico, necesitamos guardar esta tabla en un objeto. Usemos esta tabla resumida y asignémosle el nombre gráfico1, de manera que podamos referirnos a ella cuando creemos el gráfico
+
 ```{r}
 gráfico1 <- data %>% 
   group_by(Región) %>% 
@@ -108,22 +117,26 @@ gráfico1 <- data %>%
 gráfico1
 ```
 
-Un breve ejemplo. Podemos realizar la misma situación, inclusive, filtrando. En este caso, nos quedamos solamente con aquellas regiones que tienen por sector común a la ciudadanía. Podemos filtrar de distintas maneras. 
+Un breve ejemplo. Podemos realizar la misma situación, inclusive, filtrando. En este caso, nos quedamos solamente con aquellas regiones que tienen por sector común a la ciudadanía. Podemos filtrar de distintas maneras.
+
 ```{r}
-data %>% filter(Sector_común=="Ciudadanía") %>% 
+data %>% filter(Sector_comun=="Ciudadanía") %>% 
   group_by(Región) %>% 
   summarise(Total = sum(Total)) %>% 
   mutate(Porcentaje = (Total / sum(Total))*100)
 ```
 
 Graficamos "gráfico1" con todas las regiones del Perú
+
 ```{r}
 library(ggplot2)
 
 ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
   geom_bar(stat = "identity") 
 ```
+
 El gráfico anterior, sin embargo, posee demasiada información, por lo cual es difícil de observar con claridad. Por lo cual, nos quedaremos solamente con las 5 regiones con mayores porcentajes de protestas sociales, llamándolo "gráfico2"
+
 ```{r}
 gráfico2 <- data %>%
   group_by(Región) %>% 
@@ -136,12 +149,14 @@ gráfico2
 ```
 
 Graficamos con las nuevas modificaciones añadidas
+
 ```{r}
 ggplot(gráfico2, aes(x=Región, y=Porcentaje, fill=Región)) + 
   geom_bar(stat = "identity")
 ```
 
-Podemos personalizar nuestros gráficos de la manera que deseemos. 
+Podemos personalizar nuestros gráficos de la manera que deseemos.
+
 ```{r}
 library(tayloRswift)
 
@@ -153,4 +168,3 @@ ggplot(gráfico2, aes(x=Región, y=Porcentaje, fill=Región)) +
   theme(panel.background=element_rect(fill = "white", colour = "white")) +
   scale_fill_taylor(palette = "taylor1989") #fearless, speakNow, Red
 ```
-
