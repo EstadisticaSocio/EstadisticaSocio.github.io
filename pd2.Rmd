@@ -1,0 +1,77 @@
+---
+title: "Práctica dirigida 2"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 3
+    theme: flatly
+    highlight: textmate
+    always_allow_html: yes
+---
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**
+
+Curso: SOC294 - Estadística para el análisis sociológico 1
+
+Semestre 2024 - 2
+
+# **1.¿Qué es el análisis descriptivo?**
+
+```{r,echo=FALSE, out.width="80%",fig.align="center"}
+knitr::include_graphics("pd2_QSAnalisisDesc.png") 
+```
+
+# **2.Nivel de medida de una variable**
+
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("pd2_medVar.png") 
+```
+
+# **3.Importancia de visualización de datos**
+
+Debido al crecimiento de la big data en los últimos años surgieron nuevas necesidades para comprender los análisis masivos de datos de una forma simple y escalable. Es entonces cuando se dirige la atención a desarrollar nuevas técnicas gráficas en distintas plataformas (ejemplos a continuación), tanto softwares como librerías de código abierto[^1], tal es el caso de ggplot2 en R.
+
+[^1]: <https://www.data-to-viz.com/caveat/pie.html>
+
+```{r,echo=FALSE, out.width="90%",fig.align="center"}
+knitr::include_graphics("pd2_herramientas.png") 
+```
+
+Este interés por desarrollar técnicas de análisis masivo de datos y la comunicación de resultados cada vez más amigables y apta para todos los públicos dio pie a nuevas especialidades dentro de la ciencia de datos, como por ejemplo el data story telling
+
+```{r,echo=FALSE, out.width="90%",fig.align="center"}
+knitr::include_graphics("pd2_datavis.png") 
+```
+
+### **Gráficos por tipo de variables:**
+
+```{r,echo=FALSE, out.width="60%",fig.align="center"}
+knitr::include_graphics("pd2_GrafTipoVar.png") 
+```
+
+# **4.Análisis descriptivo**
+
+```{=html}
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+```
+::: custom-text
+Agregar pregunta de investigación 🤔
+:::
+
+Texto sobre la data
+
+Agregar diccionario
+```{r,echo=FALSE, out.width="100%",fig.align="center"}
+##knitr::include_graphics("Diccionario-enades.png") 
+```
+
