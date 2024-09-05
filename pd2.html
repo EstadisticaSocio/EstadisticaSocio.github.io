@@ -324,6 +324,9 @@ div.tocify {
 <li>
   <a href="pd1.html">Práctica dirigida 1</a>
 </li>
+<li>
+  <a href="pd2.html">Práctica dirigida 2</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -478,9 +481,9 @@ distintas maneras.</p>
 ## 10 Ica             72     1.12  
 ## # ℹ 13 more rows</code></pre>
 <p>Graficamos “gráfico1” con todas las regiones del Perú</p>
-<pre class="r"><code>library(ggplot2)
-
-ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
+<pre class="r"><code>ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
   geom_bar(stat = &quot;identity&quot;) + 
   theme_bw()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
@@ -643,20 +646,19 @@ región. Para ello debemos agrupar el resumen anterior.</p>
     Q3 = quantile(indicador, 0.75) #Tercer cuartil
   )</code></pre>
 <pre><code>## # A tibble: 25 × 8
-##    Región   Media Mediana Desviacion Minimo Maximo
-##    &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-##  1 Amazonas 0.727       0      1.85       0      6
-##  2 Apurímac 0.444       0      1.33       0      4
-##  3 Arequipa 0.897       0      1.47       0      6
-##  4 Ayacucho 0.105       0      0.459      0      2
-##  5 Cajamar… 0.571       0      0.938      0      2
-##  6 Callao   1.05        0      1.81       0      6
-##  7 Cusco    1.08        0      1.52       0      4
-##  8 Huancav… 0.5         0      1.10       0      4
-##  9 Huánuco  0           0      0          0      0
-## 10 Ica      0.286       0      0.717      0      2
-## # ℹ 15 more rows
-## # ℹ 2 more variables: Q1 &lt;dbl&gt;, Q3 &lt;dbl&gt;</code></pre>
+##    Región       Media Mediana Desviacion Minimo Maximo    Q1    Q3
+##    &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Amazonas     0.727       0      1.85       0      6     0   0  
+##  2 Apurímac     0.444       0      1.33       0      4     0   0  
+##  3 Arequipa     0.897       0      1.47       0      6     0   2  
+##  4 Ayacucho     0.105       0      0.459      0      2     0   0  
+##  5 Cajamarca    0.571       0      0.938      0      2     0   1.5
+##  6 Callao       1.05        0      1.81       0      6     0   2  
+##  7 Cusco        1.08        0      1.52       0      4     0   2  
+##  8 Huancavelica 0.5         0      1.10       0      4     0   0  
+##  9 Huánuco      0           0      0          0      0     0   0  
+## 10 Ica          0.286       0      0.717      0      2     0   0  
+## # ℹ 15 more rows</code></pre>
 <p>Podemos observar los resultados en un boxplot</p>
 <pre class="r"><code>ggplot(data, aes(x=Región, y=indicador, color = Región)) +
   geom_boxplot() +

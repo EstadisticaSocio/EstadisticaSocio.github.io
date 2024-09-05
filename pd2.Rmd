@@ -196,7 +196,7 @@ Sin embargo, el paquete scales nos facilita el uso del comando **rescale.** Al u
 3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
 4.  Aplicar la función **rescale** (paquete scales) indicando los límites del indicador, recuerda que sin la suma no podrás generar el indicador.
 
-## 4.2.1 Indicador aditivo de diversidad de acciones violentas. 
+## 4.2.1 Indicador aditivo de diversidad de acciones violentas.
 
 Construiremos un indicador aditivo de diversidad de acciones violentas en el Perú que vaya del 0 al 10. Para ello usaremos a las variables: Agre, Aped, Destruc, Dolor auto, Invasión, Lanzam, Motin, Quemas, Saqueo, Secues, Toma. En estas variables el valor 0 quiere decir que no hubo protestas que usen esa acción para protestar en la región y año indicados; en caso el valor sea 1, quiere decir que sí hubo protestas (por lo menos una) que use esa acción.
 
