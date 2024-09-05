@@ -433,7 +433,7 @@ regional?</h2>
 porcentajes añadiendo una línea al comando anterior. Además, para poder
 representar los resultados en un gráfico, necesitamos guardar esta tabla
 en un objeto. Usemos esta tabla resumida y asignémosle el nombre
-gráfico1, de manera que podamos referirnos a ella cuando creemos el
+“gráfico1”, de manera que podamos referirnos a ella cuando creemos el
 gráfico</p>
 <pre class="r"><code>gráfico1 &lt;- data %&gt;% 
   group_by(Región) %&gt;% 
@@ -478,10 +478,11 @@ distintas maneras.</p>
 ## 10 Ica             72     1.12  
 ## # ℹ 13 more rows</code></pre>
 <p>Graficamos “gráfico1” con todas las regiones del Perú</p>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
-<pre class="r"><code>ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
-  geom_bar(stat = &quot;identity&quot;) </code></pre>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
+  geom_bar(stat = &quot;identity&quot;) + 
+  theme_bw()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>El gráfico anterior, sin embargo, posee demasiada información, por lo
 cual es difícil de observar con claridad. Por lo cual, nos quedaremos
@@ -505,7 +506,8 @@ gráfico2</code></pre>
 ## 5 Áncash     577       2.95</code></pre>
 <p>Graficamos con las nuevas modificaciones añadidas</p>
 <pre class="r"><code>ggplot(gráfico2, aes(x=Región, y=Porcentaje, fill=Región)) + 
-  geom_bar(stat = &quot;identity&quot;)</code></pre>
+  geom_bar(stat = &quot;identity&quot;)+
+  theme_classic()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Podemos personalizar nuestros gráficos de la manera que deseemos.</p>
 <pre class="r"><code>library(tayloRswift)
@@ -519,6 +521,164 @@ ggplot(gráfico2, aes(x=Región, y=Porcentaje, fill=Región)) +
   scale_fill_taylor(palette = &quot;taylor1989&quot;) #fearless, speakNow, Red</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
+<div id="cuánta-diversidad-de-acciones-violentas-hay-a-nivel-regional"
+class="section level2">
+<h2>4.2 ¿Cuánta diversidad de acciones violentas hay a nivel
+regional?</h2>
+<div id="indicador-proxy" class="section level3">
+<h3><strong>Indicador Proxy</strong></h3>
+<p>También llamado indicador indirecto, se usa ante la imposibilidad de
+medir lo que efectivamente es de importancia. El indicador mide una
+variable distinta a la que nos interesa de manera específica, pero
+presenta una relación lo más directa posible con el fenómeno en
+estudio.</p>
+<p>Un indicador proxy es una medición o señal indirecto que aproxima o
+representa un fenómeno en la ausencia de una medición o señal
+directo.</p>
+</div>
+<div id="indicador-aditivo" class="section level3">
+<h3><strong>Indicador Aditivo</strong></h3>
+<p>Es una variable latente que se genera a través de la suma de un
+conjunto de variables manifiestas u observables. Luego de la suma se
+procede a aplicar una formula que genera que el valor máximo de la
+variable sea 1 y el mínimo sea 0. A partir de eso se puede multiplicar
+por cualquier número para que el máximo cambie. Es así que si se
+multiplica por 10, el indicador irá de 0 a 10; si se desea que el
+indicador sea de 0 a 50, se debe multiplicar por 50; etc.</p>
+<p><img src="pd2_ejemplo.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>Sin embargo, el paquete scales nos facilita el uso del comando
+<strong>rescale.</strong> Al usarlo solo necesitamos señalar los límites
+del indicador.</p>
+<div id="pasos-para-construir-un-indicador-aditivo"
+class="section level4">
+<h4>Pasos para construir un indicador aditivo:</h4>
+<ol style="list-style-type: decimal">
+<li>Verificar que las variables que construyan el indicador correspondan
+al concepto que se desea medir. <em>Ejemplo: Si deseo mejor Satisfacción
+del Usuario, las preguntas deben ser sobre ello.</em></li>
+<li>Revisar el cuestionario e identificar el sentido de las categorías.
+<em>Ejemplo: El valor 5 es “Muy instafisfecho” y 1 “Muy
+satisfecho”.</em></li>
+<li>Si las categorías de las variables están en el correcto sentido
+proceder a sumarlas, si no lo están, proceder a recodificarlas para
+luego sumar.</li>
+<li>Aplicar la función <strong>rescale</strong> (paquete scales)
+indicando los límites del indicador, recuerda que sin la suma no podrás
+generar el indicador.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="indicador-aditivo-de-diversidad-de-acciones-violentas."
+class="section level2">
+<h2>4.2.1 Indicador aditivo de diversidad de acciones violentas.</h2>
+<p>Construiremos un indicador aditivo de diversidad de acciones
+violentas en el Perú que vaya del 0 al 10. Para ello usaremos a las
+variables: Agre, Aped, Destruc, Dolor auto, Invasión, Lanzam, Motin,
+Quemas, Saqueo, Secues, Toma. En estas variables el valor 0 quiere decir
+que no hubo protestas que usen esa acción para protestar en la región y
+año indicados; en caso el valor sea 1, quiere decir que sí hubo
+protestas (por lo menos una) que use esa acción.</p>
+<ol style="list-style-type: decimal">
+<li>Luego de verificar los pasos anteriores, creamos la suma</li>
+</ol>
+<pre class="r"><code>data = data %&gt;% 
+  mutate(suma = Agre+ Aped+ Destruc+ Dolor_auto+ Invasión+ Lanzam+ Motin+ Quemas+ Saqueo+ Secues+ Toma)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Ahora, con la suma generada usamos la función
+<strong>rescale</strong> para crear un indicador que vaya del 0 al 10.
+De tal manera que una región que tenga valor 0 es una región en la que
+nunca se usó alguna acción de fuerza; y una que obtuvo 10 es una región
+en la que se usaron todas las acciones posibles.</li>
+</ol>
+<pre class="r"><code>library(scales) #Para poder usar el paquete rescale
+data = data %&gt;%  
+  mutate(indicador= rescale(suma, to=c(0,10)))</code></pre>
+<p>Ya que tenemos el indicador podemos analizarlo. Recuerda que si bien
+en esencia las variables que generaron el indicador son nominales (1.
+Si/0. No), el indicador es en sí una variable numérica. Al ser una
+numérica podemos analizar todas las medidas de tendencia central, las
+medidas de posición y las de dispersión.</p>
+<pre class="r"><code>data %&gt;% 
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )</code></pre>
+<pre><code>##     Media Mediana Desviacion Minimo Maximo Q1 Q3
+## 1 0.96875       0   1.743997      0     10  0  2</code></pre>
+<p>¿Cómo podemos interpretar la tabla? Recuerda que cada observación es
+una región en un año determinado.</p>
+<p>Para facilitar la visualización podemos graficar la variable. Haremos
+un boxplot para ello. También podemos optar por un histograma.</p>
+<pre class="r"><code>ggplot(data, aes(x=indicador))+
+  geom_boxplot()+
+  theme_bw()</code></pre>
+<p><img src="pd2_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data, aes(y=indicador))+
+  geom_boxplot()+
+  ggtitle(&quot;Indicador de diversidad de acciones violentas&quot;) +
+  theme_bw()</code></pre>
+<p><img src="pd2_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>El gráfico muestra que en el 50% de regiones por año no se usó
+acciones violentas. Además un 25% de regiones tuvo una diversidad de más
+de 2 puntos en el indicador de 0 a 10. Hubo regiones que en algún año
+llegaron a usar el máximo de acciones violentas pero son casos
+atípicos.</p>
+<p>Podemos analizar la agrupación de todos los periodos y lo vemos según
+región. Para ello debemos agrupar el resumen anterior.</p>
+<pre class="r"><code>data %&gt;% 
+  group_by(Región) %&gt;% 
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )</code></pre>
+<pre><code>## # A tibble: 25 × 8
+##    Región   Media Mediana Desviacion Minimo Maximo
+##    &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Amazonas 0.727       0      1.85       0      6
+##  2 Apurímac 0.444       0      1.33       0      4
+##  3 Arequipa 0.897       0      1.47       0      6
+##  4 Ayacucho 0.105       0      0.459      0      2
+##  5 Cajamar… 0.571       0      0.938      0      2
+##  6 Callao   1.05        0      1.81       0      6
+##  7 Cusco    1.08        0      1.52       0      4
+##  8 Huancav… 0.5         0      1.10       0      4
+##  9 Huánuco  0           0      0          0      0
+## 10 Ica      0.286       0      0.717      0      2
+## # ℹ 15 more rows
+## # ℹ 2 more variables: Q1 &lt;dbl&gt;, Q3 &lt;dbl&gt;</code></pre>
+<p>Podemos observar los resultados en un boxplot</p>
+<pre class="r"><code>ggplot(data, aes(x=Región, y=indicador, color = Región)) +
+  geom_boxplot() +
+  coord_flip() +
+  ggtitle(&quot;Indicador de diversidad de acciones violentas según región&quot;) +
+  theme_bw()</code></pre>
+<p><img src="pd2_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+</div>
+<div id="ejercicio" class="section level1">
+<h1>Ejercicio</h1>
+<ol style="list-style-type: decimal">
+<li>Analiza la variable N° de protestas políticas (R_pol_ord), genera el
+gráfico respectivo e interpreta.</li>
+<li>Analiza la variable Total de protestas con reclamo laboral
+(R_lab)</li>
+</ol>
+<p><strong>Para explorar otros comandos:</strong></p>
+<p>Genera la variable “Laboral” que se base en sector_común de tal
+manera que si es un reclamo laboral indica “Es laboral”, si no lo es que
+indique “No laboral”. Luego de crearla, analiza y genera el gráfico
+apropiado. Finalmente, interpreta.</p>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr />
