@@ -7,3 +7,5 @@ navbar:
       href: index.html
     - text: "Práctica dirigida 1"
       href: pd1.html
+    - text: "Práctica dirigida 2"
+      href: pd2.html
