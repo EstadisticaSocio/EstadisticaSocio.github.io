@@ -209,3 +209,7 @@ ggplot(ic_grupo, aes(x= ESTRATO, y =Media)) +
 Con lo que muestra el gráfico, ¿cómo podemos complementar nuestra interpretación anterior?
 
 # **Ejercicio**
+
+1. Calcula el intervalo de confianza de la media del nivel discriminación según Departamento. Grafíquelo e interprete
+
+2. La pregunta P708_1 refiere a si la población venezolana encuestada se identifica con la sociedad y cultura peruana (Sí o no). Calcula el intervalo de confianza para la proporción de la variable “P708_1” e interpreta.

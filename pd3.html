@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 3</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -452,12 +452,10 @@ n = 3104 + 7123 #almacenamos en &quot;n&quot; el total de casos</code></pre>
 <pre class="r"><code>ic_prop = prop.test(x,n)
 ic_prop #llamamos a ic_prop para visualizar los resultados</code></pre>
 <pre><code>## 
-##  1-sample proportions test with
-##  continuity correction
+##  1-sample proportions test with continuity correction
 ## 
 ## data:  x out of n, null probability 0.5
-## X-squared = 1578.6, df = 1, p-value
-## &lt; 2.2e-16
+## X-squared = 1578.6, df = 1, p-value &lt; 2.2e-16
 ## alternative hypothesis: true p is not equal to 0.5
 ## 95 percent confidence interval:
 ##  0.2946262 0.3125428
@@ -570,6 +568,14 @@ interpretación anterior?</p>
 </div>
 <div id="ejercicio" class="section level1">
 <h1><strong>Ejercicio</strong></h1>
+<ol style="list-style-type: decimal">
+<li><p>Calcula el intervalo de confianza de la media del nivel
+discriminación según Departamento. Grafíquelo e interprete</p></li>
+<li><p>La pregunta P708_1 refiere a si la población venezolana
+encuestada se identifica con la sociedad y cultura peruana (Sí o no).
+Calcula el intervalo de confianza para la proporción de la variable
+“P708_1” e interpreta.</p></li>
+</ol>
 </div>
 
 
