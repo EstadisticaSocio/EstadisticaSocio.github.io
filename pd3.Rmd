@@ -29,29 +29,21 @@ Semestre 2024 - 2
 
 # **1.Intervalos de confianza**
 
-Con este tema, comenzaremos a enfocarnos en la estadística inferencial.
-El objetivo de esta es determinar una aproximación del parámetro
-poblacional a partir de la data de una muestra representativa.
+Con este tema, comenzaremos a enfocarnos en la estadística inferencial. El objetivo de esta es determinar una aproximación del parámetro poblacional a partir de la data de una muestra representativa.
 
 Revisemos algunos conceptos:
 
--   **Estimador puntual:** un número que es nuestra predicción del
-    parámetro
+-   **Estimador puntual:** un número que es nuestra predicción del parámetro
 
--   **Intervalo de confianza:** un intervalo de números basado en la
-    distribución de la data observada de la muestra dentro de la cual se
-    cree que estaría el parámetro poblacional.
+-   **Intervalo de confianza:** un intervalo de números basado en la distribución de la data observada de la muestra dentro de la cual se cree que estaría el parámetro poblacional.
 
     *IC = estimador puntual +-/margen de error*
 
--   **Nivel de confianza:** es la probabilidad de que el parámetro se
-    encuentre en ese intervalo.
+-   **Nivel de confianza:** es la probabilidad de que el parámetro se encuentre en ese intervalo.
 
--   **Margen de error:** mide qué tan precisa es la estimación del
-    parámetro.
+-   **Margen de error:** mide qué tan precisa es la estimación del parámetro.
 
--   **Error de muestreo:** diferencia entre el valor calculado de un
-    estadístico y valor real de un parámetro de la población.
+-   **Error de muestreo:** diferencia entre el valor calculado de un estadístico y valor real de un parámetro de la población.
 
 ```{r,echo=FALSE, out.width="50%",fig.align="center"}
 knitr::include_graphics("IC.png") 
@@ -59,30 +51,15 @@ knitr::include_graphics("IC.png")
 
 ### Conceptualización e Importancia
 
--   Los intervalos de confianza ofrecen una manera de estimar, con alta
-    probabilidad, un rango de valores en el que se encuentra el valor
-    poblacional (o parámetro) de una determinada variable.
--   El intervalo de confianza describe la variabilidad entre la medida
-    obtenida en un estudio y la medida real de la población (el valor
-    real).
--   Un intervalo de confianza de 90%/95%/99% nos indica que dentro del
-    rango dado se encuentra el valor real de un parámetro con
-    90%/95%/99% de certeza.
--   Existe una relación inversa entre la amplitud del IC y el tamaño
-    muestral: mientras más pequeño es el n, más amplio es el IC. A mayor
-    n, el IC es más estrecho.
--   Gracias al IC podemos determinar si la estimación es representativa
-    de la población.
+-   Los intervalos de confianza ofrecen una manera de estimar, con alta probabilidad, un rango de valores en el que se encuentra el valor poblacional (o parámetro) de una determinada variable.
+-   El intervalo de confianza describe la variabilidad entre la medida obtenida en un estudio y la medida real de la población (el valor real).
+-   Un intervalo de confianza de 90%/95%/99% nos indica que dentro del rango dado se encuentra el valor real de un parámetro con 90%/95%/99% de certeza.
+-   Existe una relación inversa entre la amplitud del IC y el tamaño muestral: mientras más pequeño es el n, más amplio es el IC. A mayor n, el IC es más estrecho.
+-   Gracias al IC podemos determinar si la estimación es representativa de la población.
 
 ### Sobre el nivel de confianza...
 
-Si tenemos un nivel de confianza de 95%, quiere decir que si realizamos
-100 veces el mismo procedimiento de muestreo y calculamos los
-estadísticos de interés, 95 veces obtendremos los resultados en el
-intervalo calculado. Los mismo ocurriría si realizamos el cálculo con un
-99% de confianza. Al momento de decidir el nivel de confianza debemos
-tener presente una regla: a mayor nivel de confianza, menor será la
-precisión ya que el intervalo es más amplio.
+Si tenemos un nivel de confianza de 95%, quiere decir que si realizamos 100 veces el mismo procedimiento de muestreo y calculamos los estadísticos de interés, 95 veces obtendremos los resultados en el intervalo calculado. Los mismo ocurriría si realizamos el cálculo con un 99% de confianza. Al momento de decidir el nivel de confianza debemos tener presente una regla: a mayor nivel de confianza, menor será la precisión ya que el intervalo es más amplio.
 
 **Aplicación**
 
@@ -105,15 +82,9 @@ En esta sesión responderemos a la pregunta:
 
 ## **1.Intervalos de confianza para una proporción**
 
-Tengamos en consideración que para poder hallar el intervalo de
-confianza para una proporción debemos determinar nuestro caso de éxito.
-Asimismo, para hallar el intervalo de confianza para una proporción
-nuestra variable debe ser categórica y debe representar una variable
-dicotómica; es decir, una variable con solo dos categorías posibles:
-votó/no votó; sí/no, etc.
+Tengamos en consideración que para poder hallar el intervalo de confianza para una proporción debemos determinar nuestro caso de éxito. Asimismo, para hallar el intervalo de confianza para una proporción nuestra variable debe ser categórica y debe representar una variable dicotómica; es decir, una variable con solo dos categorías posibles: votó/no votó; sí/no, etc.
 
-Recordemos la fórmula para hallar el intervalo de confianza para una
-proporción
+Recordemos la fórmula para hallar el intervalo de confianza para una proporción
 
 ```{r,echo=FALSE, out.width="50%",fig.align="center"}
 knitr::include_graphics("ICprop.png") 
@@ -121,12 +92,9 @@ knitr::include_graphics("ICprop.png")
 
 ## *¿Qué proporción de venezolanos en Perú se siente discriminada?*
 
-Para ello trabajaremos con la variable P701, que tiene dos valores
-posibles: Si y No.
+Para ello trabajaremos con la variable P701, que tiene dos valores posibles: Si y No.
 
-Para poder encontrar el intervalo de confianza para la *proporción de
-venezolanos en Perú se siente discriminada*, necesitamos tener muy claro
-la frecuencia de nuestro caso de éxito y del total de casos.
+Para poder encontrar el intervalo de confianza para la *proporción de venezolanos en Perú se siente discriminada*, necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del total de casos.
 
 ```{r}
 table(data$P701)
@@ -137,40 +105,30 @@ x = 3104 #almacenamos en "x" la frecuencia de nuestro caso de éxito (Sí se sin
 n = 3104 + 7123 #almacenamos en "n" el total de casos
 ```
 
-Hallamos el invervalo de confianza para una proporción con el comando
-**prop.test**
+Hallamos el invervalo de confianza para una proporción con el comando **prop.test**
 
 ```{r}
 ic_prop = prop.test(x,n)
 ic_prop #llamamos a ic_prop para visualizar los resultados
 ```
 
-Esto quiere decir que tenemos un 95% de certeza de que el porcentaje de
-venezolanos que residen en el Perú y se han sentido discriminados oscila
-entre el 29% y 31%.
+Esto quiere decir que tenemos un 95% de certeza de que el porcentaje de venezolanos que residen en el Perú y se han sentido discriminados oscila entre el 29% y 31%.
 
 # **2.Intervalos de confianza para una media**
 
-Recordemos la fórmula para hallar el intervalo de confianza para una
-media es
+Recordemos la fórmula para hallar el intervalo de confianza para una media es
 
 ```{r,echo=FALSE, out.width="50%",fig.align="center"}
 knitr::include_graphics("ICmedia.png") 
 ```
 
-Es importante mencionar que nuestra variable debe ser numérica, sino no
-podremos calcular su promedio.
+Es importante mencionar que nuestra variable debe ser numérica, sino no podremos calcular su promedio.
 
 ### ¿Qué nivel de discriminación sufren los venezolanos en el Perú?
 
-*Hallemos el intervalo de confianza para la media de la variable
-"nivel_discriminación". Esta variable será un indice aditivo del 0 al
-100 creado a partir de las variables P702_1 a la P702_7*
+*Hallemos el intervalo de confianza para la media de la variable "nivel_discriminación". Esta variable será un indice aditivo del 0 al 100 creado a partir de las variables P702_1 a la P702_7*
 
-Guardo mis variables de interes en un vector para luego realizar la
-misma modificación en todas. Para poder indicar que se omitan los
-perdidos para la suma, primero crearemos un vector que almacene los
-nombres de las variables que conformaran el indicador.
+Guardo mis variables de interes en un vector para luego realizar la misma modificación en todas. Para poder indicar que se omitan los perdidos para la suma, primero crearemos un vector que almacene los nombres de las variables que conformaran el indicador.
 
 ```{r}
 library(dplyr)
@@ -186,8 +144,7 @@ data = data %>%
 
 ```
 
-Ahora que hemos creado el indicador de nivel de discriminación,
-realicemos un análisis descriptivo.
+Ahora que hemos creado el indicador de nivel de discriminación, realicemos un análisis descriptivo.
 
 ```{r}
 data %>% 
@@ -198,8 +155,7 @@ data %>%
             max = max(nivel_discriminación, na.rm = T))
 ```
 
-**ciMean**, del paquete **lsr**, es la función que calcula el intervalo
-de confianza de una media.
+**ciMean**, del paquete **lsr**, es la función que calcula el intervalo de confianza de una media.
 
 ```{r}
 library(lsr)
@@ -216,10 +172,6 @@ Hallemos el intervalo de confianza para el nivel de discriminación (nivel_discr
 
 Agreguemos etiquetas a la categórica
 
-```{r,echo=FALSE, out.width="50%",fig.align="center"}
-knitr::include_graphics("pd4-estratos.png") 
-```
-
 ```{r}
 table(data$ESTRATO)
 ```
@@ -230,8 +182,7 @@ data = data %>%
   mutate(ESTRATO=factor(ESTRATO, levels = (1:5), labels = c("Bajo","Medio bajo","Medio", "Medio alto", "Alto")))
 ```
 
-1\. Crearemos una tabla con la media, máximo y mínimo de la variable
-nivel_discriminación, en base al grupo de ESTRATO.
+1\. Crearemos una tabla con la media, máximo y mínimo de la variable nivel_discriminación, en base al grupo de ESTRATO.
 
 ```{r}
 ic_grupo = data %>% 
@@ -254,16 +205,7 @@ ggplot(ic_grupo, aes(x= ESTRATO, y =Media)) +
   xlab("Estrato") + ylab("Promedio del nivel de discriminación")+
   ylim(1, 3) #indicamos los límites del eje y
 ```
+
 Con lo que muestra el gráfico, ¿cómo podemos complementar nuestra interpretación anterior?
 
 # **Ejercicio**
-
-1.  Calcular el intervalo de confianza de la media para los años que
-    llevan viviendo en Lima/Callao los residentes de Lima/Callao
-    (EG2OTRO). Interprete
-2.  Muestra un gráfico que los intervalos de confianza para la media de
-    EG2OTRO según nivel socio económico (NSE_IOP). Interprete
-3.  A partir de la variable EG2OTRO, se creó "Añoslima". Que tiene dos
-    grupos "Más de 50 años" o "De 50 años a menos". Calcula el intervalo
-    de confianza para la proporción de la variable "Añoslima" e
-    interpreta.

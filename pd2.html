@@ -327,6 +327,9 @@ div.tocify {
 <li>
   <a href="pd2.html">Práctica dirigida 2</a>
 </li>
+<li>
+  <a href="pd3.html">Práctica dirigida 3</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -482,7 +485,8 @@ distintas maneras.</p>
 ## # ℹ 13 more rows</code></pre>
 <p>Graficamos “gráfico1” con todas las regiones del Perú</p>
 <pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built
+## under R version 4.2.3</code></pre>
 <pre class="r"><code>ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
   geom_bar(stat = &quot;identity&quot;) + 
   theme_bw()</code></pre>
@@ -612,8 +616,10 @@ medidas de posición y las de dispersión.</p>
     Q1 = quantile(indicador, 0.25), #Primer cuartil
     Q3 = quantile(indicador, 0.75) #Tercer cuartil
   )</code></pre>
-<pre><code>##     Media Mediana Desviacion Minimo Maximo Q1 Q3
-## 1 0.96875       0   1.743997      0     10  0  2</code></pre>
+<pre><code>##     Media Mediana Desviacion Minimo
+## 1 0.96875       0   1.743997      0
+##   Maximo Q1 Q3
+## 1     10  0  2</code></pre>
 <p>¿Cómo podemos interpretar la tabla? Recuerda que cada observación es
 una región en un año determinado.</p>
 <p>Para facilitar la visualización podemos graficar la variable. Haremos
@@ -646,19 +652,21 @@ región. Para ello debemos agrupar el resumen anterior.</p>
     Q3 = quantile(indicador, 0.75) #Tercer cuartil
   )</code></pre>
 <pre><code>## # A tibble: 25 × 8
-##    Región       Media Mediana Desviacion Minimo Maximo    Q1    Q3
-##    &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 Amazonas     0.727       0      1.85       0      6     0   0  
-##  2 Apurímac     0.444       0      1.33       0      4     0   0  
-##  3 Arequipa     0.897       0      1.47       0      6     0   2  
-##  4 Ayacucho     0.105       0      0.459      0      2     0   0  
-##  5 Cajamarca    0.571       0      0.938      0      2     0   1.5
-##  6 Callao       1.05        0      1.81       0      6     0   2  
-##  7 Cusco        1.08        0      1.52       0      4     0   2  
-##  8 Huancavelica 0.5         0      1.10       0      4     0   0  
-##  9 Huánuco      0           0      0          0      0     0   0  
-## 10 Ica          0.286       0      0.717      0      2     0   0  
-## # ℹ 15 more rows</code></pre>
+##    Región  Media Mediana Desviacion Minimo
+##    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Amazon… 0.727       0      1.85       0
+##  2 Apurím… 0.444       0      1.33       0
+##  3 Arequi… 0.897       0      1.47       0
+##  4 Ayacuc… 0.105       0      0.459      0
+##  5 Cajama… 0.571       0      0.938      0
+##  6 Callao  1.05        0      1.81       0
+##  7 Cusco   1.08        0      1.52       0
+##  8 Huanca… 0.5         0      1.10       0
+##  9 Huánuco 0           0      0          0
+## 10 Ica     0.286       0      0.717      0
+## # ℹ 15 more rows
+## # ℹ 3 more variables: Maximo &lt;dbl&gt;,
+## #   Q1 &lt;dbl&gt;, Q3 &lt;dbl&gt;</code></pre>
 <p>Podemos observar los resultados en un boxplot</p>
 <pre class="r"><code>ggplot(data, aes(x=Región, y=indicador, color = Región)) +
   geom_boxplot() +
