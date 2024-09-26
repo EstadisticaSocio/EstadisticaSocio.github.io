@@ -109,7 +109,7 @@ medias de los dos grupos comparados.
 
 # **Apliquemos**
 
-### **¿Cuál es la percepción de desigualdad en el Perú el 2024? 🤔**
+### **Insertar pregunta general 🤔**
 
 Para dar respuesta a la pregunta de investigación que guiara la práctica
 dirigida analizaremos algunas de las variables que forman parte de la
@@ -123,3 +123,26 @@ Se eligieron algunas variables de la base de datos original y se dejaron
 por fuera valores perdidos además de realizar otras modificaciones. Para
 realizar alguna investigación se debe usar la base de datos original que
 se encuentra en el siguiente [link](https://peru.oxfam.org/ENADES-2024).
+
+```{r}
+library(rio)
+data = import("pd4_enades2024.sav")
+```
+
+Diccionario: Sebastian
+
+¿Subpregunta 1? Sebastian
+
+edu2
+
+Variable P15
+
+t.test
+
+Gráfico: error_bar
+
+¿Subpregunta 2? Karina
+
+Variable con alguna likert
+
+Ejercicios
