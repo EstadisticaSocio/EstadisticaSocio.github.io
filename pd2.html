@@ -484,10 +484,9 @@ distintas maneras.</p>
 ## 10 Ica             72     1.12  
 ## # ℹ 13 more rows</code></pre>
 <p>Graficamos “gráfico1” con todas las regiones del Perú</p>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built
-## under R version 4.2.3</code></pre>
-<pre class="r"><code>ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
+<pre class="r"><code>library(ggplot2)
+
+ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
   geom_bar(stat = &quot;identity&quot;) + 
   theme_bw()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>

@@ -1,0 +1,110 @@
+---
+title: "Práctica dirigida 4"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 3
+    theme: flatly
+    highlight: textmate
+    always_allow_html: yes
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**
+
+Curso: SOC294 - Estadística para el análisis sociológico 1
+
+Semestre 2024 - 2
+
+## **Recordando lo avanzado**
+
+En la sesión anterior de teoría, nos adentramos al análisis inferencial
+bivariado, teniendo como base del tema el cálculo del Intervalo de
+Confianza (IC) para una media (variables numéricas) y para una
+proporción (variables categóricas). Recordemos que gracias al IC podemos
+determinar si la estimación es representativa de la población. La idea
+era calcular los intervalos de confianza para cada grupo y ver si los
+intervalos se interceptan o no. La regla era que si los intervalos de
+ambos grupos no se interceptaban, podíamos extrapolar que la diferencia
+muestral existe en la población al 95% de confianza. Para profundizar
+sobre estadística inferencial, evaluaremos las hipótesis mediante la
+introducción a la prueba t de diferencia de medias y desarrollaremos los
+cincos pasos de la inferencia estadística. Recordemos que el objetivo es
+corroborar que es posible extrapolar un resultado de la muestra a la
+población.
+
+# **Prueba T**
+
+## **¿Qué es la prueba T de diferencia de medias?**
+
+Generalmente, cuando queremos comparar dos grupos centramos nuestra
+atención en el promedio de cada uno. Sin embargo, el hecho de que los
+promedios sean distintos no supone, necesariamente, que existe una
+diferencia estadísticamente significativa.
+
+Para saber si la diferencia observada entre las medias de dos grupos es
+o no significativa se emplean métodos paramétricos como el de Z-scores o
+la distribución T-student. Estas técnicas calculan los intervalos de
+confianza de cada grupo y concluyen si existe una diferencia real entre
+las medias.
+
+La prueba T compara la media de una variable numérica para dos grupos o
+categorías de una variable nominal u ordinal. Los grupos que forman la
+variable nominal/ordinal tienen que ser independientes. Es decir, cada
+observación debe pertenecer a un grupo o al otro, pero no a ambos.
+
+## **Pruebas T para muestras independientes**
+
+*Condiciones*
+
+1.  Independencia: Las muestras deben ser independientes. El muestreo
+    debe ser aleatorio.
+
+2.  Igualdad de varianza: La varianza de ambas poblaciones comparadas
+    debe ser igual.
+
+3.  La variable numérica se distribuye de manera normal.
+
+***IMPORTANTE***
+
+La condición de normalidad también es considerada si es que la muestra
+fuera pequeña (Agresti y Finlay proponen que se aplica con un n pequeño
+menor a 30 observaciones). A medida que el n se hace más grande, el
+supuesto de normalidad es menos importante pues con grandes n confiamos
+en el teorema del límite central que nos indica que la distribución
+muestral será siempre normal.
+
+## **Pasos para realizar la Prueba T**
+
+1.  Establecer hipótesis
+
+2.  Calcular el estadístico (parámetro estimado) que se va a emplear
+
+3.  Determinar el nivel de significancia α (alpha)
+
+4.  Calcular el p-value y realizar la prueba prop.test
+
+5.  Interpretar
+
+**Recuerda**
+
+El H0 de la prueba T es la siguiente:
+
+**H0:** No existe diferencia estadísticamente significativa entre las
+medias de los dos grupos comparados.
+
+**H1:** Sí existe diferencia estadísticamente significativa entre las
+medias de los dos grupos comparados.
+
+*La H0 es generalmente la hipótesis de no efecto, de no diferencias.*
+
+# **Apliquemos**
