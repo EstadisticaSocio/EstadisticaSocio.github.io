@@ -108,3 +108,18 @@ medias de los dos grupos comparados.
 *La H0 es generalmente la hipótesis de no efecto, de no diferencias.*
 
 # **Apliquemos**
+
+### **¿Cuál es la percepción de desigualdad en el Perú el 2024? 🤔**
+
+Para dar respuesta a la pregunta de investigación que guiara la práctica
+dirigida analizaremos algunas de las variables que forman parte de la
+Encuesta Nacional de Percepción de Desigualdades - ENADES 2024, que fue
+elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. La encuesta
+busca ahondar en la percepción de las diferentes formas de desigualdad
+en el Perú e incorpora indicadores que permiten medir la magnitud de
+brechas sociales y políticas como género, clase, entre otros.
+
+Se eligieron algunas variables de la base de datos original y se dejaron
+por fuera valores perdidos además de realizar otras modificaciones. Para
+realizar alguna investigación se debe usar la base de datos original que
+se encuentra en el siguiente [link](https://peru.oxfam.org/ENADES-2024).
