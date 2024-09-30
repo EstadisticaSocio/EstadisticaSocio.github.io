@@ -131,15 +131,64 @@ data = import("pd4_enades2024.sav")
 
 Diccionario: Sebastian
 
-¿Subpregunta 1? Sebastian
+## 1. ¿Existe una diferencia estadísticamente significativa entre la estimación del monto mínimo mensual del hogar según nivel educativo alcanzado?
 
-edu2
+Crearemos una tabla con la media, máximo y mínimo de la variable nivel_discriminación, en base al grupo de edu2
 
-Variable P15
+```{r}
+library(dplyr)
+library(lsr)
+NivelEdu = data  %>%  
+  group_by(edu2)  %>% 
+  summarize(Media = mean(P15, na.rm = T),
+  min = ciMean(P15, na.rm=T)[1],
+  max = ciMean(P15, na.rm=T)[2])
+NivelEdu
+```
+```{r}
+NivelEdu[2,2] - NivelEdu[1,2] 
+```
+La diferencia es de aprox 1124 soles. ¿Puedo afirmar que existe esta diferencia en la población?
 
-t.test
+Para poder evaluar si existen o no diferencias poblacionales usaremos t.test
 
-Gráfico: error_bar
+```{r}
+t.test(P15 ~ edu2, data = data)
+```
+El valor p- value es < 2.2e-16, que es menor que el nivel típico de significancia (generalmente α = 0.05). Un valor p alto sugiere que no hay suficiente evidencia para rechazar la hipótesis nula. En otras palabras, podemos concluir que existe una diferencia significativa entre las medias de los dos grupos (Educación Básica y Educación Superior) con respecto a la variable P15
+
+Graficamos los resultados
+
+```{r}
+library(ggplot2)
+
+NivelEdu <- NivelEdu %>%
+  mutate(edu2 = recode(edu2,
+                       "1" = "Educación básica",
+                       "2" = "Educación superior"))
+
+ggplot(NivelEdu, aes(x = edu2, y = Media)) +
+  geom_bar(stat = "identity", fill = "#00688B", color = "black") +
+  geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
+  ggtitle("Estimación del monto mínimo mensual del hogar según máximo nivel educativo") +
+  
+  # Etiquetas de la media
+  geom_text(aes(label = paste(round(Media, 2))), vjust = -1.5, size = 4) +
+  
+  # Etiquetas de los valores mínimos
+  geom_text(aes(y = min, label = paste("min:", round(min, 2))), 
+            vjust = 1.5, hjust = -0.6, size = 3, color = "white") +
+  
+  # Etiquetas de los valores máximos
+  geom_text(aes(y = max, label = paste("max:", round(max, 2))), 
+            vjust = -0.5, hjust = -0.6, size = 3, color = "#00688B") +
+  
+  xlab("Máximo nivel educativo alcanzado") + 
+  ylab("Promedio del gasto mínimo mensual") +
+  ylim(0, 4000) +
+  theme_minimal()
+
+```
 
 ¿Subpregunta 2? Karina
 
