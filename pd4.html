@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 4</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Material para pds</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Inicio</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica dirigida 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica dirigida 2</a>
+</li>
+<li>
+  <a href="pd3.html">Práctica dirigida 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica dirigida 4</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 4</h1>
+
+</div>
+
+
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong></p>
+<p>Curso: SOC294 - Estadística para el análisis sociológico 1</p>
+<p>Semestre 2024 - 2</p>
+<div id="recordando-lo-avanzado" class="section level2">
+<h2><strong>Recordando lo avanzado</strong></h2>
+<p>En la sesión anterior de teoría, nos adentramos al análisis
+inferencial bivariado, teniendo como base del tema el cálculo del
+Intervalo de Confianza (IC) para una media (variables numéricas) y para
+una proporción (variables categóricas). Recordemos que gracias al IC
+podemos determinar si la estimación es representativa de la población.
+La idea era calcular los intervalos de confianza para cada grupo y ver
+si los intervalos se interceptan o no. La regla era que si los
+intervalos de ambos grupos no se interceptaban, podíamos extrapolar que
+la diferencia muestral existe en la población al 95% de confianza. Para
+profundizar sobre estadística inferencial, evaluaremos las hipótesis
+mediante la introducción a la prueba t de diferencia de medias y
+desarrollaremos los cincos pasos de la inferencia estadística.
+Recordemos que el objetivo es corroborar que es posible extrapolar un
+resultado de la muestra a la población.</p>
+</div>
+<div id="prueba-t" class="section level1">
+<h1><strong>Prueba T</strong></h1>
+<div id="qué-es-la-prueba-t-de-diferencia-de-medias"
+class="section level2">
+<h2><strong>¿Qué es la prueba T de diferencia de medias?</strong></h2>
+<p>Generalmente, cuando queremos comparar dos grupos centramos nuestra
+atención en el promedio de cada uno. Sin embargo, el hecho de que los
+promedios sean distintos no supone, necesariamente, que existe una
+diferencia estadísticamente significativa.</p>
+<p>Para saber si la diferencia observada entre las medias de dos grupos
+es o no significativa se emplean métodos paramétricos como el de
+Z-scores o la distribución T-student. Estas técnicas calculan los
+intervalos de confianza de cada grupo y concluyen si existe una
+diferencia real entre las medias.</p>
+<p>La prueba T compara la media de una variable numérica para dos grupos
+o categorías de una variable nominal u ordinal. Los grupos que forman la
+variable nominal/ordinal tienen que ser independientes. Es decir, cada
+observación debe pertenecer a un grupo o al otro, pero no a ambos.</p>
+</div>
+<div id="pruebas-t-para-muestras-independientes" class="section level2">
+<h2><strong>Pruebas T para muestras independientes</strong></h2>
+<p><em>Condiciones</em></p>
+<ol style="list-style-type: decimal">
+<li><p>Independencia: Las muestras deben ser independientes. El muestreo
+debe ser aleatorio.</p></li>
+<li><p>Igualdad de varianza: La varianza de ambas poblaciones comparadas
+debe ser igual.</p></li>
+<li><p>La variable numérica se distribuye de manera normal.</p></li>
+</ol>
+<p><strong><em>IMPORTANTE</em></strong></p>
+<p>La condición de normalidad también es considerada si es que la
+muestra fuera pequeña (Agresti y Finlay proponen que se aplica con un n
+pequeño menor a 30 observaciones). A medida que el n se hace más grande,
+el supuesto de normalidad es menos importante pues con grandes n
+confiamos en el teorema del límite central que nos indica que la
+distribución muestral será siempre normal.</p>
+</div>
+<div id="pasos-para-realizar-la-prueba-t" class="section level2">
+<h2><strong>Pasos para realizar la Prueba T</strong></h2>
+<ol style="list-style-type: decimal">
+<li><p>Establecer hipótesis</p></li>
+<li><p>Calcular el estadístico (parámetro estimado) que se va a
+emplear</p></li>
+<li><p>Determinar el nivel de significancia α (alpha)</p></li>
+<li><p>Calcular el p-value y realizar la prueba prop.test</p></li>
+<li><p>Interpretar</p></li>
+</ol>
+<p><strong>Recuerda</strong></p>
+<p>El H0 de la prueba T es la siguiente:</p>
+<p><strong>H0:</strong> No existe diferencia estadísticamente
+significativa entre las medias de los dos grupos comparados.</p>
+<p><strong>H1:</strong> Sí existe diferencia estadísticamente
+significativa entre las medias de los dos grupos comparados.</p>
+<p><em>La H0 es generalmente la hipótesis de no efecto, de no
+diferencias.</em></p>
+</div>
+</div>
+<div id="apliquemos" class="section level1">
+<h1><strong>Apliquemos</strong></h1>
+<div id="insertar-pregunta-general" class="section level3">
+<h3><strong>Insertar pregunta general 🤔</strong></h3>
+<p>Para dar respuesta a la pregunta de investigación que guiara la
+práctica dirigida analizaremos algunas de las variables que forman parte
+de la Encuesta Nacional de Percepción de Desigualdades - ENADES 2024,
+que fue elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. La
+encuesta busca ahondar en la percepción de las diferentes formas de
+desigualdad en el Perú e incorpora indicadores que permiten medir la
+magnitud de brechas sociales y políticas como género, clase, entre
+otros.</p>
+<p>Se eligieron algunas variables de la base de datos original y se
+dejaron por fuera valores perdidos además de realizar otras
+modificaciones. Para realizar alguna investigación se debe usar la base
+de datos original que se encuentra en el siguiente <a
+href="https://peru.oxfam.org/ENADES-2024">link</a>.</p>
+<pre class="r"><code>library(rio)
+data = import(&quot;pd4_enades2024.sav&quot;)</code></pre>
+<p><img src="PruebaT-Diccionario.jpeg" width="50%" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="existe-una-diferencia-estadísticamente-significativa-entre-la-estimación-del-monto-mínimo-mensual-del-hogar-según-nivel-educativo-alcanzado"
+class="section level2">
+<h2>1. ¿Existe una diferencia estadísticamente significativa entre la
+estimación del monto mínimo mensual del hogar según nivel educativo
+alcanzado?</h2>
+<p>Crearemos una tabla con la media, máximo y mínimo de la variable
+nivel_discriminación, en base al grupo de edu2</p>
+<p>Agreguemos etiquetas:</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>data = data  %&gt;%  
+  mutate(edu2 = factor(edu2, levels = 1:2, labels = c(&quot;E. Básica&quot;,&quot;E. Superior&quot;)))</code></pre>
+<pre class="r"><code>library(lsr)
+NivelEdu = data %&gt;% 
+  group_by(edu2)  %&gt;% 
+  summarize(Media = mean(P15, na.rm = T),
+  min = ciMean(P15, na.rm=T)[1],
+  max = ciMean(P15, na.rm=T)[2])
+NivelEdu</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   edu2        Media   min   max
+##   &lt;fct&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 E. Básica   2053. 1908. 2198.
+## 2 E. Superior 3178. 3004. 3351.</code></pre>
+<pre class="r"><code>NivelEdu[2,2] - NivelEdu[1,2] </code></pre>
+<pre><code>##      Media
+## 1 1124.792</code></pre>
+<p>La diferencia es de aprox 1124 soles. ¿Puedo afirmar que existe esta
+diferencia en la población?</p>
+<p>Para poder evaluar si existen o no diferencias poblacionales usaremos
+t.test.</p>
+<p>Recuerda que primero se indica la variable numérica y luego la
+categoríca dicotómica.</p>
+<pre class="r"><code>t.test(P15 ~ edu2, data = data)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  P15 by edu2
+## t = -9.7598, df = 1343.2, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means between group E. Básica and group E. Superior is not equal to 0
+## 95 percent confidence interval:
+##  -1350.8776  -898.7065
+## sample estimates:
+##   mean in group E. Básica mean in group E. Superior 
+##                  2052.847                  3177.639</code></pre>
+<p>El valor p- value es &lt; 2.2e-16, que es menor que el nivel típico
+de significancia (generalmente α = 0.05). Un valor p alto sugiere que no
+hay suficiente evidencia para rechazar la hipótesis nula. En otras
+palabras, podemos concluir que existe una diferencia significativa entre
+las medias de los dos grupos (Educación Básica y Educación Superior) con
+respecto a la variable P15</p>
+<p>Graficamos los resultados</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
+<pre class="r"><code>ggplot(NivelEdu, aes(x = edu2, y = Media)) +
+  geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
+  ggtitle(&quot;Estimación del monto mínimo mensual del hogar \nsegún máximo nivel educativo&quot;) +
+  # Etiquetas de la media
+  geom_text(aes(label = paste(round(Media, 2))), vjust = 0.5, size = 3) +
+  # Etiquetas de los valores mínimos
+  geom_text(aes(y = min, label = paste(&quot;min:&quot;, round(min, 2))), 
+            vjust = 1.5, hjust = -0.6, size = 2, color = &quot;#00688B&quot;) +
+  # Etiquetas de los valores máximos
+  geom_text(aes(y = max, label = paste(&quot;max:&quot;, round(max, 2))), 
+            vjust = -0.5, hjust = -0.6, size = 2, color = &quot;#00688B&quot;) +
+    theme_light()+
+  xlab(&quot;Máximo nivel educativo alcanzado&quot;) + 
+  ylab(&quot;Promedio del gasto mínimo mensual&quot;) </code></pre>
+<p><img src="pd4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div
+id="existe-una-diferencia-en-el-nivel-de-acuerdo-con-la-frase-los-que-más-tienen-deberían-pagar-más-impuestos-según-si-la-persona-pertenece-a-una-clase-social-alta-o-media-alta-o-no"
+class="section level2">
+<h2>2. ¿Existe una diferencia en el nivel de acuerdo con la frase “los
+que más tienen deberían pagar más impuestos” según si la persona
+pertenece a una clase social alta o media alta o no?</h2>
+<p>Para responder a la pregunta identifiquemos la variable numérica y la
+categórica primero.</p>
+<p>La variable númerica es la P30, que es una likert y va del 1 al
+10.</p>
+<p>La categórica se basa en <strong>clase</strong>, todo lo que sea 1 o
+2 (Clase Alta/Media Alta) será “Alta/Media alta” y lo que no, será “No
+alta/media alta”.</p>
+<pre class="r"><code>table(data$clase)</code></pre>
+<pre><code>## 
+##   1   2   3   4 
+##  34 251 722 467</code></pre>
+<pre class="r"><code>data = data %&gt;% 
+  mutate(Clase2= ifelse(clase &lt;3, &quot;Alta/Media alta&quot;, &quot;No alta/Media alta&quot; ))</code></pre>
+<p>¿Hay diferencia entre ambos grupos en la muestra?</p>
+<pre class="r"><code>clase = data %&gt;% 
+  filter(!is.na(Clase2)) %&gt;% 
+  group_by(Clase2)  %&gt;% 
+  summarize(Media = mean(P30, na.rm = T),
+  min = ciMean(P30, na.rm=T)[1],
+  max = ciMean(P30, na.rm=T)[2])
+clase</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   Clase2             Media   min   max
+##   &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Alta/Media alta     6.62  6.23  7.02
+## 2 No alta/Media alta  7.29  7.10  7.48</code></pre>
+<p>El análisis descriptivo muestra que las medias de ambos grupos se
+encuentran a 0.6 puntos de distancia.</p>
+<p>Para poder evaluar si existen o no diferencias poblacionales usaremos
+t.test.</p>
+<pre class="r"><code>t.test(P30 ~ Clase2, data = data)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  P30 by Clase2
+## t = -3.0024, df = 417.09, p-value = 0.002839
+## alternative hypothesis: true difference in means between group Alta/Media alta and group No alta/Media alta is not equal to 0
+## 95 percent confidence interval:
+##  -1.1058934 -0.2307852
+## sample estimates:
+##    mean in group Alta/Media alta mean in group No alta/Media alta 
+##                         6.621429                         7.289768</code></pre>
+<pre class="r"><code>ggplot(clase, aes(x = Clase2, y = Media)) +
+  geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
+  ggtitle(&quot;Estimación del nivel de acuerdo con &#39;Los que más \ntienen deberían pagar más impuestos&#39; según clase&quot;) +
+  # Etiquetas de la media
+  geom_text(aes(label = paste(round(Media, 2))), vjust = 0.5, size = 3) +
+  # Etiquetas de los valores mínimos
+  geom_text(aes(y = min, label = paste(&quot;min:&quot;, round(min, 2))), 
+            vjust = 1.5, hjust = -0.6, size = 2, color = &quot;#00688B&quot;) +
+  # Etiquetas de los valores máximos
+  geom_text(aes(y = max, label = paste(&quot;max:&quot;, round(max, 2))), 
+            vjust = -0.5, hjust = -0.6, size = 2, color = &quot;#00688B&quot;) +
+  theme_light()+
+  xlab(&quot;¿Es de clase alta o media alta?&quot;) + 
+  ylab(&quot;Promedio del nivel de acuerdo con \nLos que más tienen deberían pagar más impuestos&quot;) </code></pre>
+<p><img src="pd4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Ejercicios:</p>
+<ol style="list-style-type: decimal">
+<li>Analiza si existen diferencias en la población entre el promedio de
+monto estimado para vivir (P15) entre hombres y mujeres (sexo) con la
+prueba, el gráfico y la interpretación correspondiente.</li>
+<li>Analiza si existen diferencias en la población entre el nivel de
+acuerdo con la frase que indica que solo se gobierna para Lima(P29)
+entre si el encuestad@ vive en Lima o no (variable basada en macrozona)
+con la prueba, el gráfico y la interpretación correspondiente. Para ello
+debe de crear previamente una variable llamada Lima que se base en
+macrozona, si macrozona es Lima, entonces la nueva variable también será
+“Lima”, todo lo demás será “No Lima”.</li>
+</ol>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

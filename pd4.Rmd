@@ -129,69 +129,146 @@ library(rio)
 data = import("pd4_enades2024.sav")
 ```
 
-Diccionario: Sebastian
+```{r, echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("PruebaT-Diccionario.jpeg") 
+```
 
 ## 1. ¿Existe una diferencia estadísticamente significativa entre la estimación del monto mínimo mensual del hogar según nivel educativo alcanzado?
 
-Crearemos una tabla con la media, máximo y mínimo de la variable nivel_discriminación, en base al grupo de edu2
+Crearemos una tabla con la media, máximo y mínimo de la variable
+nivel_discriminación, en base al grupo de edu2
+
+Agreguemos etiquetas:
 
 ```{r}
 library(dplyr)
+data = data  %>%  
+  mutate(edu2 = factor(edu2, levels = 1:2, labels = c("E. Básica","E. Superior")))
+
+```
+
+```{r}
 library(lsr)
-NivelEdu = data  %>%  
+NivelEdu = data %>% 
   group_by(edu2)  %>% 
   summarize(Media = mean(P15, na.rm = T),
   min = ciMean(P15, na.rm=T)[1],
   max = ciMean(P15, na.rm=T)[2])
 NivelEdu
 ```
+
 ```{r}
 NivelEdu[2,2] - NivelEdu[1,2] 
 ```
-La diferencia es de aprox 1124 soles. ¿Puedo afirmar que existe esta diferencia en la población?
 
-Para poder evaluar si existen o no diferencias poblacionales usaremos t.test
+La diferencia es de aprox 1124 soles. ¿Puedo afirmar que existe esta
+diferencia en la población?
+
+Para poder evaluar si existen o no diferencias poblacionales usaremos
+t.test.
+
+Recuerda que primero se indica la variable numérica y luego la
+categoríca dicotómica.
 
 ```{r}
 t.test(P15 ~ edu2, data = data)
 ```
-El valor p- value es < 2.2e-16, que es menor que el nivel típico de significancia (generalmente α = 0.05). Un valor p alto sugiere que no hay suficiente evidencia para rechazar la hipótesis nula. En otras palabras, podemos concluir que existe una diferencia significativa entre las medias de los dos grupos (Educación Básica y Educación Superior) con respecto a la variable P15
+
+El valor p- value es \< 2.2e-16, que es menor que el nivel típico de
+significancia (generalmente α = 0.05). Un valor p alto sugiere que no
+hay suficiente evidencia para rechazar la hipótesis nula. En otras
+palabras, podemos concluir que existe una diferencia significativa entre
+las medias de los dos grupos (Educación Básica y Educación Superior) con
+respecto a la variable P15
 
 Graficamos los resultados
 
 ```{r}
 library(ggplot2)
-
-NivelEdu <- NivelEdu %>%
-  mutate(edu2 = recode(edu2,
-                       "1" = "Educación básica",
-                       "2" = "Educación superior"))
-
 ggplot(NivelEdu, aes(x = edu2, y = Media)) +
-  geom_bar(stat = "identity", fill = "#00688B", color = "black") +
   geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
-  ggtitle("Estimación del monto mínimo mensual del hogar según máximo nivel educativo") +
-  
+  ggtitle("Estimación del monto mínimo mensual del hogar \nsegún máximo nivel educativo") +
   # Etiquetas de la media
-  geom_text(aes(label = paste(round(Media, 2))), vjust = -1.5, size = 4) +
-  
+  geom_text(aes(label = paste(round(Media, 2))), vjust = 0.5, size = 3) +
   # Etiquetas de los valores mínimos
   geom_text(aes(y = min, label = paste("min:", round(min, 2))), 
-            vjust = 1.5, hjust = -0.6, size = 3, color = "white") +
-  
+            vjust = 1.5, hjust = -0.6, size = 2, color = "#00688B") +
   # Etiquetas de los valores máximos
   geom_text(aes(y = max, label = paste("max:", round(max, 2))), 
-            vjust = -0.5, hjust = -0.6, size = 3, color = "#00688B") +
-  
+            vjust = -0.5, hjust = -0.6, size = 2, color = "#00688B") +
+    theme_light()+
   xlab("Máximo nivel educativo alcanzado") + 
-  ylab("Promedio del gasto mínimo mensual") +
-  ylim(0, 4000) +
-  theme_minimal()
+  ylab("Promedio del gasto mínimo mensual") 
 
 ```
 
-¿Subpregunta 2? Karina
+## 2. ¿Existe una diferencia en el nivel de acuerdo con la frase "los que más tienen deberían pagar más impuestos" según si la persona pertenece a una clase social alta o media alta o no?
 
-Variable con alguna likert
+Para responder a la pregunta identifiquemos la variable numérica y la
+categórica primero.
 
-Ejercicios
+La variable númerica es la P30, que es una likert y va del 1 al 10.
+
+La categórica se basa en **clase**, todo lo que sea 1 o 2 (Clase
+Alta/Media Alta) será "Alta/Media alta" y lo que no, será "No alta/media
+alta".
+
+```{r}
+table(data$clase)
+data = data %>% 
+  mutate(Clase2= ifelse(clase <3, "Alta/Media alta", "No alta/Media alta" ))
+
+```
+
+¿Hay diferencia entre ambos grupos en la muestra?
+
+```{r}
+clase = data %>% 
+  filter(!is.na(Clase2)) %>% 
+  group_by(Clase2)  %>% 
+  summarize(Media = mean(P30, na.rm = T),
+  min = ciMean(P30, na.rm=T)[1],
+  max = ciMean(P30, na.rm=T)[2])
+clase
+```
+
+El análisis descriptivo muestra que las medias de ambos grupos se
+encuentran a 0.6 puntos de distancia.
+
+Para poder evaluar si existen o no diferencias poblacionales usaremos
+t.test.
+
+```{r}
+t.test(P30 ~ Clase2, data = data)
+```
+
+```{r}
+ggplot(clase, aes(x = Clase2, y = Media)) +
+  geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
+  ggtitle("Estimación del nivel de acuerdo con 'Los que más \ntienen deberían pagar más impuestos' según clase") +
+  # Etiquetas de la media
+  geom_text(aes(label = paste(round(Media, 2))), vjust = 0.5, size = 3) +
+  # Etiquetas de los valores mínimos
+  geom_text(aes(y = min, label = paste("min:", round(min, 2))), 
+            vjust = 1.5, hjust = -0.6, size = 2, color = "#00688B") +
+  # Etiquetas de los valores máximos
+  geom_text(aes(y = max, label = paste("max:", round(max, 2))), 
+            vjust = -0.5, hjust = -0.6, size = 2, color = "#00688B") +
+  theme_light()+
+  xlab("¿Es de clase alta o media alta?") + 
+  ylab("Promedio del nivel de acuerdo con \nLos que más tienen deberían pagar más impuestos") 
+```
+
+Ejercicios:
+
+1.  Analiza si existen diferencias en la población entre el promedio de
+    monto estimado para vivir (P15) entre hombres y mujeres (sexo) con
+    la prueba, el gráfico y la interpretación correspondiente.
+2.  Analiza si existen diferencias en la población entre el nivel de
+    acuerdo con la frase que indica que solo se gobierna para Lima(P29)
+    entre si el encuestad\@ vive en Lima o no (variable basada en
+    macrozona) con la prueba, el gráfico y la interpretación
+    correspondiente. Para ello debe de crear previamente una variable
+    llamada Lima que se base en macrozona, si macrozona es Lima,
+    entonces la nueva variable también será "Lima", todo lo demás será
+    "No Lima".
