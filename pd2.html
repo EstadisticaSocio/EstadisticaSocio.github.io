@@ -333,6 +333,9 @@ div.tocify {
 <li>
   <a href="pd4.html">Práctica dirigida 4</a>
 </li>
+<li>
+  <a href="pd5.html">Práctica dirigida 5</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -451,18 +454,18 @@ gráfico</p>
 
 gráfico1</code></pre>
 <pre><code>## # A tibble: 25 × 3
-##    Región       Total Porcentaje
-##    &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;
-##  1 Amazonas       116      0.593
-##  2 Apurímac       200      1.02 
-##  3 Arequipa       975      4.98 
-##  4 Ayacucho       227      1.16 
-##  5 Cajamarca      291      1.49 
-##  6 Callao         404      2.06 
-##  7 Cusco          922      4.71 
-##  8 Huancavelica   157      0.802
-##  9 Huánuco        128      0.654
-## 10 Ica            314      1.60 
+##    Región     Total Porcentaje
+##    &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Amazonas     116      0.593
+##  2 Apurímac     200      1.02 
+##  3 Arequipa     975      4.98 
+##  4 Ayacucho     227      1.16 
+##  5 Cajamarca    291      1.49 
+##  6 Callao       404      2.06 
+##  7 Cusco        922      4.71 
+##  8 Huancavel…   157      0.802
+##  9 Huánuco      128      0.654
+## 10 Ica          314      1.60 
 ## # ℹ 15 more rows</code></pre>
 <p>Un breve ejemplo. Podemos realizar la misma situación, inclusive,
 filtrando. En este caso, nos quedamos solamente con aquellas regiones
@@ -473,23 +476,23 @@ distintas maneras.</p>
   summarise(Total = sum(Total)) %&gt;% 
   mutate(Porcentaje = (Total / sum(Total))*100)</code></pre>
 <pre><code>## # A tibble: 23 × 3
-##    Región       Total Porcentaje
-##    &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;
-##  1 Amazonas        13     0.203 
-##  2 Apurímac        36     0.562 
-##  3 Arequipa       368     5.74  
-##  4 Ayacucho        68     1.06  
-##  5 Cajamarca      191     2.98  
-##  6 Callao          71     1.11  
-##  7 Cusco          453     7.07  
-##  8 Huancavelica    44     0.687 
-##  9 Huánuco          3     0.0468
-## 10 Ica             72     1.12  
+##    Región     Total Porcentaje
+##    &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Amazonas      13     0.203 
+##  2 Apurímac      36     0.562 
+##  3 Arequipa     368     5.74  
+##  4 Ayacucho      68     1.06  
+##  5 Cajamarca    191     2.98  
+##  6 Callao        71     1.11  
+##  7 Cusco        453     7.07  
+##  8 Huancavel…    44     0.687 
+##  9 Huánuco        3     0.0468
+## 10 Ica           72     1.12  
 ## # ℹ 13 more rows</code></pre>
 <p>Graficamos “gráfico1” con todas las regiones del Perú</p>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
-<pre class="r"><code>ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
+<pre class="r"><code>library(ggplot2)
+
+ggplot(gráfico1, aes(x=Región, y=Porcentaje, fill=Región)) + 
   geom_bar(stat = &quot;identity&quot;) + 
   theme_bw()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
@@ -618,8 +621,10 @@ medidas de posición y las de dispersión.</p>
     Q1 = quantile(indicador, 0.25), #Primer cuartil
     Q3 = quantile(indicador, 0.75) #Tercer cuartil
   )</code></pre>
-<pre><code>##     Media Mediana Desviacion Minimo Maximo Q1 Q3
-## 1 0.96875       0   1.743997      0     10  0  2</code></pre>
+<pre><code>##     Media Mediana Desviacion
+## 1 0.96875       0   1.743997
+##   Minimo Maximo Q1 Q3
+## 1      0     10  0  2</code></pre>
 <p>¿Cómo podemos interpretar la tabla? Recuerda que cada observación es
 una región en un año determinado.</p>
 <p>Para facilitar la visualización podemos graficar la variable. Haremos
@@ -652,19 +657,24 @@ región. Para ello debemos agrupar el resumen anterior.</p>
     Q3 = quantile(indicador, 0.75) #Tercer cuartil
   )</code></pre>
 <pre><code>## # A tibble: 25 × 8
-##    Región       Media Mediana Desviacion Minimo Maximo    Q1    Q3
-##    &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 Amazonas     0.727       0      1.85       0      6     0   0  
-##  2 Apurímac     0.444       0      1.33       0      4     0   0  
-##  3 Arequipa     0.897       0      1.47       0      6     0   2  
-##  4 Ayacucho     0.105       0      0.459      0      2     0   0  
-##  5 Cajamarca    0.571       0      0.938      0      2     0   1.5
-##  6 Callao       1.05        0      1.81       0      6     0   2  
-##  7 Cusco        1.08        0      1.52       0      4     0   2  
-##  8 Huancavelica 0.5         0      1.10       0      4     0   0  
-##  9 Huánuco      0           0      0          0      0     0   0  
-## 10 Ica          0.286       0      0.717      0      2     0   0  
-## # ℹ 15 more rows</code></pre>
+##    Región       Media Mediana
+##    &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;
+##  1 Amazonas     0.727       0
+##  2 Apurímac     0.444       0
+##  3 Arequipa     0.897       0
+##  4 Ayacucho     0.105       0
+##  5 Cajamarca    0.571       0
+##  6 Callao       1.05        0
+##  7 Cusco        1.08        0
+##  8 Huancavelica 0.5         0
+##  9 Huánuco      0           0
+## 10 Ica          0.286       0
+## # ℹ 15 more rows
+## # ℹ 5 more variables:
+## #   Desviacion &lt;dbl&gt;,
+## #   Minimo &lt;dbl&gt;,
+## #   Maximo &lt;dbl&gt;, Q1 &lt;dbl&gt;,
+## #   Q3 &lt;dbl&gt;</code></pre>
 <p>Podemos observar los resultados en un boxplot</p>
 <pre class="r"><code>ggplot(data, aes(x=Región, y=indicador, color = Región)) +
   geom_boxplot() +

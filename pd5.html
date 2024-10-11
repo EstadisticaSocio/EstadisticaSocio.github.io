@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 5</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Material para pds</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Inicio</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica dirigida 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica dirigida 2</a>
+</li>
+<li>
+  <a href="pd3.html">Práctica dirigida 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica dirigida 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica dirigida 5</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 5</h1>
+
+</div>
+
+
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong></p>
+<p>Curso: SOC294 - Estadística para el análisis sociológico 1</p>
+<p>Semestre 2024 - 2</p>
+<div id="chi-cuadrado-y-repaso" class="section level1">
+<h1>Chi cuadrado y repaso</h1>
+<div id="tablas-de-contingencia" class="section level2">
+<h2><strong>Tablas de contingencia</strong></h2>
+<ul>
+<li><p>Son tablas de doble entrada, en las cuales se cruzan las
+categorías de dos variables de interés.</p></li>
+<li><p>En las casillas de la tabla se ubica la frecuencia o el número de
+casos de cada cruce.</p></li>
+<li><p>Conceptos importantes: Frecuencias observadas y frecuencias
+esperadas.</p></li>
+</ul>
+<p><img src="Tabla_contingencia1.png" width="50%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="frecuencias-observadas-y-esperadas" class="section level2">
+<h2><strong>Frecuencias observadas y esperadas</strong></h2>
+<ul>
+<li><p>Frecuencia esperada: Estas son las frecuencia que deberían darse
+si las variables fueran independientes.</p></li>
+<li><p>Frecuencia observada: Estas son las frecuencias reales que se
+observa en nuestra data.</p></li>
+</ul>
+<p>Ejemplo:</p>
+<p><img src="Tabla_contingencia2.png" width="50%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="prueba-chi2" class="section level2">
+<h2><strong>Prueba Chi2</strong></h2>
+<p>Chi2 es una prueba para estimar el grado de asociación entre
+variables categóricas:</p>
+<ul>
+<li><p>“Nominal - Nominal”,</p></li>
+<li><p>“Nominal - Ordinal”</p></li>
+<li><p>“Ordinal - Ordinal”</p></li>
+</ul>
+<p>Esto significa que una parte de la variabilidad de una variable puede
+ser explicada por otra variable.</p>
+<p>Supuestos:</p>
+<p>Para analizar asociación se requiere que el número de observaciones
+esperadas en cada celda de la tabla de contingencia debe ser
+suficientemente grande.</p>
+<p>Para fines de este curso, al menos cada celda de la tabla de
+contingencia de frecuencias esperadas debe ser de 5.</p>
+<p>Ten en cuenta que si estas condiciones no se cumplen, entonces la
+prueba podría no funcionar adecuadamente y los resultados de la prueba
+podrían no ser válidos.</p>
+<p>Hipótesis:</p>
+<ul>
+<li><p>Hipótesis nula (H0): Las variables son estadísticamente
+independientes (No hay asociación) 🚫</p></li>
+<li><p>Hipótesis alternativa (H1): Las variables son estadísticamente
+dependientes (Sí hay asociación)✅</p></li>
+</ul>
+<p>Que dos variables estén asociadas significa que parte de la
+variabilidad en una variable puede ser explicada por la otra
+variable.</p>
+<p>El Chi2 específica grado de asociación, <strong>NO LA FORMA DE
+ASOCIACIÓN</strong>.</p>
+</div>
+<div id="ejercicio" class="section level2">
+<h2><strong>Ejercicio</strong></h2>
+<p>Para la clase de hoy, se usará la base de datos de la ENPOVE 2022, el
+módulo de empleo. Esta “es una investigación estadística que permite
+suministrar información estadística que refleje la situación migratoria
+de la población venezolana refugiada y migrante en el Perú, con énfasis
+en el contexto de la pandemia por la COVID-19, para así apoyar a tomar
+las decisiones de política pública basadas en datos sólidos y
+confiables”</p>
+<p><img src="DicPD5.png" width="50%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>library(rio) #Convocamos el paquete   
+data=import(&quot;PD5_enpove2022.sav&quot;)</code></pre>
+<div
+id="existe-una-relación-significativa-entre-el-estrato-con-el-envío-deremesas"
+class="section level3">
+<h3><strong>¿Existe una relación significativa entre el estrato con el
+envío deremesas?</strong></h3>
+<p><strong>PASO 1: Tabla de contingencia</strong></p>
+<pre class="r"><code>library(dplyr)
+data = data %&gt;% 
+  mutate(estrato = factor(estrato,labels=c(&quot;Bajo&quot;,&quot;Medio bajo&quot;,&quot;Medio&quot;,&quot;Medio alto&quot;,&quot;Alto&quot;))) %&gt;% 
+  mutate(remesas = factor(remesas,labels=c(&quot;Sí&quot;,&quot;No&quot;)))</code></pre>
+<pre class="r"><code>table(data$remesas)</code></pre>
+<pre><code>## 
+##   Sí   No 
+## 4443 3867</code></pre>
+<pre class="r"><code>tabla1=table(data$estrato,data$remesas)
+tabla1</code></pre>
+<pre><code>##             
+##                Sí   No
+##   Bajo        555  422
+##   Medio bajo 1397 1168
+##   Medio      1557 1400
+##   Medio alto  848  737
+##   Alto         86  140</code></pre>
+<p>Revisamos el supuesto</p>
+<pre class="r"><code>chisq.test(tabla1)$expected</code></pre>
+<pre><code>##             
+##                     Sí        No
+##   Bajo        522.3599  454.6401
+##   Medio bajo 1371.3953 1193.6047
+##   Medio      1580.9809 1376.0191
+##   Medio alto  847.4314  737.5686
+##   Alto        120.8325  105.1675</code></pre>
+<p>En este caso sí cumple el supuesto!😎</p>
+<p>Creamos porcentajes por columna, para ello tenemos que agregar
+prop.table al comando anterior. El argumento de prop.table puede ser</p>
+<p>1: para calcular porcentaje por fila</p>
+<p>2: para calcular por columna ⚠️ Recuerda que es recomendable calcular
+los porcentajes sobre la variable sociodemográfica o aquella que
+antecede a la otra.</p>
+<pre class="r"><code>tablapor1 = tabla1 %&gt;%
+           prop.table(1) %&gt;%  
+           round(2) #redondear el resultado a 2 decimales
+tablapor1</code></pre>
+<pre><code>##             
+##                Sí   No
+##   Bajo       0.57 0.43
+##   Medio bajo 0.54 0.46
+##   Medio      0.53 0.47
+##   Medio alto 0.54 0.46
+##   Alto       0.38 0.62</code></pre>
+<p><strong>PASO 2: Tabla de contingencia</strong></p>
+<pre class="r"><code>toPlot1 = as.data.frame(tablapor1) 
+names(toPlot1) = c(&quot;Estrato&quot;, &quot;Remesa&quot;, &quot;Porcentaje&quot;)</code></pre>
+<pre class="r"><code>library(ggplot2)
+  ggplot(toPlot1, aes(x=Estrato, y=Porcentaje*100, fill=Remesa)) +
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+ #Stack indica que son barras apiladas
+  geom_text(aes(label=paste0(Porcentaje*100,&quot;%&quot;)), 
+            position = position_stack(vjust = 0.5), 
+             size = 4,
+             fontface=&quot;bold&quot;)+
+  labs(x=&quot;Estrato&quot;, y=&quot;Porcentaje&quot;, fill=&quot;¿Envía remesa?&quot;)+
+  theme_minimal()</code></pre>
+<p><img src="pd5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>De forma preliminar ¿Hay diferencias entre la forma cómo se
+distribuye la variable “Situación Económica” en cada subgrupo (hombre y
+mujer)?</p>
+<p><strong>PASO 3: Prueba Chi2</strong></p>
+<pre class="r"><code>chisq.test(tabla1)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla1
+## X-squared = 27.771, df = 4, p-value = 1.388e-05</code></pre>
+<p>De acuerdo al p-value obtenido en la prueba de hipótesis de Chi2, al
+ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son
+independientes)</p>
+<p>Por lo tanto, podemos concluir que existe dependencia entre las
+variables escogidas. Esto quiere decir que el estrato SÍ se vincula con
+el envío de remesas.</p>
+</div>
+</div>
+<div id="repaso" class="section level2">
+<h2><strong>Repaso</strong></h2>
+<p>Ten en consideración que evitar borrar los datos perdidos pero no
+considerarlos en el análisis podemos agregar un filtro:
+<strong>filter(!is.na(variableatrabajar))</strong> recuerda que esto
+debe ir antes del summarise.</p>
+<p>No olvides llamar a los paquetes necesarios y setear tu
+directorio.</p>
+<div id="análisis-descriptivo" class="section level3">
+<h3><strong>1. Análisis descriptivo</strong></h3>
+<div id="cuál-es-la-proporción-de-venezolanos-con-empleo-trabajo"
+class="section level4">
+<h4>¿Cuál es la proporción de venezolanos con empleo? (trabajo)</h4>
+<pre><code>## # A tibble: 2 × 3
+##   trabajo  Freq Porcentaje
+##   &lt;fct&gt;   &lt;int&gt;      &lt;dbl&gt;
+## 1 Si       5987       58.5
+## 2 No       4240       41.5</code></pre>
+<p>En la muestra, un 59% de venezolanos que residen en Perú, contaba con
+empleo.</p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="cuánto-ganan-los-venezolanos-con-empleo-en-el-perú"
+class="section level4">
+<h4>¿Cuánto ganan los venezolanos con empleo en el Perú?</h4>
+<p>La muestra indica que los venezolan@s ganan entre 0 y 9500 soles por
+cada pago, y en promedio ganan 511 soles. Además la mitad de los
+venezolanos gana de 330 soles o menos. Hay que tomar este dato con
+precaución ya que depende de la frecuencia de pago. Es decir, puede que
+reciban 300 soles en cada pago pero este se realiza de manera quincenal,
+lo que serían 1200 soles mensuales.</p>
+<p>Visualicemos lo hallado</p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+</div>
+<div id="intervalo-de-confianza-para-proporción" class="section level3">
+<h3><strong>2. Intervalo de confianza para proporción</strong></h3>
+<p>Encontramos que la proporción de venezolan@s con empleo en el Perú es
+de 59%, calculemos cuanto será este valor en la población.</p>
+<p>Previamente ya habíamos calculado la frecuencia de los que contaban
+con empleo y los que no, ingresemos esos datos en el prop.test</p>
+<pre><code>## # A tibble: 2 × 3
+##   trabajo  Freq Porcentaje
+##   &lt;fct&gt;   &lt;int&gt;      &lt;dbl&gt;
+## 1 Si       5987       58.5
+## 2 No       4240       41.5</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  5987 out of 5987 + 4240, null probability 0.5
+## X-squared = 298.09, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.5757838 0.5949741
+## sample estimates:
+##         p 
+## 0.5854112</code></pre>
+<p>La proporción de venezolanos/as con empleo en Perú se encuentra entre
+57.5% y 59.4%, a un 95% de confianza.</p>
+</div>
+</div>
+<div id="intervalo-de-confianza-para-media" class="section level2">
+<h2><strong>3. Intervalo de confianza para media</strong></h2>
+<p>Anteriormente, encontramos que los venezolanos en Perú ganan en
+promedio 511 soles. Calculemos cuanto es este valor en la población.</p>
+<p>No olvides llamar al paquete lsr para hallar los intervalos de
+confianza</p>
+<pre><code>##      media Superior.2.5% Superior.97.5% Inferior.2.5% Inferior.97.5%
+## 1 511.0324      492.2745       529.7902      492.2745       529.7902</code></pre>
+<p>A un 95% de confianza podemos concluir que, en promedio, un/a
+venezolan@ que trabaja en Perú gana aproximadamente entre 492.2 y 529.7
+soles. Hay que tener en consideración que este monto es en cada pago,
+que puede ser quincenal, mensual, etc.</p>
+<div id="prueba-t" class="section level3">
+<h3><strong>4. Prueba T</strong></h3>
+<div
+id="existe-diferencia-entre-el-monto-percibido-ingreso-entre-los-venezolanos-que-envían-remesas-remesas-y-los-que-no"
+class="section level4">
+<h4>¿Existe diferencia entre el monto percibido (ingreso) entre los
+venezolanos que envían remesas (remesas) y los que no?</h4>
+<pre><code>## # A tibble: 2 × 4
+##   remesas media Superior Inferior
+##   &lt;fct&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Si       543.     518.     567.
+## 2 No       459.     431.     487.</code></pre>
+<p>En la muestra si existe una diferencia entre los ingresos de los que
+envían remesas y los que no. Siendo el ingreso más alto el de los que sí
+envían. Analicemos si esto se cumple en la población de venezolanos en
+Perú.</p>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  ingreso by remesas
+## t = 4.3886, df = 3677.7, p-value = 1.173e-05
+## alternative hypothesis: true difference in means between group Si and group No is not equal to 0
+## 95 percent confidence interval:
+##   46.16303 120.71568
+## sample estimates:
+## mean in group Si mean in group No 
+##         542.5315         459.0921</code></pre>
+<p>H0: No existe diferencia entre los promedios de ingreso de los que
+envían remesas y los que no. /H1: Existe diferencia entre los promedios
+de ingreso de los que envían remesas y los que no.</p>
+<p>Analizando el pvalor, podemos rechazar la hipótesis nula y así
+afirmar que las medias de ingreso de los que envían remesas y los que
+no, no son iguales.</p>
+<p>Constatemos cual es la media más alta con un gráfico:</p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+</div>
+<div id="prueba-chi-cuadrado" class="section level3">
+<h3><strong>5. Prueba Chi Cuadrado</strong></h3>
+<p>¿De qué manera se relaciona el sexo con si la ocupacion de la persona
+es empleado o no?</p>
+<p>Nos basaremos en la variable ocupación, si es 3 será “Empleado” todos
+los demás casos serán “No empleado”.</p>
+<pre><code>## 
+##    1    2    3    4    5    6    7 
+##   90 1947 3987  110   28  221    4</code></pre>
+<pre><code>## 
+##    Empleado No empleado 
+##        3987        2400</code></pre>
+<p>Agreguemos etiquetas a la variable sexo</p>
+<pre><code>##         
+##          Empleado No empleado
+##   Hombre     2372        1220
+##   Mujer      1615        1180</code></pre>
+<p>Revisemos el supuesto: Recuerda que debe haber por lo menos 5 casos
+por celda.</p>
+<pre><code>##         
+##          Empleado No empleado
+##   Hombre 2242.258    1349.742
+##   Mujer  1744.742    1050.258</code></pre>
+<p>Sí cumple con el mínimo por celda.</p>
+<pre><code>##         
+##          Empleado No empleado
+##   Hombre     0.66        0.34
+##   Mujer      0.58        0.42</code></pre>
+<p><img src="pd5_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  tabla1
+## X-squared = 45.302, df = 1, p-value = 1.689e-11</code></pre>
+<p>La prueba confirma lo expuesto en el gráfico. A un 95% de confianza
+podemos afirmar que existe relación entre ser hombre o mujer y el ser
+empleado. Apoyándonos en el gráfico, podemos afirmar que habrá una mayor
+proporción de mujeres cuya ocupación es ser dependiente o empleada que
+en el caso de los hombres.</p>
+</div>
+</div>
+<div id="ejercicios" class="section level2">
+<h2>Ejercicios:</h2>
+<ol style="list-style-type: decimal">
+<li>Describe a la variable frecuencia de pago, realiza el gráfico
+respectivo e interpreta los resultados.</li>
+<li>Ahora analiza si que una persona vive en Lima se relaciona con la
+frecuencia de pago (frecuencia).</li>
+<li>Analiza si existe diferencias entre el promedio de horas de trabajo
+a la semana (horas_trabajo) según modalidad de trabajo (modalidad2)</li>
+</ol>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

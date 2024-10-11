@@ -15,15 +15,13 @@ editor_options:
     wrap: 72
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**
 
 Curso: SOC294 - Estadística para el análisis sociológico 1
 
 Semestre 2024 - 2
+
+# Chi cuadrado y repaso
 
 ## **Tablas de contingencia**
 
@@ -54,16 +52,16 @@ Ejemplo:
 knitr::include_graphics("Tabla_contingencia2.png") 
 ```
 
-# **Prueba Chi2**
+## **Prueba Chi2**
 
 Chi2 es una prueba para estimar el grado de asociación entre variables
 categóricas:
 
--   “Nominal - Nominal”,
+-   "Nominal - Nominal",
 
--   “Nominal - Ordinal”
+-   "Nominal - Ordinal"
 
--   “Ordinal - Ordinal”
+-   "Ordinal - Ordinal"
 
 Esto significa que una parte de la variabilidad de una variable puede
 ser explicada por otra variable.
@@ -94,7 +92,7 @@ en una variable puede ser explicada por la otra variable.
 
 El Chi2 específica grado de asociación, **NO LA FORMA DE ASOCIACIÓN**.
 
-# **Ejercicio**
+## **Ejercicio**
 
 Para la clase de hoy, se usará la base de datos de la ENPOVE 2022, el
 módulo de empleo. Esta "es una investigación estadística que permite
@@ -113,11 +111,11 @@ library(rio) #Convocamos el paquete
 data=import("PD5_enpove2022.sav")
 ```
 
-## **¿Existe una relación significativa entre el estrato con el envío deremesas?**
+### **¿Existe una relación significativa entre el estrato con el envío deremesas?**
 
 **PASO 1: Tabla de contingencia**
 
-```{r}
+```{r, warning=FALSE,message=FALSE}
 library(dplyr)
 data = data %>% 
   mutate(estrato = factor(estrato,labels=c("Bajo","Medio bajo","Medio","Medio alto","Alto"))) %>% 
@@ -164,7 +162,7 @@ toPlot1 = as.data.frame(tablapor1)
 names(toPlot1) = c("Estrato", "Remesa", "Porcentaje")
 ```
 
-```{r}
+```{r, warning=FALSE,message=FALSE}
 library(ggplot2)
   ggplot(toPlot1, aes(x=Estrato, y=Porcentaje*100, fill=Remesa)) +
   geom_bar(position="stack", stat="identity")+ #Stack indica que son barras apiladas
@@ -177,13 +175,257 @@ library(ggplot2)
 ```
 
 De forma preliminar ¿Hay diferencias entre la forma cómo se distribuye
-la variable “Situación Económica” en cada subgrupo (hombre y mujer)?
+la variable "Situación Económica" en cada subgrupo (hombre y mujer)?
 
 **PASO 3: Prueba Chi2**
 
-```{r}
+```{r, warning=FALSE,message=FALSE}
 chisq.test(tabla1)
 ```
-De acuerdo al p-value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes)
 
-Por lo tanto, podemos concluir que existe dependencia entre las variables escogidas. Esto quiere decir que el estrato SÍ se vincula con el envío de remesas. 
+De acuerdo al p-value obtenido en la prueba de hipótesis de Chi2, al ser
+menor de 0.05, podemos rechazar la hipótesis nula (Las variables son
+independientes)
+
+Por lo tanto, podemos concluir que existe dependencia entre las
+variables escogidas. Esto quiere decir que el estrato SÍ se vincula con
+el envío de remesas.
+
+## **Repaso**
+
+Ten en consideración que evitar borrar los datos perdidos pero no
+considerarlos en el análisis podemos agregar un filtro:
+**filter(!is.na(variableatrabajar))** recuerda que esto debe ir antes
+del summarise.
+
+No olvides llamar a los paquetes necesarios y setear tu directorio.
+
+### **1. Análisis descriptivo**
+
+#### ¿Cuál es la proporción de venezolanos con empleo? (trabajo)
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+data = data %>% 
+  mutate(trabajo =factor(trabajo,labels=c("Si","No")))
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+tabla1 = data %>% 
+  filter(!is.na(trabajo)) %>% 
+  group_by(trabajo) %>% 
+  summarise(Freq=n()) %>% 
+  mutate(Porcentaje = (Freq/sum(Freq))*100)
+tabla1
+```
+
+En la muestra, un 59% de venezolanos que residen en Perú, contaba con
+empleo.
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+ggplot(tabla1, aes(x=trabajo,y=Porcentaje,fill=trabajo))+
+  geom_bar(stat="identity")+
+  geom_text(aes(label=paste(round(Porcentaje,1),"%")),vjust=1.30, color="black", size=3)+
+  ggtitle("Venezolanos en Perú con empleo (%)")+xlab("¿La semana pasada tuvo algún trabajo?")+theme_classic()
+
+```
+
+#### ¿Cuánto ganan los venezolanos con empleo en el Perú?
+
+```{r, include=FALSE, echo=T}
+data %>% 
+  summarise(minimo=min(ingreso,na.rm = T),
+            maximo=max(ingreso,na.rm = T),
+            media=mean(ingreso,na.rm = T),
+            mediana=median(ingreso,na.rm = T),
+            sd=sd(ingreso,na.rm = T),
+            Q1=quantile(ingreso,na.rm = T,0.25),
+            Q3=quantile(ingreso,na.rm = T,0.75))
+```
+
+La muestra indica que los venezolan\@s ganan entre 0 y 9500 soles por
+cada pago, y en promedio ganan 511 soles. Además la mitad de los
+venezolanos gana de 330 soles o menos. Hay que tomar este dato con
+precaución ya que depende de la frecuencia de pago. Es decir, puede que
+reciban 300 soles en cada pago pero este se realiza de manera quincenal,
+lo que serían 1200 soles mensuales.
+
+Visualicemos lo hallado
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+data %>%
+  ggplot(aes(x = ingreso)) + 
+  geom_histogram(color = "black", fill = "hotpink1", bins = 40) +
+  ggtitle("Salario de la población venezolana en Perú ") +
+  ylab("Frecuencia")+xlab("Salario")+
+  geom_vline(xintercept =  mean(data$ingreso, na.rm = TRUE), color = "red", linetype = "dashed", size = 1) + # Línea de la media
+  geom_vline(xintercept = median(data$ingreso, na.rm = TRUE), color = "grey", linetype = "dashed", size = 1) + # Línea de la mediana
+  theme_minimal()
+
+```
+
+### **2. Intervalo de confianza para proporción**
+
+Encontramos que la proporción de venezolan\@s con empleo en el Perú es
+de 59%, calculemos cuanto será este valor en la población.
+
+Previamente ya habíamos calculado la frecuencia de los que contaban con
+empleo y los que no, ingresemos esos datos en el prop.test
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+tabla1
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+prop.test(5987,5987+4240)
+```
+
+La proporción de venezolanos/as con empleo en Perú se encuentra entre
+57.5% y 59.4%, a un 95% de confianza.
+
+## **3. Intervalo de confianza para media**
+
+Anteriormente, encontramos que los venezolanos en Perú ganan en promedio
+511 soles. Calculemos cuanto es este valor en la población.
+
+No olvides llamar al paquete lsr para hallar los intervalos de confianza
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+library(lsr)
+data %>% 
+  summarise(media = mean(ingreso,na.rm=T),
+            Superior = ciMean(ingreso,na.rm=T),
+            Inferior = ciMean(ingreso,na.rm=T))
+```
+
+A un 95% de confianza podemos concluir que, en promedio, un/a
+venezolan\@ que trabaja en Perú gana aproximadamente entre 492.2 y 529.7
+soles. Hay que tener en consideración que este monto es en cada pago,
+que puede ser quincenal, mensual, etc.
+
+### **4. Prueba T**
+
+#### ¿Existe diferencia entre el monto percibido (ingreso) entre los venezolanos que envían remesas (remesas) y los que no?
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+data = data %>% mutate(remesas = factor(remesas, labels = c("Si","No")))
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+grafico = data %>% 
+  filter(!is.na(remesas)) %>% 
+  group_by(remesas) %>% 
+  summarise(media = mean(ingreso,na.rm=T),
+            Superior = ciMean(ingreso,na.rm=T)[1],
+            Inferior = ciMean(ingreso,na.rm=T)[2])
+grafico
+```
+
+En la muestra si existe una diferencia entre los ingresos de los que
+envían remesas y los que no. Siendo el ingreso más alto el de los que sí
+envían. Analicemos si esto se cumple en la población de venezolanos en
+Perú.
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+t.test(ingreso~remesas,data)
+```
+
+H0: No existe diferencia entre los promedios de ingreso de los que
+envían remesas y los que no. /H1: Existe diferencia entre los promedios
+de ingreso de los que envían remesas y los que no.
+
+Analizando el pvalor, podemos rechazar la hipótesis nula y así afirmar
+que las medias de ingreso de los que envían remesas y los que no, no son
+iguales.
+
+Constatemos cual es la media más alta con un gráfico:
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+ggplot(grafico,aes(x=remesas,y=media))+
+  geom_errorbar(aes(ymin=Inferior,ymax=Superior),width=0.4)+
+  xlab("Ingreso")+
+  ylab("¿Envía remesa?")+theme_classic()
+```
+
+### **5. Prueba Chi Cuadrado**
+
+¿De qué manera se relaciona el sexo con si la ocupacion de la persona es
+empleado o no?
+
+Nos basaremos en la variable ocupación, si es 3 será "Empleado" todos
+los demás casos serán "No empleado".
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+table(data$ocupacion)
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+data = data %>% 
+  mutate(empleado = ifelse(ocupacion == 3,"Empleado","No empleado"))
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+table(data$empleado)
+```
+
+Agreguemos etiquetas a la variable sexo
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+data = data %>% 
+  mutate(sexo = factor(sexo, labels=c("Hombre","Mujer")))
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+tabla1=table(data$sexo,data$empleado)
+tabla1
+```
+
+Revisemos el supuesto: Recuerda que debe haber por lo menos 5 casos por
+celda.
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+chisq.test(tabla1)$expected
+```
+
+Sí cumple con el mínimo por celda.
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+tablapor1 = tabla1 %>%
+           prop.table(1) %>%  
+           round(2) #redondear el resultado a 2 decimales
+tablapor1
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+toPlot1 = as.data.frame(tablapor1) 
+names(toPlot1) = c("Sexo", "Ocupacion", "Porcentaje")
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+  ggplot(toPlot1, aes(x=Sexo, y=Porcentaje*100, fill=Ocupacion)) +
+  geom_bar(position="stack", stat="identity")+ #Stack indica que son barras apiladas
+  geom_text(aes(label=paste0(Porcentaje*100,"%")), 
+            position = position_stack(vjust = 0.5), 
+             size = 4,
+             fontface="bold")+
+  labs(x="Sexo", y="Porcentaje", fill="¿Es empleador?")+
+  theme_minimal()
+```
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+chisq.test(tabla1)
+```
+
+La prueba confirma lo expuesto en el gráfico. A un 95% de confianza
+podemos afirmar que existe relación entre ser hombre o mujer y el ser
+empleado. Apoyándonos en el gráfico, podemos afirmar que habrá una mayor
+proporción de mujeres cuya ocupación es ser dependiente o empleada que
+en el caso de los hombres.
+
+## Ejercicios:
+
+1.  Describe a la variable frecuencia de pago, realiza el gráfico
+    respectivo e interpreta los resultados.
+2.  Ahora analiza si que una persona vive en Lima se relaciona con la
+    frecuencia de pago (frecuencia).
+3.  Analiza si existe diferencias entre el promedio de horas de trabajo
+    a la semana (horas_trabajo) según modalidad de trabajo (modalidad2)
