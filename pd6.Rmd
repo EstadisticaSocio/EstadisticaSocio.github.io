@@ -21,6 +21,106 @@ Curso: SOC294 - Estadística para el análisis sociológico 1
 
 Semestre 2024 - 2
 
+## **ANOVA**
+
+**¿Qué es el Análisis de Varianza (ANOVA)?**
+
+Es una prueba estadística que permite comparar la media (promedio) de
+**más de 2 grupos**. Es decir, es como una prueba T, pero de más de dos
+grupos.
+
+Al igual que con la prueba T, en esta oportunidad debemos observar el
+**p-value** de la prueba. Para ello, se establecen 2 hipótesis:
+
+H0 (p-value \> 0.05): no hay diferencia significativa entre las medias
+de ningún grupo. H1 (p-value =\< 0.05): al menos una media poblacional
+(de un grupo) es significativamente distinta a las otras
+
+**Estadístico F**
+
+Indica la variablidad entre grupos y dentro de un mismo grupo.
+
+Si F es grande, hay mucha variabilidad entre grupos y poca variabilidad
+dentro de un mismo grupo. Si F es pequeño, hay poca variabilidad entre
+grupos pero mucha variabilidad dentro de un mismo grupo.
+
+**Prueba Tukey**
+
+Prueba “post-hoc” (luego de), realizada para revisar entre qué grupos
+existe una diferencia significativa.
+
+OJO: como es una prueba complementaria a la ANOVA, **solo resulta
+necesaria si se rechaza la H0** en ANOVA. Si la H0 no se rechaza en
+ANOVA, no hay necesidad de hacer prueba Tukey.
+
+Al igual que las otras pruebas estadísticas, se debe ver el p-value en
+cada emparejamiento
+
+```{r}
+library(rio)
+data=import("dataWorld_q.rda")
+```
+
+### ¿Existe diferencias en la tasa de fecundidad según la quinquenio (entre el 2000 y el 2019)?
+
+Observemos algunos estadísticos descriptivos.
+
+```{r}
+library(tidyverse)
+library(lsr)
+
+library(dplyr)
+
+data <- data %>%
+  filter(quinq %in% c("2000-2004", "2005-2009", "2010-2014", "2015-2019"))
+
+
+tabla1 = data %>%
+  group_by(quinq) %>%
+  summarise(Media = mean(tfr, na.rm = T),
+            Mediana = median(tfr, na.rm = T),
+            Desviacion = sd(tfr, na.rm = T),
+            Inferior = ciMean(tfr, na.rm = T)[1],
+            Superior = ciMean(tfr, na.rm = T)[2])
+
+tabla1
+```
+
+Veámoslo en gráficos
+
+```{r}
+library(ggplot2)
+ggplot(tabla1, aes(x=quinq, y=Media, fill = quinq))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=Inferior, ymax=Superior), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-2, size=3)+
+  xlab("Quinquenio") + ylab("Tasa global de fecundidad")+
+  ylim(0, 5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Realicemos un ANOVA
+
+```{r}
+anova1 = aov(data$tfr ~ data$quinq)
+summary(anova1)
+```
+
+Observamos que el p-value es menor a 0.05, lo que significa que al menos
+un grupo tiene la media estadísticamente significativa respecto del
+resto.
+
+Para saber qué media es distinta, aplicamos la prueba Tukey.
+
+```{r}
+comparacion = TukeyHSD(anova1)
+comparacion
+```
+
+solo la comparación 2015-2019 vs. 2000-2004 tiene un valor p ajustado de
+0.0189, que es menor que 0.05, lo cual indica que esta diferencia es
+estadísticamente significativa.
+
 ## **Diagramas de dispersión y correlación**
 
 ### Ideas clave
@@ -74,6 +174,7 @@ Otros ejemplos:
 
 # ¿Que factores se relacionan con la tasa de fecundidad en los países?
 
+<<<<<<< Updated upstream
 ¿Cómo se relaciona la tasa de fecundidad con la esperanza de vida de las
 mujeres en los países?
 
@@ -109,3 +210,82 @@ Ejercicios para clase
 
 2.  ¿Cómo se relaciona la tasa de fecundidad (tfr) con el porcentaje de
     personas con acceso a agua en los países (water)?
+=======
+### ¿Existe una relación entre la tasa de fecundidad y el trabajo femenino?
+
+**Paso 1**: Exploramos variables de interés
+
+```{r}
+data %>%
+ summarize(Min = min(tfr, na.rm = TRUE),
+           Media = mean(tfr, na.rm = TRUE),
+           Mediana = median(tfr, na.rm = TRUE),
+           Max = max(tfr, na.rm = TRUE))
+
+data %>%
+ summarize(Min = min(femWork, na.rm = TRUE),
+           Media = mean(femWork, na.rm = TRUE),
+           Mediana = median(femWork, na.rm = TRUE),
+           Max = max(femWork, na.rm = TRUE))
+```
+
+**Paso 2**: Realizamos el gráfico
+
+```{r}
+ggplot(data, aes(x=tfr, y=femWork)) +
+  geom_point(colour="skyblue") +  xlab("Tasa global de fecundidad, número promedio de hijos por mujer") +  ylab("Participación femenina en la fuerza laboral") +
+  ggtitle("Relación entre la tasa de fecundidad y el trabajo femenino") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+**Paso 3**: Realizamos el ANOVA
+
+```{r}
+cor.test(data$femWork, data$tfr)
+```
+
+-   p \< 0.05 Rechazas la H0 (por lo tanto, sí hay correlación)
+
+-   P \> 0.05 No rechazas la H0
+
+¿Qué nos dice el resultado? Recuerda que en la interpretación no debe
+faltar: (i) intepretación del p-valor y (ii) interpretación del
+coeficiente de correlación (cor)
+
+Reporte: Dado que el p-valor es menor a 0.05, rechazamos la H0. Por lo
+tanto, podemos afirmar que existe correlación entre el porcentaje de
+mujeres que trabajan y la tasa de fecundidad
+
+El coeficiente es de 0.14, lo que quiere decir: (i) Se trata de una
+correlación positiva; según los criterios de Cohen (1988), se trata de
+una correlación pequeña.
+
+Esta relación es de fuerza pequeña, lo que significa que aunque la
+tendencia es clara presenta una correlación bastante limita.
+
+### ¿Existe una relación entre la tasa de fecundidad y el trabajo masculino?
+
+```{r}
+data %>%
+ summarize(Min = min(maleWork, na.rm = TRUE),
+           Media = mean(maleWork, na.rm = TRUE),
+           Mediana = median(maleWork, na.rm = TRUE),
+           Max = max(maleWork, na.rm = TRUE))
+```
+
+```{r}
+ggplot(data, aes(x=tfr, y=maleWork)) +
+  geom_point(colour="skyblue") +  xlab("Tasa global de fecundidad, número promedio de hijos por mujer") +  ylab("Participación masculina en la fuerza laboral") +
+  ggtitle("Relación entre la tasa de fecundidad y el trabajo femenino") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+```{r}
+cor.test(data$maleWork, data$tfr)
+```
+
+Se puede apreciar que, al igual que con el trabajo femenino, el p-valor
+es menor a 0.05, por lo que se rechaza la H0. El coeficiente es de 0.21, lo que indica una correlación positiva pequeña. 
+
+Entonces, a mayor número promedio de hijos, aumenta la participación de la fuerza laboral, tanto de hombres como mujeres. ¿Cuál podría ser una posible explicación? Se puede pensar en la necesidad de suplir las demandas que requieren los hijos en términos monetarios, lo que lleva a un mayor trabajo. Se puede pensar en las políticas públicas de apoyo y como estas permiten continuar trabajar a los padres de familia. ¿Alguna otra posible explicación?
+>>>>>>> Stashed changes
