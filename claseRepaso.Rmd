@@ -1,0 +1,246 @@
+---
+title: "PD5"
+author: "Karina A"
+date: "2024-10-11"
+output: html_document
+---
+
+```{r, warning=FALSE,message=FALSE}
+library(rio)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+data = import("PD5_enpove2022.sav")
+```
+
+```{r}
+names(data)
+```
+
+¿Existe una relación significativa entre el **estrato** con el envío de **remesas**?
+
+1:Bajo / 2:Medio bajo / 3:Medio / 4:Medio alto / 5:Alto
+
+1.  Preparar nuestras variables
+
+    ```{r}
+    data = data %>% 
+      mutate(remesas = factor(remesas, labels = c("Si","No"))) %>% 
+      mutate(estrato= factor(estrato, labels = c("Bajo","Medio bajo","Medio","Medio alto","Alto")))
+    ```
+
+```{r}
+table(data$remesas)
+table(data$estrato)
+```
+
+```{r}
+tabla1 = table(data$estrato,data$remesas)
+```
+
+```{r}
+tablapor = tabla1 %>% 
+  prop.table(1) %>% 
+  round(2)
+
+tablapor
+```
+
+```{r}
+tablapor = as.data.frame(tablapor)
+```
+
+1.  Los nombres de variables en la nueva data 2. Sobre qué se calcula el 100% (Estrato)
+
+```{r}
+names(tablapor) = c("Estrato","Remesa","Porcentaje")
+names(tablapor)
+```
+
+```{r}
+ggplot(tablapor, aes(x= Estrato, y=Porcentaje*100, fill=Remesa)) +
+  geom_bar(position = "stack", stat = "identity")+
+  ylab("Porcentaje (%)")+
+  geom_text(aes(label=paste0(Porcentaje*100,"%")), 
+            position = position_stack(vjust = 0.5), 
+             size = 4)+
+  theme_classic()
+```
+
+```{r}
+chisq.test(tabla1)$expected
+```
+
+todos las celdas tienen por lo menos 5 observaciones
+
+```{r}
+chisq.test(tabla1) #Tabla de contingencia con frecuencias en absoluto
+```
+
+H0 : No existe asociación/dependencia entre pertenecer a cierto estrato y enviar remesas a Venezuela.
+
+A un 95% de confianza, como la prueba indica que el pvalor no supera el 0.05, tenemos evidencia suficiente para rechazar la hipótesis nula y concluir que en la población si existe asociación entre pertenecer a cierto estrato y enviar remesas.
+
+IC para proporción
+
+variable trabajo
+
+```{r}
+data %>% 
+  count(trabajo)
+```
+
+```{r}
+data %>% 
+  filter(!(is.na(trabajo))) %>% 
+  count(trabajo)
+```
+
+1/Si trabaja: 5987
+
+2/No trabaja: 4240
+
+```{r}
+prop.test(5987, 5987+4240)
+```
+
+IC para la media
+
+Prueba T : Hallar si hay diferencia de las medias/promedios entre DOS grupos
+
+#### ¿Existe diferencia entre el monto percibido (ingreso) entre los venezolanos que envían remesas (remesas) y los que no?
+
+```{r}
+table(data$remesas)
+```
+
+```{r}
+library(lsr)
+grafico_t = data %>% 
+  filter(!(is.na(remesas))) %>% 
+  group_by(remesas) %>% 
+summarise(media = mean(ingreso, na.rm=T), 
+          inf = ciMean(ingreso, na.rm=T)[1], 
+          sup = ciMean(ingreso, na.rm=T)[2])
+```
+
+```{r}
+t.test(ingreso ~ remesas, data)
+```
+
+H0: No hay diferencia entre las medias de ingresos de los que envian remesas de los que
+
+A un 95% de nivel de confianza existe evidencia suficiente para rechazar la hipótesis nula y afirmar que existe diferencias en el promedio de ingreso según si envia remesas a venezuela o no.
+
+```{r}
+ggplot(grafico_t, aes(x=remesas,y=media))+
+  geom_errorbar(aes(ymin = inf, ymax = sup))+
+  theme_classic()
+```
+
+1.  Describe a la variable frecuencia de pago, realiza el gráfico respectivo e interpreta los resultados.
+
+    ```{r}
+    names(data)
+    ```
+
+    1:Diario/2:Semanal/3:Quincenal/4:Mensual/5:No recibió pago alguno
+
+    ```{r}
+    data = data %>% 
+      mutate(frec_pago=factor(frec_pago, labels=c("Diario","Semanal","Quincenal","Mensual","No recibio")))
+    table(data$frec_pago)
+    ```
+
+    ```{r}
+    tabla2 = data %>% 
+      filter(!is.na(frec_pago)) %>% 
+      count(frec_pago) %>% 
+      mutate(Porcentaje = (n/sum(n))*100)
+    tabla2
+
+    ```
+
+    ```{r}
+    ggplot(tabla2, aes(x=frec_pago, y=Porcentaje, fill=frec_pago))+
+      geom_bar(stat="identity")+
+      theme_bw()
+    ```
+
+2.  Ahora analiza si que una persona vive en Lima (Lima) se relaciona con la frecuencia de pago (frecuencia).
+
+    Lima: es categórica dicotómica
+
+    Frec_pago: categórica
+
+    ```{r}
+    tabla3 = table(data$Lima,data$frec_pago)
+    tabla3
+    ```
+
+    ```{r}
+    tablapor2 = tabla3 %>% 
+      prop.table(1) %>% 
+      round(2)
+    tablapor2
+    ```
+
+    ```{r}
+    chisq.test(tabla3)$expected
+    ```
+
+    ```{r}
+    #Importar data otra vez
+    data_sinNoRecibio = data %>% 
+        filter(!is.na(frec_pago)) %>% 
+      filter(!(frec_pago==5)) %>% 
+      mutate(frec_pago=factor(frec_pago, labels=c("Diario","Semanal","Quincenal","Mensual")))
+
+    tabla4 = table(data_sinNoRecibio$Lima,data_sinNoRecibio$frec_pago)
+    tabla4
+    ```
+
+    ```{r}
+    tablapor3 = tabla4 %>% 
+      prop.table(1) %>% 
+      round(2)
+    tablapor3
+    ```
+
+    ```{r}
+    chisq.test(tabla4)$expected
+    chisq.test(tabla4)
+    ```
+
+    ```{r}
+    tablapor3 = as.data.frame(tablapor3)
+
+    names(tablapor3)= c("Lima","Frecuencia_pago","Porcentaje")
+
+    ggplot(tablapor3, aes(x= Lima, y=Porcentaje*100, fill=Frecuencia_pago)) +
+      geom_bar(position = "stack", stat = "identity")+
+      ylab("Porcentaje (%)")+
+      geom_text(aes(label=paste0(Porcentaje*100,"%")), 
+                position = position_stack(vjust = 0.5), 
+                 size = 4)+
+      theme_classic()
+    ```
+
+3.  Analiza si existe diferencias entre el promedio de horas de trabajo a la semana (horas_trabajo) según modalidad de trabajo (modalidad2) - IC de la media por grupos.
+
+    ```{r}
+    grafico_5 = data %>% 
+      filter(modalidad2 %in% c("Descanso","No presencial","Presencial")) %>% 
+      group_by(modalidad2) %>% 
+      summarise(media = mean(horas_trabajo, na.rm=T), 
+              inf = ciMean(horas_trabajo, na.rm=T)[1], 
+              sup = ciMean(horas_trabajo, na.rm=T)[2])
+    ```
+
+```{r}
+ggplot(grafico_5, aes(x=modalidad2,y=media))+
+  geom_errorbar(aes(ymin = inf, ymax = sup))+
+  theme_classic()
+```
