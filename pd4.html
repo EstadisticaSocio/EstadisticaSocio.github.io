@@ -336,6 +336,12 @@ div.tocify {
 <li>
   <a href="pd5.html">Práctica dirigida 5</a>
 </li>
+<li>
+  <a href="pd6.html">Práctica dirigida 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica dirigida 7</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -461,8 +467,16 @@ alcanzado?</h2>
 <p>Crearemos una tabla con la media, máximo y mínimo de la variable
 nivel_discriminación, en base al grupo de edu2</p>
 <p>Agreguemos etiquetas:</p>
-<pre class="r"><code>library(dplyr)
-data = data  %&gt;%  
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>data = data  %&gt;%  
   mutate(edu2 = factor(edu2, levels = 1:2, labels = c(&quot;E. Básica&quot;,&quot;E. Superior&quot;)))</code></pre>
 <pre class="r"><code>library(lsr)
 NivelEdu = data %&gt;% 
@@ -472,10 +486,10 @@ NivelEdu = data %&gt;%
   max = ciMean(P15, na.rm=T)[2])
 NivelEdu</code></pre>
 <pre><code>## # A tibble: 2 × 4
-##   edu2       Media   min   max
-##   &lt;fct&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 E. Básica  2053. 1908. 2198.
-## 2 E. Superi… 3178. 3004. 3351.</code></pre>
+##   edu2        Media   min   max
+##   &lt;fct&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 E. Básica   2053. 1908. 2198.
+## 2 E. Superior 3178. 3004. 3351.</code></pre>
 <pre class="r"><code>NivelEdu[2,2] - NivelEdu[1,2] </code></pre>
 <pre><code>##      Media
 ## 1 1124.792</code></pre>
@@ -490,16 +504,13 @@ categoríca dicotómica.</p>
 ##  Welch Two Sample t-test
 ## 
 ## data:  P15 by edu2
-## t = -9.7598, df = 1343.2,
-## p-value &lt; 2.2e-16
+## t = -9.7598, df = 1343.2, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means between group E. Básica and group E. Superior is not equal to 0
 ## 95 percent confidence interval:
 ##  -1350.8776  -898.7065
 ## sample estimates:
-##   mean in group E. Básica 
-##                  2052.847 
-## mean in group E. Superior 
-##                  3177.639</code></pre>
+##   mean in group E. Básica mean in group E. Superior 
+##                  2052.847                  3177.639</code></pre>
 <p>El valor p- value es &lt; 2.2e-16, que es menor que el nivel típico
 de significancia (generalmente α = 0.05). Un valor p alto sugiere que no
 hay suficiente evidencia para rechazar la hipótesis nula. En otras
@@ -507,8 +518,9 @@ palabras, podemos concluir que existe una diferencia significativa entre
 las medias de los dos grupos (Educación Básica y Educación Superior) con
 respecto a la variable P15</p>
 <p>Graficamos los resultados</p>
-<pre class="r"><code>library(ggplot2)
-ggplot(NivelEdu, aes(x = edu2, y = Media)) +
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
+<pre class="r"><code>ggplot(NivelEdu, aes(x = edu2, y = Media)) +
   geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
   ggtitle(&quot;Estimación del monto mínimo mensual del hogar \nsegún máximo nivel educativo&quot;) +
   # Etiquetas de la media
@@ -522,7 +534,7 @@ ggplot(NivelEdu, aes(x = edu2, y = Media)) +
     theme_light()+
   xlab(&quot;Máximo nivel educativo alcanzado&quot;) + 
   ylab(&quot;Promedio del gasto mínimo mensual&quot;) </code></pre>
-<p><img src="pd4_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
+<p><img src="pd4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div
 id="existe-una-diferencia-en-el-nivel-de-acuerdo-con-la-frase-los-que-más-tienen-deberían-pagar-más-impuestos-según-si-la-persona-pertenece-a-una-clase-social-alta-o-media-alta-o-no"
@@ -552,10 +564,10 @@ alta/media alta”.</p>
   max = ciMean(P30, na.rm=T)[2])
 clase</code></pre>
 <pre><code>## # A tibble: 2 × 4
-##   Clase2     Media   min   max
-##   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 Alta/Medi…  6.62  6.23  7.02
-## 2 No alta/M…  7.29  7.10  7.48</code></pre>
+##   Clase2             Media   min   max
+##   &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Alta/Media alta     6.62  6.23  7.02
+## 2 No alta/Media alta  7.29  7.10  7.48</code></pre>
 <p>El análisis descriptivo muestra que las medias de ambos grupos se
 encuentran a 0.6 puntos de distancia.</p>
 <p>Para poder evaluar si existen o no diferencias poblacionales usaremos
@@ -565,16 +577,13 @@ t.test.</p>
 ##  Welch Two Sample t-test
 ## 
 ## data:  P30 by Clase2
-## t = -3.0024, df = 417.09,
-## p-value = 0.002839
+## t = -3.0024, df = 417.09, p-value = 0.002839
 ## alternative hypothesis: true difference in means between group Alta/Media alta and group No alta/Media alta is not equal to 0
 ## 95 percent confidence interval:
 ##  -1.1058934 -0.2307852
 ## sample estimates:
-##    mean in group Alta/Media alta 
-##                         6.621429 
-## mean in group No alta/Media alta 
-##                         7.289768</code></pre>
+##    mean in group Alta/Media alta mean in group No alta/Media alta 
+##                         6.621429                         7.289768</code></pre>
 <pre class="r"><code>ggplot(clase, aes(x = Clase2, y = Media)) +
   geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
   ggtitle(&quot;Estimación del nivel de acuerdo con &#39;Los que más \ntienen deberían pagar más impuestos&#39; según clase&quot;) +
@@ -589,7 +598,7 @@ t.test.</p>
   theme_light()+
   xlab(&quot;¿Es de clase alta o media alta?&quot;) + 
   ylab(&quot;Promedio del nivel de acuerdo con \nLos que más tienen deberían pagar más impuestos&quot;) </code></pre>
-<p><img src="pd4_files/figure-html/unnamed-chunk-139-1.png" width="672" /></p>
+<p><img src="pd4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Ejercicios:</p>
 <ol style="list-style-type: decimal">
 <li>Analiza si existen diferencias en la población entre el promedio de

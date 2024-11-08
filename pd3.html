@@ -336,6 +336,12 @@ div.tocify {
 <li>
   <a href="pd5.html">Práctica dirigida 5</a>
 </li>
+<li>
+  <a href="pd6.html">Práctica dirigida 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica dirigida 7</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -459,12 +465,10 @@ n = 3104 + 7123 #almacenamos en &quot;n&quot; el total de casos</code></pre>
 <pre class="r"><code>ic_prop = prop.test(x,n)
 ic_prop #llamamos a ic_prop para visualizar los resultados</code></pre>
 <pre><code>## 
-##  1-sample proportions test
-##  with continuity correction
+##  1-sample proportions test with continuity correction
 ## 
 ## data:  x out of n, null probability 0.5
-## X-squared = 1578.6, df =
-## 1, p-value &lt; 2.2e-16
+## X-squared = 1578.6, df = 1, p-value &lt; 2.2e-16
 ## alternative hypothesis: true p is not equal to 0.5
 ## 95 percent confidence interval:
 ##  0.2946262 0.3125428
@@ -511,10 +515,8 @@ realicemos un análisis descriptivo.</p>
             sd = sd(nivel_discriminación, na.rm = T),
             min = min(nivel_discriminación, na.rm = T),
             max = max(nivel_discriminación, na.rm = T))</code></pre>
-<pre><code>##    media  mediana        sd
-## 1 2.0436 1.666667 0.8521802
-##        min max
-## 1 1.666667  10</code></pre>
+<pre><code>##    media  mediana        sd      min max
+## 1 2.0436 1.666667 0.8521802 1.666667  10</code></pre>
 <p><strong>ciMean</strong>, del paquete <strong>lsr</strong>, es la
 función que calcula el intervalo de confianza de una media.</p>
 <pre class="r"><code>library(lsr)

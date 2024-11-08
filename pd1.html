@@ -337,6 +337,12 @@ div.tocify {
 <li>
   <a href="pd5.html">Práctica dirigida 5</a>
 </li>
+<li>
+  <a href="pd6.html">Práctica dirigida 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica dirigida 7</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -371,11 +377,6 @@ automático, la visualización de datos y la generación de informes.
 Además, su sintaxis es relativamente sencilla, lo que facilita su
 aprendizaje y uso para personas con distintos niveles de experiencia en
 programación, lo cual ha significado su uso en diversos rubros.</p>
-<pre><code>## 
-## Attaching package: &#39;vembedr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:lubridate&#39;:
-## 
-##     hms</code></pre>
 <div class="vembedr">
 <div>
 <iframe src="https://www.youtube.com/embed/ZCQHm63xc4s" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
@@ -468,11 +469,7 @@ llamada iris. En esta se muestran datos sobre flores.</p>
 variables que componen la base de datos. Solo necesita un argumento
 básico: el nombre de la data en este caso: iris</p>
 <pre class="r"><code>names(iris)</code></pre>
-<pre><code>## [1] &quot;Sepal.Length&quot;
-## [2] &quot;Sepal.Width&quot; 
-## [3] &quot;Petal.Length&quot;
-## [4] &quot;Petal.Width&quot; 
-## [5] &quot;Species&quot;</code></pre></li>
+<pre><code>## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre></li>
 <li><p>str: se usa para conocer la estructura de un objeto, te brinda el
 tipo y un vistazo de los valores. Solo se necesita el nombre del objeto
 como argumento.</p>
@@ -502,10 +499,8 @@ te muestra una tabla de frecuencias. Se necesita como argumento por lo
 menos a una variable.</p>
 <pre class="r"><code>table(iris$Species)</code></pre>
 <pre><code>## 
-##     setosa versicolor 
-##         50         50 
-##  virginica 
-##         50</code></pre></li>
+##     setosa versicolor  virginica 
+##         50         50         50</code></pre></li>
 <li><p>mean: La media aritmética (promedio) de un conjunto de datos. Se
 necesita como argumento a una variable de tipo numérica.</p>
 <pre class="r"><code>mean(iris$Sepal.Length)</code></pre>
@@ -565,20 +560,9 @@ encontrarla arrojará error.</li>
 <p>Busquemos los nombres de las variables que componen la base de
 datos</p>
 <pre class="r"><code>names(data)</code></pre>
-<pre><code>##  [1] &quot;idmunici&quot;    
-##  [2] &quot;Ubigeo&quot;      
-##  [3] &quot;Departamento&quot;
-##  [4] &quot;Provincia&quot;   
-##  [5] &quot;Distrito&quot;    
-##  [6] &quot;Tipomuni&quot;    
-##  [7] &quot;P40_1&quot;       
-##  [8] &quot;P41_1&quot;       
-##  [9] &quot;P42_1&quot;       
-## [10] &quot;P43_3&quot;       
-## [11] &quot;P43_4&quot;       
-## [12] &quot;P43_5&quot;       
-## [13] &quot;P43_6&quot;       
-## [14] &quot;P44_1&quot;</code></pre>
+<pre><code>##  [1] &quot;idmunici&quot;     &quot;Ubigeo&quot;       &quot;Departamento&quot; &quot;Provincia&quot;    &quot;Distrito&quot;    
+##  [6] &quot;Tipomuni&quot;     &quot;P40_1&quot;        &quot;P41_1&quot;        &quot;P42_1&quot;        &quot;P43_3&quot;       
+## [11] &quot;P43_4&quot;        &quot;P43_5&quot;        &quot;P43_6&quot;        &quot;P44_1&quot;</code></pre>
 <p>Examinemos la estructura de esta base de datos</p>
 <pre class="r"><code>str(data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    1891 obs. of  14 variables:
@@ -691,254 +675,68 @@ deseamos quedarnos con los casos que Sí informen un Plan de Valorización
 de Residuos Sólidos Orgánicos</p>
 <pre class="r"><code>data %&gt;% 
 filter(P43_6 == &quot;6&quot;)</code></pre>
-<pre><code>##    idmunici Ubigeo
-## 1    010101 010101
-## 2    021401 021401
-## 3    040409 040409
-## 4    070101 070101
-## 5    070103 070103
-## 6    070106 070106
-## 7    070107 070107
-## 8    150101 150101
-## 9    150103 150103
-## 10   150110 150110
-## 11   150111 150111
-## 12   150112 150112
-## 13   150114 150114
-## 14   150115 150115
-## 15   150116 150116
-## 16   150117 150117
-## 17   150118 150118
-## 18   150119 150119
-## 19   150122 150122
-## 20   150123 150123
-## 21   150128 150128
-## 22   150130 150130
-## 23   150131 150131
-## 24   150142 150142
-## 25   150703 150703
-## 26   170101 170101
-## 27   211101 211101
-## 28   250101 250101
-## 29   250301 250301
-## 30   250401 250401
-##     Departamento
-## 1       AMAZONAS
-## 2         ANCASH
-## 3       AREQUIPA
-## 4         CALLAO
-## 5         CALLAO
-## 6         CALLAO
-## 7         CALLAO
-## 8           LIMA
-## 9           LIMA
-## 10          LIMA
-## 11          LIMA
-## 12          LIMA
-## 13          LIMA
-## 14          LIMA
-## 15          LIMA
-## 16          LIMA
-## 17          LIMA
-## 18          LIMA
-## 19          LIMA
-## 20          LIMA
-## 21          LIMA
-## 22          LIMA
-## 23          LIMA
-## 24          LIMA
-## 25          LIMA
-## 26 MADRE DE DIOS
-## 27          PUNO
-## 28       UCAYALI
-## 29       UCAYALI
-## 30       UCAYALI
-##           Provincia
-## 1       CHACHAPOYAS
-## 2             OCROS
-## 3          CASTILLA
-## 4            CALLAO
-## 5            CALLAO
-## 6            CALLAO
-## 7            CALLAO
-## 8              LIMA
-## 9              LIMA
-## 10             LIMA
-## 11             LIMA
-## 12             LIMA
-## 13             LIMA
-## 14             LIMA
-## 15             LIMA
-## 16             LIMA
-## 17             LIMA
-## 18             LIMA
-## 19             LIMA
-## 20             LIMA
-## 21             LIMA
-## 22             LIMA
-## 23             LIMA
-## 24             LIMA
-## 25       HUAROCHIRI
-## 26        TAMBOPATA
-## 27        SAN ROMAN
-## 28 CORONEL PORTILLO
-## 29       PADRE ABAD
-## 30            PURUS
-##                      Distrito
-## 1                 CHACHAPOYAS
-## 2                       OCROS
-## 3                   ORCOPAMPA
-## 4                      CALLAO
-## 5  CARMEN DE LA LEGUA REYNOSO
-## 6                  VENTANILLA
-## 7                     MI PERÚ
-## 8                        LIMA
-## 9                         ATE
-## 10                      COMAS
-## 11                EL AGUSTINO
-## 12              INDEPENDENCIA
-## 13                  LA MOLINA
-## 14                LA VICTORIA
-## 15                      LINCE
-## 16                 LOS OLIVOS
-## 17                 LURIGANCHO
-## 18                      LURIN
-## 19                 MIRAFLORES
-## 20                 PACHACAMAC
-## 21                      RIMAC
-## 22                  SAN BORJA
-## 23                 SAN ISIDRO
-## 24          VILLA EL SALVADOR
-## 25                CALLAHUANCA
-## 26                  TAMBOPATA
-## 27                    JULIACA
-## 28                   CALLERIA
-## 29                 PADRE ABAD
-## 30                      PURUS
-##    Tipomuni P40_1
-## 1         1     1
-## 2         1     3
-## 3         2     1
-## 4         1     1
-## 5         2     1
-## 6         2     1
-## 7         2     1
-## 8         1     1
-## 9         2     1
-## 10        2     1
-## 11        2     1
-## 12        2     1
-## 13        2     1
-## 14        2     1
-## 15        2     1
-## 16        2     1
-## 17        2     1
-## 18        2     1
-## 19        2     1
-## 20        2     2
-## 21        2     1
-## 22        2     1
-## 23        2     1
-## 24        2     1
-## 25        2     2
-## 26        1     2
-## 27        1     1
-## 28        1     1
-## 29        1     1
-## 30        1     1
-##    recojo_diario_kg P42_1
-## 1             25800     4
-## 2               800     4
-## 3              2114     4
-## 4            742834     4
-## 5             54126     4
-## 6            323825     4
-## 7             34162     4
-## 8            412876     4
-## 9            652468     4
-## 10           570230     4
-## 11           274410     4
-## 12           246640     4
-## 13           157889     4
-## 14           363171     4
-## 15            66260     4
-## 16           370000     4
-## 17           160000     4
-## 18           182940     4
-## 19           178907     4
-## 20            83490     3
-## 21           217261     4
-## 22           110592     4
-## 23           140000     4
-## 24           368255     4
-## 25              160     4
-## 26            80500     4
-## 27           200000     3
-## 28           200000     3
-## 29            14400     4
-## 30              400     3
-##    P43_3 P43_4 P43_5 P43_6
-## 1      0     0     5     6
-## 2      0     0     0     6
-## 3      3     0     5     6
-## 4      0     0     5     6
-## 5      3     0     0     6
-## 6      0     0     5     6
-## 7      3     0     5     6
-## 8      3     0     5     6
-## 9      0     0     5     6
-## 10     3     4     5     6
-## 11     3     0     5     6
-## 12     0     0     0     6
-## 13     3     0     5     6
-## 14     0     0     0     6
-## 15     3     0     5     6
-## 16     3     0     5     6
-## 17     0     0     5     6
-## 18     3     0     5     6
-## 19     0     0     5     6
-## 20     0     0     5     6
-## 21     0     0     5     6
-## 22     3     0     5     6
-## 23     3     0     5     6
-## 24     3     0     5     6
-## 25     3     0     5     6
-## 26     3     4     5     6
-## 27     0     0     0     6
-## 28     0     0     5     6
-## 29     0     0     0     6
-## 30     0     0     5     6
-##    P44_1
-## 1      2
-## 2      1
-## 3      1
-## 4      1
-## 5      1
-## 6      1
-## 7      1
-## 8      1
-## 9      1
-## 10     1
-## 11     1
-## 12     1
-## 13     1
-## 14     1
-## 15     1
-## 16     1
-## 17     1
-## 18     1
-## 19     1
-## 20     1
-## 21     1
-## 22     1
-## 23     1
-## 24     1
-## 25     2
-## 26     2
-## 27     2
-## 28     2
-## 29     2
-## 30     2</code></pre></li>
+<pre><code>##    idmunici Ubigeo  Departamento        Provincia                   Distrito
+## 1    010101 010101      AMAZONAS      CHACHAPOYAS                CHACHAPOYAS
+## 2    021401 021401        ANCASH            OCROS                      OCROS
+## 3    040409 040409      AREQUIPA         CASTILLA                  ORCOPAMPA
+## 4    070101 070101        CALLAO           CALLAO                     CALLAO
+## 5    070103 070103        CALLAO           CALLAO CARMEN DE LA LEGUA REYNOSO
+## 6    070106 070106        CALLAO           CALLAO                 VENTANILLA
+## 7    070107 070107        CALLAO           CALLAO                    MI PERÚ
+## 8    150101 150101          LIMA             LIMA                       LIMA
+## 9    150103 150103          LIMA             LIMA                        ATE
+## 10   150110 150110          LIMA             LIMA                      COMAS
+## 11   150111 150111          LIMA             LIMA                EL AGUSTINO
+## 12   150112 150112          LIMA             LIMA              INDEPENDENCIA
+## 13   150114 150114          LIMA             LIMA                  LA MOLINA
+## 14   150115 150115          LIMA             LIMA                LA VICTORIA
+## 15   150116 150116          LIMA             LIMA                      LINCE
+## 16   150117 150117          LIMA             LIMA                 LOS OLIVOS
+## 17   150118 150118          LIMA             LIMA                 LURIGANCHO
+## 18   150119 150119          LIMA             LIMA                      LURIN
+## 19   150122 150122          LIMA             LIMA                 MIRAFLORES
+## 20   150123 150123          LIMA             LIMA                 PACHACAMAC
+## 21   150128 150128          LIMA             LIMA                      RIMAC
+## 22   150130 150130          LIMA             LIMA                  SAN BORJA
+## 23   150131 150131          LIMA             LIMA                 SAN ISIDRO
+## 24   150142 150142          LIMA             LIMA          VILLA EL SALVADOR
+## 25   150703 150703          LIMA       HUAROCHIRI                CALLAHUANCA
+## 26   170101 170101 MADRE DE DIOS        TAMBOPATA                  TAMBOPATA
+## 27   211101 211101          PUNO        SAN ROMAN                    JULIACA
+## 28   250101 250101       UCAYALI CORONEL PORTILLO                   CALLERIA
+## 29   250301 250301       UCAYALI       PADRE ABAD                 PADRE ABAD
+## 30   250401 250401       UCAYALI            PURUS                      PURUS
+##    Tipomuni P40_1 recojo_diario_kg P42_1 P43_3 P43_4 P43_5 P43_6 P44_1
+## 1         1     1            25800     4     0     0     5     6     2
+## 2         1     3              800     4     0     0     0     6     1
+## 3         2     1             2114     4     3     0     5     6     1
+## 4         1     1           742834     4     0     0     5     6     1
+## 5         2     1            54126     4     3     0     0     6     1
+## 6         2     1           323825     4     0     0     5     6     1
+## 7         2     1            34162     4     3     0     5     6     1
+## 8         1     1           412876     4     3     0     5     6     1
+## 9         2     1           652468     4     0     0     5     6     1
+## 10        2     1           570230     4     3     4     5     6     1
+## 11        2     1           274410     4     3     0     5     6     1
+## 12        2     1           246640     4     0     0     0     6     1
+## 13        2     1           157889     4     3     0     5     6     1
+## 14        2     1           363171     4     0     0     0     6     1
+## 15        2     1            66260     4     3     0     5     6     1
+## 16        2     1           370000     4     3     0     5     6     1
+## 17        2     1           160000     4     0     0     5     6     1
+## 18        2     1           182940     4     3     0     5     6     1
+## 19        2     1           178907     4     0     0     5     6     1
+## 20        2     2            83490     3     0     0     5     6     1
+## 21        2     1           217261     4     0     0     5     6     1
+## 22        2     1           110592     4     3     0     5     6     1
+## 23        2     1           140000     4     3     0     5     6     1
+## 24        2     1           368255     4     3     0     5     6     1
+## 25        2     2              160     4     3     0     5     6     2
+## 26        1     2            80500     4     3     4     5     6     2
+## 27        1     1           200000     3     0     0     0     6     2
+## 28        1     1           200000     3     0     0     5     6     2
+## 29        1     1            14400     4     0     0     0     6     2
+## 30        1     1              400     3     0     0     5     6     2</code></pre></li>
 </ul>
 <p>4.2 ¿Cuál es la municipalidad distrital con mayor promedio diario de
 recojo de residuos sólidos?</p>
@@ -947,20 +745,10 @@ filter y 2. summarise</p>
 <pre class="r"><code>data %&gt;% 
   filter(Tipomuni == 2) %&gt;% 
   filter(recojo_diario_kg == max(recojo_diario_kg,na.rm = T))</code></pre>
-<pre><code>##   idmunici Ubigeo
-## 1   150132 150132
-##   Departamento Provincia
-## 1         LIMA      LIMA
-##                 Distrito
-## 1 SAN JUAN DE LURIGANCHO
-##   Tipomuni P40_1
-## 1        2     1
-##   recojo_diario_kg P42_1
-## 1          1026525     4
-##   P43_3 P43_4 P43_5 P43_6
-## 1     0     0     5     0
-##   P44_1
-## 1     1</code></pre>
+<pre><code>##   idmunici Ubigeo Departamento Provincia               Distrito Tipomuni P40_1
+## 1   150132 150132         LIMA      LIMA SAN JUAN DE LURIGANCHO        2     1
+##   recojo_diario_kg P42_1 P43_3 P43_4 P43_5 P43_6 P44_1
+## 1          1026525     4     0     0     5     0     1</code></pre>
 <p>4.3 ¿Cuál es la municipalidad distrital de Loreto que recoge en
 promedio una mayor cantidad de residuos sólidos?</p>
 <pre class="r"><code>data %&gt;% 

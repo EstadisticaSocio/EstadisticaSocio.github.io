@@ -56,6 +56,8 @@ ANOVA, no hay necesidad de hacer prueba Tukey.
 Al igual que las otras pruebas estadísticas, se debe ver el p-value en
 cada emparejamiento
 
+![](Dicpd6.png)
+
 ```{r}
 library(rio)
 data=import("dataWorld_q.rda")
@@ -172,57 +174,35 @@ Otros ejemplos:
 
 ### Aplicación práctica
 
-# ¿Que factores se relacionan con la tasa de fecundidad en los países?
+# ¿Que factores se relacionan con la tasa de fecundidad en los países entre los años 2015-2019?
 
-<<<<<<< Updated upstream
-¿Cómo se relaciona la tasa de fecundidad con la esperanza de vida de las
-mujeres en los países?
+Como vimos anteriormente, nuestra data abarca distintos periodos. Analicemos los factores que se relacionan con la tasa de fecundidad en el periodo más reciente: 2015-2019
 
-```{r}
-cor.test(data$tfr, data$lifExpFem)
-```
-
-¿Cómo se relaciona la tasa de fecundidad con el ingreso per cápita en
-los países?
+Primero revisemos como está escrito y luego filtremos
 
 ```{r}
-cor.test(data$tfr, data$incomePp)
+table(data$quinq)
 ```
-
-¿Cómo se relaciona la tasa de fecundidad con la participación masculina
-en la fuerza laboral en los países?
-
 ```{r}
-cor.test(data$tfr, data$maleWork)
+data2 = data %>% 
+  filter(quinq=="2015-2019")
 ```
 
-¿Cómo se relaciona la tasa de fecundidad con la participación femenina
-en la fuerza laboral en los países?
+Ahora sí, analicemos!
 
-```{r}
-cor.test(data$tfr, data$femWork)
-```
 
-Ejercicios para clase
-
-1.  ¿Cómo se relaciona la tasa de fecundidad (tfr) con la equidad de
-    género en la educación en los países (schGenEq)?
-
-2.  ¿Cómo se relaciona la tasa de fecundidad (tfr) con el porcentaje de
-    personas con acceso a agua en los países (water)?
-=======
 ### ¿Existe una relación entre la tasa de fecundidad y el trabajo femenino?
 
 **Paso 1**: Exploramos variables de interés
 
 ```{r}
-data %>%
+data2 %>%
  summarize(Min = min(tfr, na.rm = TRUE),
            Media = mean(tfr, na.rm = TRUE),
            Mediana = median(tfr, na.rm = TRUE),
            Max = max(tfr, na.rm = TRUE))
 
-data %>%
+data2 %>%
  summarize(Min = min(femWork, na.rm = TRUE),
            Media = mean(femWork, na.rm = TRUE),
            Mediana = median(femWork, na.rm = TRUE),
@@ -232,7 +212,7 @@ data %>%
 **Paso 2**: Realizamos el gráfico
 
 ```{r}
-ggplot(data, aes(x=tfr, y=femWork)) +
+ggplot(data2, aes(x=tfr, y=femWork)) +
   geom_point(colour="skyblue") +  xlab("Tasa global de fecundidad, número promedio de hijos por mujer") +  ylab("Participación femenina en la fuerza laboral") +
   ggtitle("Relación entre la tasa de fecundidad y el trabajo femenino") +
   theme_light()+ geom_smooth(method=lm,se=F)
@@ -241,7 +221,7 @@ ggplot(data, aes(x=tfr, y=femWork)) +
 **Paso 3**: Realizamos el ANOVA
 
 ```{r}
-cor.test(data$femWork, data$tfr)
+cor.test(data2$femWork, data2$tfr)
 ```
 
 -   p \< 0.05 Rechazas la H0 (por lo tanto, sí hay correlación)
@@ -266,7 +246,7 @@ tendencia es clara presenta una correlación bastante limita.
 ### ¿Existe una relación entre la tasa de fecundidad y el trabajo masculino?
 
 ```{r}
-data %>%
+data2 %>%
  summarize(Min = min(maleWork, na.rm = TRUE),
            Media = mean(maleWork, na.rm = TRUE),
            Mediana = median(maleWork, na.rm = TRUE),
@@ -274,18 +254,96 @@ data %>%
 ```
 
 ```{r}
-ggplot(data, aes(x=tfr, y=maleWork)) +
+ggplot(data2, aes(x=tfr, y=maleWork)) +
   geom_point(colour="skyblue") +  xlab("Tasa global de fecundidad, número promedio de hijos por mujer") +  ylab("Participación masculina en la fuerza laboral") +
   ggtitle("Relación entre la tasa de fecundidad y el trabajo femenino") +
   theme_light()+ geom_smooth(method=lm,se=F)
 ```
 
 ```{r}
-cor.test(data$maleWork, data$tfr)
+cor.test(data2$maleWork, data2$tfr)
 ```
 
 Se puede apreciar que, al igual que con el trabajo femenino, el p-valor
 es menor a 0.05, por lo que se rechaza la H0. El coeficiente es de 0.21, lo que indica una correlación positiva pequeña. 
 
 Entonces, a mayor número promedio de hijos, aumenta la participación de la fuerza laboral, tanto de hombres como mujeres. ¿Cuál podría ser una posible explicación? Se puede pensar en la necesidad de suplir las demandas que requieren los hijos en términos monetarios, lo que lleva a un mayor trabajo. Se puede pensar en las políticas públicas de apoyo y como estas permiten continuar trabajar a los padres de familia. ¿Alguna otra posible explicación?
->>>>>>> Stashed changes
+
+### ¿Existe una relación entre la tasa de fecundidad y la esperanza de vida de las mujeres?
+
+```{r}
+data2 %>%
+ summarize(Min = min(lifExpFem, na.rm = TRUE),
+           Media = mean(lifExpFem, na.rm = TRUE),
+           Mediana = median(lifExpFem, na.rm = TRUE),
+           Max = max(lifExpFem, na.rm = TRUE))
+```
+Podemos apreciar que la esperanza de vida de las mujeres entre países tiene un rango de 35 años entre el menor valor y el mayor. En la mayoría de los países, este valor supera a los 76 años. 
+
+```{r warning=FALSE, message=FALSE}
+ggplot(data2, aes(x=tfr, y=lifExpFem)) +
+  geom_point(colour="skyblue") +  xlab("Tasa global de fecundidad, número promedio de hijos por mujer") +  ylab("Esperanza de vida de las mujeres") +
+  ggtitle("Relación entre la tasa de fecundidad y la esperanza de vida de las mujeres") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+El gráfico nos permite observar que existe una relación inversa entre las variables, además se puede esperar que esta relación sea grande ya que la mayoría de puntos se están ajustando a la recta que se modela.
+
+```{r}
+cor.test(data2$tfr, data2$lifExpFem)
+```
+La prueba de correlación no permite comprobar lo que visualizamos en el gráfico. Es así que obtenemos tres conclusiones principales. 1. A un 95% de confianza tenemos la evidencia suficiente para rechazar que no haya relación entre la tasa de fecundidad y la esperanza de vida de las mujeres en los países. 2. Esta relación es negativa, lo que implica que en los países que tienen una tasa de fecundidad más elevada, se espera que la esperanza de vida sea menor. 3. El coeficiente nos indica que es una relación grande, lo que se puede ver claramente en el gráfico. Esta relación podría explicarse por el nivel de desarrollo de algunos países donde el acceso a servicios de salud y de educación sexual es limitado. Esto implica que las mujeres enfrenten mayores obstáculos en cuanto a cuidados prenatales, nutrición y/o atención médica, lo cual afecta su salud, y así también la esperanza de vida de las mismas. 
+
+### ¿Existe una relación entre la tasa de fecundidad y el ingreso per cápita en los países?
+
+```{r}
+data2 %>%
+ summarize(Min = min(incomePp, na.rm = TRUE),
+           Media = mean(incomePp, na.rm = TRUE),
+           Mediana = median(incomePp, na.rm = TRUE),
+           Max = max(incomePp, na.rm = TRUE))
+```
+Para esta variable vemos aún más dispersión de los datos, ya que el valor puede ir desde 626 dólares hasta más de 110 mil dólares. 
+
+```{r warning=FALSE, message=FALSE}
+ggplot(data2, aes(x=tfr, y=incomePp)) +
+  geom_point(colour="skyblue") +  xlab("Tasa global de fecundidad, número promedio de hijos por mujer") +  ylab("Ingreso per cápita") +
+  ggtitle("Relación entre la tasa de fecundidad y el ingreso per cápita") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+Nuevamente, podemos esperar una relación negativa entre las variables. En esta ocasión es más sencillo notar la presencia de los datos atípicos.
+
+```{r}
+cor.test(data2$tfr, data2$incomePp)
+```
+Finalmente la prueba evidencia que podemos rechazar la ausencia de relación entre ambas variables. Y así afirmar que la tasa de fecundidad y el ingreso per capita tienen una relación inversa, lo que quiere decir que se espera que a medida que aumente el ingreso per capita, disminuya la tasa de fecundidad, y viceversa. Además, esta relación es también grande. 
+
+#### Conclusión
+
+```{r, echo=FALSE}
+library(knitr)
+results <- data.frame(
+  Variables = c("Tasa de fec. y trabajo femenino", 
+                "Tasa de fec. y trabajo masculino", 
+                "Tasa de fec. y esperanza de vida de las mujeres", 
+                "Tasa de fec. e ingreso per cápita"),
+  `R de Pearson` = c(
+    cor.test(data2$tfr, data2$femWork)$estimate,
+    cor.test(data2$tfr, data2$maleWork)$estimate,
+    cor.test(data2$tfr, data2$lifExpFem)$estimate,
+    cor.test(data2$tfr, data2$incomePp)$estimate
+  )
+)
+names(results)[2]="Coeficiente"
+kable(results, caption = "Correlación entre variables y tasa de fecundidad")
+```
+
+Finalmente, podemos concluir que todas las variables analizadas se relacionan con la tasa de fecundidad a nivel país. Además, la variable que se relaciona más sería la esperanza de vida de las mujeres, ya que su coeficiente es el más cercano a 1, aún cuando su relación sea negativa. Por otro lado, la variable que se relaciona menos es el trabajo masculino. 
+
+## Ejercicios para clase
+
+1.  ¿Cómo se relaciona la tasa de fecundidad (tfr) con la equidad de
+    género en la educación en los países (schGenEq)?
+
+2.  ¿Cómo se relaciona la tasa de fecundidad (tfr) con el porcentaje de
+    personas con acceso a agua en los países (water)?
