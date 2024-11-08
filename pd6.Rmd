@@ -232,16 +232,8 @@ cor.test(data2$femWork, data2$tfr)
 faltar: (i) intepretación del p-valor y (ii) interpretación del
 coeficiente de correlación (cor)
 
-Reporte: Dado que el p-valor es menor a 0.05, rechazamos la H0. Por lo
-tanto, podemos afirmar que existe correlación entre el porcentaje de
-mujeres que trabajan y la tasa de fecundidad
+Reporte: Dado que el p-valor es mayor a 0.05, no hay evidencia suficiente para rechazar la H0. Por lo tanto, podemos afirmar que no existe correlación entre el porcentaje de mujeres que trabajan y la tasa de fecundidad
 
-El coeficiente es de 0.14, lo que quiere decir: (i) Se trata de una
-correlación positiva; según los criterios de Cohen (1988), se trata de
-una correlación pequeña.
-
-Esta relación es de fuerza pequeña, lo que significa que aunque la
-tendencia es clara presenta una correlación bastante limita.
 
 ### ¿Existe una relación entre la tasa de fecundidad y el trabajo masculino?
 
@@ -328,7 +320,7 @@ results <- data.frame(
                 "Tasa de fec. y esperanza de vida de las mujeres", 
                 "Tasa de fec. e ingreso per cápita"),
   `R de Pearson` = c(
-    cor.test(data2$tfr, data2$femWork)$estimate,
+    "No hay correlación",
     cor.test(data2$tfr, data2$maleWork)$estimate,
     cor.test(data2$tfr, data2$lifExpFem)$estimate,
     cor.test(data2$tfr, data2$incomePp)$estimate
@@ -338,7 +330,7 @@ names(results)[2]="Coeficiente"
 kable(results, caption = "Correlación entre variables y tasa de fecundidad")
 ```
 
-Finalmente, podemos concluir que todas las variables analizadas se relacionan con la tasa de fecundidad a nivel país. Además, la variable que se relaciona más sería la esperanza de vida de las mujeres, ya que su coeficiente es el más cercano a 1, aún cuando su relación sea negativa. Por otro lado, la variable que se relaciona menos es el trabajo masculino. 
+Finalmente, podemos concluir que todas las variables analizadas se relacionan con la tasa de fecundidad a nivel país, menos la fuerza laboral femenina. Además, la variable que se relaciona más sería la esperanza de vida de las mujeres, ya que su coeficiente es el más cercano a 1, aún cuando su relación sea negativa. 
 
 ## Ejercicios para clase
 
