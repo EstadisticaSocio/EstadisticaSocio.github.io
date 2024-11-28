@@ -91,7 +91,7 @@ Seguiremos los siguientes pasos para el análisis:
 5. ¿Qué variable aporta más? -> coeficientes estandarizados
 6. Identificación de coeficientes y construcció de la ecuació
 
-#Aplicación
+# Aplicación
 
 ```{r, warning=FALSE,message=FALSE}
 library(rio)
@@ -157,8 +157,6 @@ Del segundo paso, ya conocíamos que el valor de la pendiente es **+3.8947** Si 
 $$
 Y = 5.36520 + (3.89471)\times \text{educacion}
 $$
-
-**Ŷ =  5.36520 +3.89471∗X**
 
 Donde:
 
