@@ -362,140 +362,566 @@ div.tocify {
 <p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong></p>
 <p>Curso: SOC294 - Estadística para el análisis sociológico 1</p>
 <p>Semestre 2024 - 2</p>
-<div id="repaso" class="section level1">
-<h1>Repaso</h1>
+<div id="i.-análisis-de-regresión-lineal-simple-rls-ideas-clave"
+class="section level1">
+<h1><strong>I. Análisis de regresión lineal simple (RLS): ideas
+clave</strong></h1>
+<p>Técnica estadística que predice el valor de una variable con los
+valores de otra. La regresión lineal simple es un método útil para
+predecir una respuesta cuantitativa <strong>Y</strong> partiendo de una
+sola variable predictora <strong>X</strong>, asumiendo que hay una
+relación aproximadamente lineal entre X e Y. Matemáticamente, esta
+relación lineal se representa como</p>
+<p><strong>Y = a + bX + E</strong></p>
+<ul>
+<li><p>Y = variable dependiente o explicada. Variable cuyos valores se
+desea predecir o resumir. Un modelo de regresión lineal tiene como
+variable dependiente una variable numérica</p></li>
+<li><p>a = Constante: ordenada en el origen, valor esperado de “Y”
+cuando X=0</p></li>
+<li><p>b = Pendiente: mide el cambio de la variable “Y” por cada unidad
+de cambio de “X”. Su magnitud sirve para predecir en cuánto aumentará
+“y” cada vez que “x” se incremente en una unidad.Su signo puede ser
+positivo o negativo, y en esto la interpretación coincide con la
+correlación.</p></li>
+<li><p>X = variable utilizada para predecir el valor de la variable
+dependiente. También se denomina variable predictora o variable
+explicativa. Las variables explicativas que son parte del modelo suelen
+ser numéricas o intervalares; sin embargo, es posible incorporar
+variables explicativas ordinales o categóricas.</p></li>
+<li><p>E = Corresponde a las desviaciones de los valores verdaderos de Y
+con respecto a los valores esperados de “Y” (diferencia entre lo
+observado y estimado por el modelo). Asumimos que es independiente de
+“X”.</p></li>
+</ul>
+<p>La relación entre las variables depende de la pendiente:</p>
+<ul>
+<li><p>Si b es positivo, Y aumenta cuando X aumenta. Es una relación
+directa / positiva.</p></li>
+<li><p>Si b es negativo, Y aumenta cuando X disminuye. Es una relación
+inversa / negativa.</p></li>
+<li><p>Si b es cero.Y no cambia cuando X varía. No existe relación entre
+las variables.</p></li>
+</ul>
+<p>Asimismo, con el método de la regresión lineal se puede responder las
+siguientes preguntas:</p>
+<ul>
+<li><p>Analizar si hay una <strong>asociación</strong> entre las
+variables mediante un test de independencia estadística.</p></li>
+<li><p>Analizar la <strong>dirección</strong> de la asociación (directa
+o inversa).</p></li>
+<li><p>Evaluar la <strong>fuerza</strong> de la asociación usando una
+medida de asociación llamada <em>correlación de Pearson</em>.</p></li>
+<li><p>Estimar una ecuación de regresión que <strong>“predice”</strong>
+los valores de la variable dependiente para valores de la variable
+independiente.</p></li>
+</ul>
+</div>
+<div id="ii.-análisis-de-regresión-lineal-múltiple-rlm-ideas-clave"
+class="section level1">
+<h1><strong>II. Análisis de regresión lineal múltiple (RLM): ideas
+clave</strong></h1>
+<p>Hasta el momento, nos hemos encontrado en el campo del análisis
+bivariado. Sin embargo, en el mundo social, difícilmente se pueden
+explicar los fenómenos de interés con una sola variable. Incluso si nos
+interesa evaluar el efecto de un a variable en específico sobre un
+fenómeno de estudio, hay muchos otros factores que podrían influir en
+aquello que nos interesa explorar. Por ello, necesitamos recurrir al
+<strong>análisis multivariado</strong> y conocer el concepto de
+<strong>control estadístico</strong>.</p>
+<p>El control estadístico nos permite aislar el efecto de otras
+variables. La idea es:</p>
+<ul>
+<li><p>Evaluar si la asociación entre X e Y permanece si se remueve el
+efecto de otra variable, es decir, si se controla por una tercera
+variable.</p></li>
+<li><p>Se analiza la relación entre X e Y para valores similares o
+iguales de una variable Z. De esta manera se elimina la influencia de Z
+en la relación entre X e Y. Lo anterior nos ayuda a acercarnos a una
+interpretación causar X -&gt; Y.</p></li>
+<li><p>Si la relación entre X e Y desaparece cuando se controla por Z,
+se dice que la relación era espúrea. En otras palabras, la relación
+dependendia de la influencia de Z y no de una conexión directa entre X e
+Y.</p></li>
+</ul>
+<p>Sobre la regresión lineal múltiple:</p>
+<p><img src="pd12_diap1.png" width="100%" style="display: block; margin: auto;" /></p>
+<hr />
+<p>Seguiremos los siguientes pasos para el análisis:</p>
+<ol style="list-style-type: decimal">
+<li>Creación del modelo</li>
+<li>Analizar si el modelo es válido -&gt; p value</li>
+<li>¿Qué tanto explica mi modelo? -&gt; Coeficiente de determinación -
+R2</li>
+<li>¿Las variables Xs aportan al modelo? -&gt; p value de cada
+variable</li>
+<li>¿Qué variable aporta más? -&gt; coeficientes estandarizados</li>
+<li>Identificación de coeficientes y construcció de la ecuació</li>
+</ol>
+<p>#Aplicación</p>
 <pre class="r"><code>library(rio)
 library(dplyr)
 library(ggplot2)
-library(lsr)</code></pre>
-<pre class="r"><code>data = import(&quot;Data-provincias.xlsx&quot;)</code></pre>
-<div id="prueba-t" class="section level2">
-<h2>Prueba T</h2>
-<p>¿Existe alguna diferencia en el promedio del voto (%) por Keiko
-Fujimori (FP) en segunda vuelta según el nivel de IDH (alto/bajo)?</p>
-<pre class="r"><code>tabla1 = data %&gt;% 
-  group_by(IDH_cat) %&gt;% 
-  summarise(Media = mean(FP, na.rm=T),
-            LimSup = ciMean(FP, na.rm=T)[1],
-            LimInf = ciMean(FP, na.rm=T)[2])
-
-tabla1</code></pre>
-<pre><code>## # A tibble: 2 × 4
-##   IDH_cat Media LimSup LimInf
-##   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Alto     43.4   37.3   49.5
-## 2 Bajo     31.3   28.6   34.1</code></pre>
-<pre class="r"><code>ggplot(tabla1, aes(x=IDH_cat, y=Media))+
-  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
-  theme_light()+
-  xlab(&quot;Nivel de IDH&quot;)+ylab(&quot;% de voto a Keiko Fujimori&quot;)</code></pre>
-<p><img src="pd7_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>t.test(data$FP ~ data$IDH_cat)</code></pre>
+library(jtools)</code></pre>
+<pre class="r"><code>data = import(&quot;Data-provincias.xlsx&quot;)
+str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    195 obs. of  14 variables:
+##  $ ubigeoRegion   : chr  &quot;100000&quot; &quot;080000&quot; &quot;130000&quot; &quot;130000&quot; ...
+##  $ ubigeoProvincia: chr  &quot;100800&quot; &quot;081100&quot; &quot;130900&quot; &quot;130500&quot; ...
+##  $ nombreRegion   : chr  &quot;HUÁNUCO&quot; &quot;CUSCO&quot; &quot;LA LIBERTAD&quot; &quot;LA LIBERTAD&quot; ...
+##  $ nombreProvincia: chr  &quot;Pachitea&quot; &quot;Paucartambo&quot; &quot;Sánchez Carrión&quot; &quot;Julcán&quot; ...
+##  $ PL             : num  81.8 92.5 50.9 56 52.5 90.4 92.1 73.3 68.9 55.7 ...
+##  $ FP             : num  18.2 7.5 49.1 44 47.5 9.6 7.9 26.7 31.1 44.3 ...
+##  $ FP_cat         : chr  &quot;Menos de 20%&quot; &quot;Menos de 20%&quot; &quot;De 20% a 50%&quot; &quot;De 20% a 50%&quot; ...
+##  $ Años_educ      : chr  &quot;Menos de 6&quot; &quot;Menos de 6&quot; &quot;Menos de 6&quot; &quot;Menos de 6&quot; ...
+##  $ educacion      : num  3.35 3.83 3.93 3.94 4.37 ...
+##  $ ingresos       : num  356 235 305 168 271 ...
+##  $ IDH_cat        : chr  &quot;Bajo&quot; &quot;Bajo&quot; &quot;Bajo&quot; &quot;Bajo&quot; ...
+##  $ IDH            : num  0.273 0.242 0.286 0.22 0.278 ...
+##  $ Reg_nat        : chr  &quot;SIERRA&quot; &quot;COSTA&quot; &quot;SIERRA&quot; &quot;SELVA&quot; ...
+##  $ Sierra_no      : chr  &quot;SIERRA&quot; &quot;NO SIERRA&quot; &quot;SIERRA&quot; &quot;NO SIERRA&quot; ...</code></pre>
+<p><strong>¿Qué factores explican se relacionan con el voto por Fuerza
+Popular (FP) en segunda vuelta a nivel provincial (2021)?</strong></p>
+<div id="ejercicios-regresión-lineal-simple" class="section level2">
+<h2>Ejercicios regresión lineal simple</h2>
+<ol style="list-style-type: decimal">
+<li>¿Los años de educación promedio en una provincia podrá ayudar a
+predecir el % de voto por Fuerza Popular en segunda vuelta?</li>
+</ol>
+<div id="creación-del-modelo" class="section level3">
+<h3>Creación del modelo</h3>
+<pre class="r"><code>modelo1=lm(FP~educacion,data=data)
+summary(modelo1)</code></pre>
 <pre><code>## 
-##  Welch Two Sample t-test
+## Call:
+## lm(formula = FP ~ educacion, data = data)
 ## 
-## data:  data$FP by data$IDH_cat
-## t = 3.7185, df = 33.054, p-value = 0.000741
-## alternative hypothesis: true difference in means between group Alto and group Bajo is not equal to 0
-## 95 percent confidence interval:
-##   5.469224 18.682394
-## sample estimates:
-## mean in group Alto mean in group Bajo 
-##           43.42174           31.34593</code></pre>
-</div>
-<div id="anova" class="section level2">
-<h2>Anova</h2>
-<pre class="r"><code>tabla2 = data %&gt;% 
-  group_by(Reg_nat) %&gt;% 
-  summarise(Media = mean(FP, na.rm=T),
-            LimSup = ciMean(FP, na.rm=T)[1],
-            LimInf = ciMean(FP, na.rm=T)[2])
-
-tabla2</code></pre>
-<pre><code>## # A tibble: 3 × 4
-##   Reg_nat Media LimSup LimInf
-##   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 COSTA    32.6   28.3   37.0
-## 2 SELVA    52.7   45.7   59.7
-## 3 SIERRA   30.0   26.7   33.3</code></pre>
-<pre class="r"><code>ggplot(tabla2, aes(x=Reg_nat, y=Media))+
-  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
-  theme_light()+
-  xlab(&quot;Región natural&quot;)+ylab(&quot;% de voto a Keiko Fujimori&quot;)</code></pre>
-<p><img src="pd7_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>anova=aov(data$FP~data$Reg_nat)
-summary(anova)</code></pre>
-<pre><code>##               Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## data$Reg_nat   2   6763    3382    11.1 2.75e-05 ***
-## Residuals    192  58515     305                     
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -28.168 -14.383  -0.674  12.591  42.289 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   5.3652     5.0525   1.062     0.29    
+## educacion     3.8947     0.6967   5.590 7.67e-08 ***
 ## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-</div>
-<div id="chi-cuadrado" class="section level2">
-<h2>Chi cuadrado</h2>
-<p>¿Existe alguna diferencia en el voto (%) por Keiko Fujimori (FP) (en
-segunda vuelta según si es de la sierra o no (Sierra_no)?</p>
-<pre class="r"><code>tabla3 = table(data$FP_cat,data$Años_educ)
-tabla3</code></pre>
-<pre><code>##               
-##                De 6 a 8 Más de 7 Menos de 6
-##   De 20% a 50%       32       25         32
-##   Más de 50%         14       25          3
-##   Menos de 20%       26        8         30</code></pre>
-<pre class="r"><code>prop= as.data.frame(prop.table(tabla3,2))
-prop</code></pre>
-<pre><code>##           Var1       Var2       Freq
-## 1 De 20% a 50%   De 6 a 8 0.44444444
-## 2   Más de 50%   De 6 a 8 0.19444444
-## 3 Menos de 20%   De 6 a 8 0.36111111
-## 4 De 20% a 50%   Más de 7 0.43103448
-## 5   Más de 50%   Más de 7 0.43103448
-## 6 Menos de 20%   Más de 7 0.13793103
-## 7 De 20% a 50% Menos de 6 0.49230769
-## 8   Más de 50% Menos de 6 0.04615385
-## 9 Menos de 20% Menos de 6 0.46153846</code></pre>
-<pre class="r"><code>names(prop)=c(&quot;Voto&quot;,&quot;Años_educ&quot;,&quot;Porcentaje&quot;)</code></pre>
-<pre class="r"><code>ggplot(prop, aes(x=Años_educ,y=Porcentaje*100, fill=Voto))+
-  geom_bar(stat=&quot;identity&quot;, position=&quot;stack&quot;)+
-  geom_text(aes(label=paste(round(Porcentaje*100,1),&quot;%&quot;)),
-  position = position_stack(vjust = 0.5))+
-  ylab(&quot;Porcentaje(%)&quot;)+xlab(&quot;Años de educación&quot;)+
-  theme_minimal()</code></pre>
-<p><img src="pd7_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<pre class="r"><code>chisq.test(tabla3)$expected</code></pre>
-<pre><code>##               
-##                De 6 a 8 Más de 7 Menos de 6
-##   De 20% a 50% 32.86154 26.47179   29.66667
-##   Más de 50%   15.50769 12.49231   14.00000
-##   Menos de 20% 23.63077 19.03590   21.33333</code></pre>
-<pre class="r"><code>chisq.test(tabla3)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s Chi-squared test
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## data:  tabla3
-## X-squared = 31.757, df = 4, p-value = 2.145e-06</code></pre>
+## Residual standard error: 17.06 on 193 degrees of freedom
+## Multiple R-squared:  0.1393, Adjusted R-squared:  0.1349 
+## F-statistic: 31.25 on 1 and 193 DF,  p-value: 7.668e-08</code></pre>
 </div>
-<div id="correlación" class="section level2">
-<h2>Correlación</h2>
-<pre class="r"><code>ggplot(data, aes(x=FP, y=ingresos))+
-  geom_point()+
-  geom_smooth(method=&quot;lm&quot;)+
-  xlab(&quot;Voto por Keiko Fujimori (%)&quot;)+
-  theme_minimal()</code></pre>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="pd7_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>cor.test(data$FP,data$ingresos)</code></pre>
+<div id="interpretación" class="section level3">
+<h3>Interpretación</h3>
+<div id="primero-p-value" class="section level4">
+<h4>Primero: p-value</h4>
+<p>Sabremos si la variable independiente impacta en la dependiente al
+revisar la significancia del p valor.</p>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li><p>H0: El modelo de regresión no es válido</p></li>
+<li><p>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</p></li>
+</ul>
+<p>Como el p valor es <strong>7.668e-08</strong>, entonces podemos
+afirmar que hay suficiente evidencia para rechazar la H0, por lo que
+concluimos que el modelo sí es válido como modelo de predicción. Es
+decir, podemos decir que hay evidencia estadística suficiente para
+afirmar que existe una relación significativa entre los años de
+educación en promedio y el porcentaje de voto obtenido por Fuerza
+Popular en las provincias.</p>
+<p>En otras palabras, podemos decir que los años de educación en
+promedio <em>sí influyen</em> en el porcentaje de voto obtenido por
+Fuerza Popular en las provincias.</p>
+</div>
+<div id="segundo-pendienteb" class="section level4">
+<h4>Segundo: pendiente/b</h4>
+<p>Explica cómo es el efecto de x en y. Para ello analizamos el valor
+del parámetro de la pendiente.</p>
+<p>En este caso, al ser este valor <strong>3.8947</strong>, concluimos
+que cada vez que el promedio de años de educación aumenta en 1, el % de
+votos por Fuerza Popular aumenta en 3.89. Es decir, tenemos una
+<em>relación directa o positiva</em>.</p>
+</div>
+<div id="tercero-r2" class="section level4">
+<h4>Tercero: R<sup>2</sup></h4>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por la variable independiente (x), para ello revisamor el
+<strong>R<sup>2</sup></strong> (Multiple R-squared). Los valores van de
+0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad
+explicada. El R2 es un indicador de ajuste del modelo.</p>
+<p>En nuestro modelo, este arrojó el valor de <strong>0.1393</strong>,
+por lo que podemos concluir que aproximadamente el
+<strong>13.9%</strong> (0.1393*100)del % de votos por Fuerza Popular es
+explicado por el promedio de años de educación.</p>
+<p>Esto significa que la cantidad de variabilidad explicada es baja; en
+este caso, los cambios en los años de educación explican solo una
+pequeña proporción de la variación en el porcentaje de votos por Fuerza
+Popular.</p>
+</div>
+<div id="cuarto-ecuación-de-la-recta" class="section level4">
+<h4>Cuarto: Ecuación de la recta</h4>
+<p>Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos
+los dos valores de la tabla que se encuentran en la columna de
+“Estimate”, el valor de la primera fila es el del intercepto (a) y el de
+la segunda es el de la pendiente (b).</p>
+<p>Del segundo paso, ya conocíamos que el valor de la pendiente es
+<strong>+3.8947</strong> Si volvemos a revisar nuestra tabla podemos
+observar que en el cruce de Estimate e Intercept está el valor de
+<strong>5.3652</strong>, este sería nuestro intercepto. Ahora, armemos
+nuestra ecuación de la recta:</p>
+<p><span class="math display">\[
+Y = 5.36520 + (3.89471)\times \text{educacion}
+\]</span></p>
+<p><strong>Ŷ = 5.36520 +3.89471∗X</strong></p>
+<p>Donde:</p>
+<ul>
+<li>X = Años de educación en promedio - (independiente)</li>
+<li>Y = % de voto por Fuerza Popular - (dependiente)</li>
+</ul>
+<p>También podemos obtener los coeficientes de intercepción/intercepto y
+pendiente de la siguiente forma:</p>
+<pre class="r"><code>modelo1$coefficients</code></pre>
+<pre><code>## (Intercept)   educacion 
+##    5.365177    3.894698</code></pre>
+</div>
+<div id="quinto-predecir" class="section level4">
+<h4>Quinto: Predecir</h4>
+<p>Sustituyendo el valor de “x” en la ecuación, tenemos:</p>
+<p>Para realizar una predicción debemos proponer un valor que se
+encuentre dentro de los valores de la X.</p>
+<pre class="r"><code>summary(data$educacion)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   3.351   5.601   6.927   7.037   8.328  11.111</code></pre>
+<p>Como educación puede ir de 3 a 11, podemos proponer cualquier valor
+dentro de ese rango. Veamos qué se espera de una provincia en la que los
+años de educación en promedio sean 11.</p>
+<pre class="r"><code>Y =  5.36520 +3.89471*11
+Y</code></pre>
+<pre><code>## [1] 48.20701</code></pre>
+<p>Cuando los años de educación en promedio son 11, se espera que en esa
+provincia Fuerza Popular haya obtenido un 48 % de los votos.</p>
+</div>
+</div>
+</div>
+<div id="ejercicios-regresión-lineal-múltiple" class="section level2">
+<h2>Ejercicios regresión lineal múltiple</h2>
+<p>¿Qué sucede si agregamos una variable a nuestro modelo anterior?</p>
+<p><strong>¿Los años de educación y los ingresos mensuales en promedio
+en una provincia pueden ayudar a explicar el porcentaje de voto que
+obtuvo Fuerza Popular?</strong></p>
+</div>
+<div id="modelo-2" class="section level2">
+<h2><strong>Modelo 2</strong></h2>
+<pre class="r"><code>modelo2 = lm(FP ~ educacion + ingresos, data)
+summary(modelo2)</code></pre>
 <pre><code>## 
-##  Pearson&#39;s product-moment correlation
+## Call:
+## lm(formula = FP ~ educacion + ingresos, data = data)
 ## 
-## data:  data$FP and data$ingresos
-## t = 7.2777, df = 193, p-value = 8.34e-12
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  0.3460994 0.5675505
-## sample estimates:
-##       cor 
-## 0.4640447</code></pre>
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -40.012 -12.761  -1.263  11.183  45.018 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 17.44495    5.56797   3.133    0.002 ** 
+## educacion   -0.82138    1.26933  -0.647    0.518    
+## ingresos     0.03222    0.00738   4.365 2.07e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 16.32 on 192 degrees of freedom
+## Multiple R-squared:  0.217,  Adjusted R-squared:  0.2089 
+## F-statistic: 26.61 on 2 and 192 DF,  p-value: 6.291e-11</code></pre>
+</div>
+<div id="interpretamos" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (las variables independientes
+aportan al modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+&lt; 6.291e-11 entonces podemos afirmar que hay suficiente evidencia
+para rechazar la H0, por lo que concluimos que el modelo es válido como
+modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamos
+el R2 (Adjusted R-squared, por ser un modelo lineal múltiple).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.2089 , por lo que
+podemos concluir que el modelo explica aproximadamente el 20.89%
+(0.2089*100) de la variabilidad en el % de votos que obtuvo Fuerza
+Popular (variable dependiente).</p>
+<p><em>Recordemos que el R cuadrado puede tomar valores entre 0 y 1. Un
+R cuadrado de 1 indica que el modelo explica toda la variabilidad de la
+variable Y. Un R cuadrado de 0 indica que el modelo no explica nada de
+la variabilidad de la variable Y.</em></p>
+</div>
+<div id="las-variables-aportan-al-modelo" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li>Nos damos cuenta que <em>no todas</em> las variables independientes
+tienen un p-value &lt;0.05, es el caso de: educación</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<p>Podemos obtener extraer los coeficientes del modelo:</p>
+<p><em>No olvidar identificar el signo de cada coeficiente, este tendrá
+repercusión en la ecuación y su futura aplicación</em></p>
+<pre class="r"><code>round(modelo2$coefficients,3)</code></pre>
+<pre><code>## (Intercept)   educacion    ingresos 
+##      17.445      -0.821       0.032</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = 17.445 + (-0.821) \times  \text{educacion}  +
+(0.032)\times  \text{ingresos}
+\]</span></p>
+<p>Es decir, se tienen las siguientes relaciones entre VD y las VI:</p>
+<ul>
+<li><p>Por cada sol adicional en ingresos, el % de voto por Fuerza
+Popular <strong>aumenta en 0.032 puntos</strong>. (relación
+directa).</p></li>
+<li><p>Por cada año de educación adicional , el % de voto por Fuerza
+Popular <strong>disminuye en 0.821 puntos</strong> (relación inversa).
+Sin embargo, esta variable no tiene un impacto significativo en la
+predicción.</p></li>
+</ul>
+<p><strong>OJO: La ecuación de la recta debe incluir TODAS las variables
+analizadas, tengan o no una influencia significativa en la
+VD.</strong></p>
+<p><strong>¿Los años de educación, los ingresos mensuales en promedio y
+el tener IDH alto o no en una provincia pueden ayudar a explicar el
+porcentaje de voto que obtuvo Fuerza Popular?</strong></p>
+</div>
+</div>
+<div id="modelo-3" class="section level2">
+<h2><strong>Modelo 3</strong></h2>
+<pre class="r"><code>library(fastDummies)</code></pre>
+<pre><code>## Thank you for using fastDummies!</code></pre>
+<pre><code>## To acknowledge our work, please cite the package:</code></pre>
+<pre><code>## Kaplan, J. &amp; Schlegel, B. (2023). fastDummies: Fast Creation of Dummy (Binary) Columns and Rows from Categorical Variables. Version 1.7.1. URL: https://github.com/jacobkap/fastDummies, https://jacobkap.github.io/fastDummies/.</code></pre>
+<pre class="r"><code>data = dummy_cols(data, select_columns=&quot;IDH_cat&quot;)
+names(data)</code></pre>
+<pre><code>##  [1] &quot;ubigeoRegion&quot;    &quot;ubigeoProvincia&quot; &quot;nombreRegion&quot;    &quot;nombreProvincia&quot;
+##  [5] &quot;PL&quot;              &quot;FP&quot;              &quot;FP_cat&quot;          &quot;Años_educ&quot;      
+##  [9] &quot;educacion&quot;       &quot;ingresos&quot;        &quot;IDH_cat&quot;         &quot;IDH&quot;            
+## [13] &quot;Reg_nat&quot;         &quot;Sierra_no&quot;       &quot;IDH_cat_Alto&quot;    &quot;IDH_cat_Bajo&quot;</code></pre>
+<pre class="r"><code>modelo3 = lm(FP ~ educacion + ingresos +IDH_cat_Alto, data)
+summary(modelo3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = FP ~ educacion + ingresos + IDH_cat_Alto, data = data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -38.371 -11.572  -2.122  11.310  44.425 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  13.413989   5.882341   2.280   0.0237 *  
+## educacion    -0.646030   1.262626  -0.512   0.6095    
+## ingresos      0.038223   0.007917   4.828 2.82e-06 ***
+## IDH_cat_Alto -9.648597   4.831734  -1.997   0.0473 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 16.19 on 191 degrees of freedom
+## Multiple R-squared:  0.2331, Adjusted R-squared:  0.221 
+## F-statistic: 19.35 on 3 and 191 DF,  p-value: 5.37e-11</code></pre>
+<ol style="list-style-type: decimal">
+<li>¿El modelo es válido?</li>
+<li>Cuanto ayuda a explicar</li>
+<li>¿Todas las variables aportan?</li>
+<li>¿Cómo es el impacto de las variables?</li>
+<li>¿Qué variable aporta más?</li>
+<li>Ecuación</li>
+</ol>
+<pre class="r"><code>modelo3$coefficients</code></pre>
+<pre><code>##  (Intercept)    educacion     ingresos IDH_cat_Alto 
+##  13.41398934  -0.64603001   0.03822324  -9.64859668</code></pre>
+<div id="qué-variable-aporta-más" class="section level3">
+<h3><strong>¿Qué variable aporta más?</strong></h3>
+<p>Para interpretar cómo cada variable independiente contribuye a la
+variabilidad de la variable dependiente, podemos usar los coeficientes
+estandarizados. Estos coeficientes nos ayudan a comparar, en una misma
+escala, el impacto que tiene cada variable independiente sobre la
+variable dependiente, permitiéndonos identificar cuáles tienen un efecto
+más fuerte.</p>
+<pre class="r"><code>library(jtools)
+summ(modelo3, scale=T)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Observations
+</td>
+<td style="text-align:right;">
+195
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Dependent variable
+</td>
+<td style="text-align:right;">
+FP
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Type
+</td>
+<td style="text-align:right;">
+OLS linear regression
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover table-condensed table-responsive" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+F(3,191)
+</td>
+<td style="text-align:right;">
+19.35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+R²
+</td>
+<td style="text-align:right;">
+0.23
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Adj. R²
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover table-condensed table-responsive" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Est.
+</th>
+<th style="text-align:right;">
+S.E.
+</th>
+<th style="text-align:right;">
+t val.
+</th>
+<th style="text-align:right;">
+p
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+33.91
+</td>
+<td style="text-align:right;">
+1.29
+</td>
+<td style="text-align:right;">
+26.25
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+educacion
+</td>
+<td style="text-align:right;">
+-1.14
+</td>
+<td style="text-align:right;">
+2.22
+</td>
+<td style="text-align:right;">
+-0.51
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+ingresos
+</td>
+<td style="text-align:right;">
+11.56
+</td>
+<td style="text-align:right;">
+2.39
+</td>
+<td style="text-align:right;">
+4.83
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+IDH_cat_Alto
+</td>
+<td style="text-align:right;">
+-9.65
+</td>
+<td style="text-align:right;">
+4.83
+</td>
+<td style="text-align:right;">
+-2.00
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> Standard errors: OLS; Continuous predictors are
+mean-centered and scaled by 1 s.d. The outcome variable remains in its
+original units.
+</td>
+</tr>
+</tfoot>
+</table>
+<p>Los resultados anteriores nos demuestran que las variables con mayor
+impacto son ingresos (11.56) y IDH_cat_Alto (-9.65)</p>
+<pre class="r"><code>plot_summs(modelo1,modelo2,modelo3, scale = T)</code></pre>
+<p><img src="pd7_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
 </div>
 </div>
 
