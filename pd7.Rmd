@@ -91,7 +91,7 @@ tabla3 = table(data$FP_cat,data$Años_educ)
 tabla3
 ```
 ```{r}
-prop= as.data.frame(prop.table(tabla2,2))
+prop= as.data.frame(prop.table(tabla3,2))
 prop
 ```
 ```{r}

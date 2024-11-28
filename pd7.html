@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 7</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Material para pds</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Inicio</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica dirigida 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica dirigida 2</a>
+</li>
+<li>
+  <a href="pd3.html">Práctica dirigida 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica dirigida 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica dirigida 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica dirigida 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica dirigida 7</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 7</h1>
+
+</div>
+
+
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong></p>
+<p>Curso: SOC294 - Estadística para el análisis sociológico 1</p>
+<p>Semestre 2024 - 2</p>
+<div id="repaso" class="section level1">
+<h1>Repaso</h1>
+<pre class="r"><code>library(rio)
+library(dplyr)
+library(ggplot2)
+library(lsr)</code></pre>
+<pre class="r"><code>data = import(&quot;Data-provincias.xlsx&quot;)</code></pre>
+<div id="prueba-t" class="section level2">
+<h2>Prueba T</h2>
+<p>¿Existe alguna diferencia en el promedio del voto (%) por Keiko
+Fujimori (FP) en segunda vuelta según el nivel de IDH (alto/bajo)?</p>
+<pre class="r"><code>tabla1 = data %&gt;% 
+  group_by(IDH_cat) %&gt;% 
+  summarise(Media = mean(FP, na.rm=T),
+            LimSup = ciMean(FP, na.rm=T)[1],
+            LimInf = ciMean(FP, na.rm=T)[2])
+
+tabla1</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   IDH_cat Media LimSup LimInf
+##   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Alto     43.4   37.3   49.5
+## 2 Bajo     31.3   28.6   34.1</code></pre>
+<pre class="r"><code>ggplot(tabla1, aes(x=IDH_cat, y=Media))+
+  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
+  theme_light()+
+  xlab(&quot;Nivel de IDH&quot;)+ylab(&quot;% de voto a Keiko Fujimori&quot;)</code></pre>
+<p><img src="pd7_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>t.test(data$FP ~ data$IDH_cat)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  data$FP by data$IDH_cat
+## t = 3.7185, df = 33.054, p-value = 0.000741
+## alternative hypothesis: true difference in means between group Alto and group Bajo is not equal to 0
+## 95 percent confidence interval:
+##   5.469224 18.682394
+## sample estimates:
+## mean in group Alto mean in group Bajo 
+##           43.42174           31.34593</code></pre>
+</div>
+<div id="anova" class="section level2">
+<h2>Anova</h2>
+<pre class="r"><code>tabla2 = data %&gt;% 
+  group_by(Reg_nat) %&gt;% 
+  summarise(Media = mean(FP, na.rm=T),
+            LimSup = ciMean(FP, na.rm=T)[1],
+            LimInf = ciMean(FP, na.rm=T)[2])
+
+tabla2</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   Reg_nat Media LimSup LimInf
+##   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 COSTA    32.6   28.3   37.0
+## 2 SELVA    52.7   45.7   59.7
+## 3 SIERRA   30.0   26.7   33.3</code></pre>
+<pre class="r"><code>ggplot(tabla2, aes(x=Reg_nat, y=Media))+
+  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
+  theme_light()+
+  xlab(&quot;Región natural&quot;)+ylab(&quot;% de voto a Keiko Fujimori&quot;)</code></pre>
+<p><img src="pd7_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>anova=aov(data$FP~data$Reg_nat)
+summary(anova)</code></pre>
+<pre><code>##               Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## data$Reg_nat   2   6763    3382    11.1 2.75e-05 ***
+## Residuals    192  58515     305                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="chi-cuadrado" class="section level2">
+<h2>Chi cuadrado</h2>
+<p>¿Existe alguna diferencia en el voto (%) por Keiko Fujimori (FP) (en
+segunda vuelta según si es de la sierra o no (Sierra_no)?</p>
+<pre class="r"><code>tabla3 = table(data$FP_cat,data$Años_educ)
+tabla3</code></pre>
+<pre><code>##               
+##                De 6 a 8 Más de 7 Menos de 6
+##   De 20% a 50%       32       25         32
+##   Más de 50%         14       25          3
+##   Menos de 20%       26        8         30</code></pre>
+<pre class="r"><code>prop= as.data.frame(prop.table(tabla3,2))
+prop</code></pre>
+<pre><code>##           Var1       Var2       Freq
+## 1 De 20% a 50%   De 6 a 8 0.44444444
+## 2   Más de 50%   De 6 a 8 0.19444444
+## 3 Menos de 20%   De 6 a 8 0.36111111
+## 4 De 20% a 50%   Más de 7 0.43103448
+## 5   Más de 50%   Más de 7 0.43103448
+## 6 Menos de 20%   Más de 7 0.13793103
+## 7 De 20% a 50% Menos de 6 0.49230769
+## 8   Más de 50% Menos de 6 0.04615385
+## 9 Menos de 20% Menos de 6 0.46153846</code></pre>
+<pre class="r"><code>names(prop)=c(&quot;Voto&quot;,&quot;Años_educ&quot;,&quot;Porcentaje&quot;)</code></pre>
+<pre class="r"><code>ggplot(prop, aes(x=Años_educ,y=Porcentaje*100, fill=Voto))+
+  geom_bar(stat=&quot;identity&quot;, position=&quot;stack&quot;)+
+  geom_text(aes(label=paste(round(Porcentaje*100,1),&quot;%&quot;)),
+  position = position_stack(vjust = 0.5))+
+  ylab(&quot;Porcentaje(%)&quot;)+xlab(&quot;Años de educación&quot;)+
+  theme_minimal()</code></pre>
+<p><img src="pd7_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>chisq.test(tabla3)$expected</code></pre>
+<pre><code>##               
+##                De 6 a 8 Más de 7 Menos de 6
+##   De 20% a 50% 32.86154 26.47179   29.66667
+##   Más de 50%   15.50769 12.49231   14.00000
+##   Menos de 20% 23.63077 19.03590   21.33333</code></pre>
+<pre class="r"><code>chisq.test(tabla3)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla3
+## X-squared = 31.757, df = 4, p-value = 2.145e-06</code></pre>
+</div>
+<div id="correlación" class="section level2">
+<h2>Correlación</h2>
+<pre class="r"><code>ggplot(data, aes(x=FP, y=ingresos))+
+  geom_point()+
+  geom_smooth(method=&quot;lm&quot;)+
+  xlab(&quot;Voto por Keiko Fujimori (%)&quot;)+
+  theme_minimal()</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="pd7_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>cor.test(data$FP,data$ingresos)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  data$FP and data$ingresos
+## t = 7.2777, df = 193, p-value = 8.34e-12
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.3460994 0.5675505
+## sample estimates:
+##       cor 
+## 0.4640447</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
