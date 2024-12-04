@@ -1,0 +1,267 @@
+---
+title: "Práctica dirigida 7"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 3
+    theme: flatly
+    highlight: textmate
+    always_allow_html: yes
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**
+
+Curso: SOC294 - Estadística para el análisis sociológico 1
+
+Semestre 2024 - 2
+
+# Análisis de Componentes principales
+```{r, warning=FALSE,message=FALSE}
+library(rio)
+library(dplyr)
+library(psych)
+library(FactoMineR)
+```
+
+La base de datos está a nivel país distintas variables que ayudan a crear el indicador de desigualdad de género (DesigualdadGenero). Además, todas las variables han sido escaladas del 0 al 10. Estas variables son
+
+MLAutonomia: Mide que tanto el sistema legal protege derechos reporductivos de las mujeres
+
+MLViolencia: Mide que tanto el sistema legal protege a las mujeres de la violencia
+
+VozPolítica: Presencia de mujeres en el parlamento
+
+LibertadMov: Porcentaje de mujeres que declaran no sentirse seguras en las calles
+
+DesconfianzaSJ: Porcentaje de mujeres que no confian en el sistema de justicia
+
+SecundariaC: Porcentaje de población con secundaria completa
+
+DesempleoMuj: Ratio de desempleo de muejeres frente a hombres
+
+CuentaF: Porcentaje de mujeres que cuentan con una cuenta en el sistema financiero
+
+Recuerda que solo pueden entrar al análisis variables númerica, también dejaremos por fuera el indicador de desigualdad ya que fue creado a partir de las otras variables. Es decir, utilizaremos desde MLautonomia hasta Cuenta F
+
+```{r}
+data0 = import("desigualdad_v2.xlsx")
+```
+
+```{r}
+names(data0)
+```
+
+Le asignamos el id de cada país a la fila, es decir, asignamos los valores de la primera columna como el nombre identificador de la fila. 
+```{r}
+rownames(data0)<-data0[,1]
+```
+
+Ahora dejaremos por fuera las variables Pais y DesigualdadGenero
+```{r}
+data0 = data0 %>% 
+  select(-Pais,-DesigualdadGenero)
+```
+
+Revisemos que todas las variables sean numéricas
+
+```{r}
+str(data0)
+```
+Ahora revisemos si hay algún valor perdido. Para ello podemos pedir un conteo de todos los perdidos, si sale 0 quiere decir que no hay valores perdidos. Si los hubiera, podemos usar el comando complete.cases.
+
+```{r}
+sum(is.na(data0))
+```
+
+Ya que nos cercioramos de eso, podemos continuar. 
+
+Paso 1: Realizar una matriz de correlación
+
+```{r}
+library(corrplot)
+matriz = cor(data0) #Recuerda que si fueran ordinales en escala likert, debemos usar polycor y no cor
+
+corrplot(matriz,        
+         type = "lower",    #Para que solo aparezca la mitad de la tabla de doble entrada
+         diag = TRUE,      #Para que aparezca la matriz
+         tl.col = "black") #Para que los nombres de las variables salgan en negro, por default aparecen en rojo.
+```
+
+Paso 2: ¿Se puede factorizar?
+
+- KMO
+```{r}
+library(psych)
+psych::KMO(matriz) 
+```
+Debemos analizar el overall MSA, tenemos que obtener un valor superior a 0.5 para afirmar que se puede aplicar la técnica a este grupo de variables. 
+
+- Test de Bartlet
+
+Al ser una prueba, el Test de Bartlett tiene una hipótesis nula que es "la matriz de identidad y la matriz de correlación de las variables son iguales". Si el pvalue es menor o igual a 0.05, podemos rechazar que sean iguales. 
+
+```{r}
+cortest.bartlett(matriz,n=nrow(data0))$p.value>0.05  
+```
+
+Este código solicita solo el pvalue de la prueba y pregunta si el valor supera el 0.05, si el resultado es TRUE quiere decir que el pvalue supera el 0.05. Es decir, para poder afirmar que ambas matrices son distintas debemos esperar que el resultado sea FALSE
+
+Paso 3: Determinar cuántos factores o variables latentes puede redimensionar la data
+
+Por el gráfico de sedimentación 
+
+```{r}
+fa.parallel(matriz, fm="pa", fa="pc", main = "Scree Plot")
+```
+¿Cómo se interpreta el gráfico?
+
+Se cuenta los puntos (en este caso triángulos) que están por encima de la linea roja.
+En este caso se propone un factor o variable latente. 
+
+- Criterio de la varianza
+
+```{r}
+eigenf = eigen(matriz)
+eigenf$values
+```
+El número de fatores que se propone depende de cuántos números son mayores a 1. En este caso son 3 números, por lo tanto se concluye que se podría agrupar en 3 factores.
+
+Se puede obtener la misma conclusión usando el comando PCA
+
+```{r}
+library(factoextra)
+library(FactoMineR)
+res.pca <- PCA(data0, graph = FALSE)
+eig.val <- get_eig(res.pca)
+eig.val
+```
+Paso 3: Análizar qué variables componen cada variable latente
+Consideremos el número de factores propuesto por la segunda técnica. Si hubieramos optado por realizar un solo factor, deberiamos cambiar lo que sigue luego de nfactors.
+
+```{r}
+pc <- principal(data0, nfactors = 3)
+print(pc$loadings,cutoff = 0.5) #Para ver las variables y cuanto aportan a cada factor
+```
+- Ver qué variables tiene cada componente
+- Ver la carga, que tanto aporta cada variable al componente. 
+
+Paso 4: Agregar las variables latentes a la base de datos original
+Recuerda que los factores se agregan en puntuación z. 
+
+```{r}
+matriz = as.data.frame(pc$scores) #Guardamos los factores en una base de datos
+data_final = cbind(data0,matriz)
+head(data_final)[5:11]
+```
+
+# Repaso
+
+```{r, warning=FALSE,message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(lsr)
+```
+
+```{r}
+data = import("Data-provincias.xlsx")
+```
+
+## Prueba T
+
+¿Existe alguna diferencia en el promedio del voto (%) por Keiko Fujimori (FP) en segunda vuelta según el nivel de IDH (alto/bajo)?
+
+```{r}
+tabla1 = data %>% 
+  group_by(IDH_cat) %>% 
+  summarise(Media = mean(FP, na.rm=T),
+            LimSup = ciMean(FP, na.rm=T)[1],
+            LimInf = ciMean(FP, na.rm=T)[2])
+
+tabla1
+```
+
+```{r}
+ggplot(tabla1, aes(x=IDH_cat, y=Media))+
+  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
+  theme_light()+
+  xlab("Nivel de IDH")+ylab("% de voto a Keiko Fujimori")
+```
+
+```{r}
+t.test(data$FP ~ data$IDH_cat)
+```
+
+## Anova 
+
+```{r}
+tabla2 = data %>% 
+  group_by(Reg_nat) %>% 
+  summarise(Media = mean(FP, na.rm=T),
+            LimSup = ciMean(FP, na.rm=T)[1],
+            LimInf = ciMean(FP, na.rm=T)[2])
+
+tabla2
+```
+
+```{r}
+ggplot(tabla2, aes(x=Reg_nat, y=Media))+
+  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
+  theme_light()+
+  xlab("Región natural")+ylab("% de voto a Keiko Fujimori")
+```
+```{r}
+anova=aov(data$FP~data$Reg_nat)
+summary(anova)
+```
+
+## Chi cuadrado
+
+¿Existe alguna diferencia en el voto (%) por Keiko Fujimori (FP) (en segunda vuelta según si es de la sierra o no (Sierra_no)?
+
+```{r}
+tabla3 = table(data$FP_cat,data$Años_educ)
+tabla3
+```
+```{r}
+prop= as.data.frame(prop.table(tabla3,2))
+prop
+```
+```{r}
+names(prop)=c("Voto","Años_educ","Porcentaje")
+```
+
+```{r}
+ggplot(prop, aes(x=Años_educ,y=Porcentaje*100, fill=Voto))+
+  geom_bar(stat="identity", position="stack")+
+  geom_text(aes(label=paste(round(Porcentaje*100,1),"%")),
+  position = position_stack(vjust = 0.5))+
+  ylab("Porcentaje(%)")+xlab("Años de educación")+
+  theme_minimal()
+```
+
+```{r}
+chisq.test(tabla3)$expected
+```
+```{r}
+chisq.test(tabla3)
+```
+## Correlación
+
+```{r}
+ggplot(data, aes(x=FP, y=ingresos))+
+  geom_point()+
+  geom_smooth(method="lm")+
+  xlab("Voto por Keiko Fujimori (%)")+
+  theme_minimal()
+```
+
+```{r}
+cor.test(data$FP,data$ingresos)
+```
+

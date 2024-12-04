@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 7</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Material para pds</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Inicio</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica dirigida 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica dirigida 2</a>
+</li>
+<li>
+  <a href="pd3.html">Práctica dirigida 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica dirigida 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica dirigida 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica dirigida 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica dirigida 7</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 7</h1>
+
+</div>
+
+
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong></p>
+<p>Curso: SOC294 - Estadística para el análisis sociológico 1</p>
+<p>Semestre 2024 - 2</p>
+<div id="análisis-de-componentes-principales" class="section level1">
+<h1>Análisis de Componentes principales</h1>
+<pre class="r"><code>library(rio)
+library(dplyr)
+library(psych)
+library(FactoMineR)</code></pre>
+<p>La base de datos está a nivel país distintas variables que ayudan a
+crear el indicador de desigualdad de género (DesigualdadGenero). Además,
+todas las variables han sido escaladas del 0 al 10. Estas variables
+son</p>
+<p>MLAutonomia: Mide que tanto el sistema legal protege derechos
+reporductivos de las mujeres</p>
+<p>MLViolencia: Mide que tanto el sistema legal protege a las mujeres de
+la violencia</p>
+<p>VozPolítica: Presencia de mujeres en el parlamento</p>
+<p>LibertadMov: Porcentaje de mujeres que declaran no sentirse seguras
+en las calles</p>
+<p>DesconfianzaSJ: Porcentaje de mujeres que no confian en el sistema de
+justicia</p>
+<p>SecundariaC: Porcentaje de población con secundaria completa</p>
+<p>DesempleoMuj: Ratio de desempleo de muejeres frente a hombres</p>
+<p>CuentaF: Porcentaje de mujeres que cuentan con una cuenta en el
+sistema financiero</p>
+<p>Recuerda que solo pueden entrar al análisis variables númerica,
+también dejaremos por fuera el indicador de desigualdad ya que fue
+creado a partir de las otras variables. Es decir, utilizaremos desde
+MLautonomia hasta Cuenta F</p>
+<pre class="r"><code>data0 = import(&quot;desigualdad_v2.xlsx&quot;)</code></pre>
+<pre class="r"><code>names(data0)</code></pre>
+<pre><code>##  [1] &quot;Pais&quot;              &quot;DesigualdadGenero&quot; &quot;MLAutonomia&quot;      
+##  [4] &quot;MLViolencia&quot;       &quot;VozPolitica&quot;       &quot;LibertadMov&quot;      
+##  [7] &quot;DesconfianzaSJ&quot;    &quot;SecundariaC&quot;       &quot;DesempleoMuj&quot;     
+## [10] &quot;CuentaF&quot;</code></pre>
+<p>Le asignamos el id de cada país a la fila, es decir, asignamos los
+valores de la primera columna como el nombre identificador de la
+fila.</p>
+<pre class="r"><code>rownames(data0)&lt;-data0[,1]</code></pre>
+<p>Ahora dejaremos por fuera las variables Pais y DesigualdadGenero</p>
+<pre class="r"><code>data0 = data0 %&gt;% 
+  select(-Pais,-DesigualdadGenero)</code></pre>
+<p>Revisemos que todas las variables sean numéricas</p>
+<pre class="r"><code>str(data0)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    121 obs. of  8 variables:
+##  $ MLAutonomia   : num  7.5 0 7.5 5 0 0 0 0 7.5 0 ...
+##  $ MLViolencia   : num  10 5 5 10 10 10 0 10 10 10 ...
+##  $ VozPolitica   : num  4.52 4.55 4.21 6.35 2.95 ...
+##  $ LibertadMov   : num  5.26 6.6 4.71 5.15 4.76 ...
+##  $ DesconfianzaSJ: num  9.93 7.4 5.86 7.3 7.02 ...
+##  $ SecundariaC   : num  1.17 9.34 3.8 6.59 9.68 ...
+##  $ DesempleoMuj  : num  9.18 2.19 8.8 4.21 2.84 ...
+##  $ CuentaF       : num  0.558 3.705 2.807 4.992 3.991 ...</code></pre>
+<p>Ahora revisemos si hay algún valor perdido. Para ello podemos pedir
+un conteo de todos los perdidos, si sale 0 quiere decir que no hay
+valores perdidos. Si los hubiera, podemos usar el comando
+complete.cases.</p>
+<pre class="r"><code>sum(is.na(data0))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>Ya que nos cercioramos de eso, podemos continuar.</p>
+<p>Paso 1: Realizar una matriz de correlación</p>
+<pre class="r"><code>library(corrplot)</code></pre>
+<pre><code>## corrplot 0.92 loaded</code></pre>
+<pre class="r"><code>matriz = cor(data0) #Recuerda que si fueran ordinales en escala likert, debemos usar polycor y no cor
+
+corrplot(matriz,        
+         type = &quot;lower&quot;,    #Para que solo aparezca la mitad de la tabla de doble entrada
+         diag = TRUE,      #Para que aparezca la matriz
+         tl.col = &quot;black&quot;) #Para que los nombres de las variables salgan en negro, por default aparecen en rojo.</code></pre>
+<p><img src="pd8_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Paso 2: ¿Se puede factorizar?</p>
+<ul>
+<li>KMO</li>
+</ul>
+<pre class="r"><code>library(psych)
+psych::KMO(matriz) </code></pre>
+<pre><code>## Kaiser-Meyer-Olkin factor adequacy
+## Call: psych::KMO(r = matriz)
+## Overall MSA =  0.73
+## MSA for each item = 
+##    MLAutonomia    MLViolencia    VozPolitica    LibertadMov DesconfianzaSJ 
+##           0.83           0.66           0.75           0.73           0.60 
+##    SecundariaC   DesempleoMuj        CuentaF 
+##           0.70           0.85           0.72</code></pre>
+<p>Debemos analizar el overall MSA, tenemos que obtener un valor
+superior a 0.5 para afirmar que se puede aplicar la técnica a este grupo
+de variables.</p>
+<ul>
+<li>Test de Bartlet</li>
+</ul>
+<p>Al ser una prueba, el Test de Bartlett tiene una hipótesis nula que
+es “la matriz de identidad y la matriz de correlación de las variables
+son iguales”. Si el pvalue es menor o igual a 0.05, podemos rechazar que
+sean iguales.</p>
+<pre class="r"><code>cortest.bartlett(matriz,n=nrow(data0))$p.value&gt;0.05  </code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>Este código solicita solo el pvalue de la prueba y pregunta si el
+valor supera el 0.05, si el resultado es TRUE quiere decir que el pvalue
+supera el 0.05. Es decir, para poder afirmar que ambas matrices son
+distintas debemos esperar que el resultado sea FALSE</p>
+<p>Paso 3: Determinar cuántos factores o variables latentes puede
+redimensionar la data</p>
+<p>Por el gráfico de sedimentación</p>
+<pre class="r"><code>fa.parallel(matriz, fm=&quot;pa&quot;, fa=&quot;pc&quot;, main = &quot;Scree Plot&quot;)</code></pre>
+<pre><code>## Warning in fa.parallel(matriz, fm = &quot;pa&quot;, fa = &quot;pc&quot;, main = &quot;Scree Plot&quot;): It
+## seems as if you are using a correlation matrix, but have not specified the
+## number of cases. The number of subjects is arbitrarily set to be 100</code></pre>
+<p><img src="pd8_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre><code>## Parallel analysis suggests that the number of factors =  NA  and the number of components =  1</code></pre>
+<p>¿Cómo se interpreta el gráfico?</p>
+<p>Se cuenta los puntos (en este caso triángulos) que están por encima
+de la linea roja. En este caso se propone un factor o variable
+latente.</p>
+<ul>
+<li>Criterio de la varianza</li>
+</ul>
+<pre class="r"><code>eigenf = eigen(matriz)
+eigenf$values</code></pre>
+<pre><code>## [1] 3.0714888 1.2071756 1.0772113 0.8265806 0.7015968 0.5154084 0.3600658
+## [8] 0.2404727</code></pre>
+<p>El número de fatores que se propone depende de cuántos números son
+mayores a 1. En este caso son 3 números, por lo tanto se concluye que se
+podría agrupar en 3 factores.</p>
+<p>Se puede obtener la misma conclusión usando el comando PCA</p>
+<pre class="r"><code>library(factoextra)</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;ggplot2&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:psych&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre><code>## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
+<pre class="r"><code>library(FactoMineR)
+res.pca &lt;- PCA(data0, graph = FALSE)
+eig.val &lt;- get_eig(res.pca)
+eig.val</code></pre>
+<pre><code>##       eigenvalue variance.percent cumulative.variance.percent
+## Dim.1  3.0714888        38.393610                    38.39361
+## Dim.2  1.2071756        15.089695                    53.48331
+## Dim.3  1.0772113        13.465141                    66.94845
+## Dim.4  0.8265806        10.332257                    77.28070
+## Dim.5  0.7015968         8.769960                    86.05066
+## Dim.6  0.5154084         6.442605                    92.49327
+## Dim.7  0.3600658         4.500822                    96.99409
+## Dim.8  0.2404727         3.005909                   100.00000</code></pre>
+<p>Paso 3: Análizar qué variables componen cada variable latente
+Consideremos el número de factores propuesto por la segunda técnica. Si
+hubieramos optado por realizar un solo factor, deberiamos cambiar lo que
+sigue luego de nfactors.</p>
+<pre class="r"><code>pc &lt;- principal(data0, nfactors = 3)
+print(pc$loadings,cutoff = 0.5) #Para ver las variables y cuanto aportan a cada factor</code></pre>
+<pre><code>## 
+## Loadings:
+##                RC1    RC2    RC3   
+## MLAutonomia    -0.784              
+## MLViolencia                  -0.824
+## VozPolitica                   0.702
+## LibertadMov            0.810       
+## DesconfianzaSJ         0.905       
+## SecundariaC     0.782              
+## DesempleoMuj   -0.646              
+## CuentaF         0.763              
+## 
+##                  RC1   RC2   RC3
+## SS loadings    2.358 1.709 1.289
+## Proportion Var 0.295 0.214 0.161
+## Cumulative Var 0.295 0.508 0.669</code></pre>
+<ul>
+<li>Ver qué variables tiene cada componente</li>
+<li>Ver la carga, que tanto aporta cada variable al componente.</li>
+</ul>
+<p>Paso 4: Agregar las variables latentes a la base de datos original
+Recuerda que los factores se agregan en puntuación z.</p>
+<pre class="r"><code>matriz = as.data.frame(pc$scores) #Guardamos los factores en una base de datos
+data_final = cbind(data0,matriz)
+head(data_final)[5:11]</code></pre>
+<pre><code>##             DesconfianzaSJ SecundariaC DesempleoMuj  CuentaF        RC1
+## Afghanistan       9.929078    1.168329     9.180328 0.558324 -2.4822324
+## Albania           7.399527    9.339507     2.185792 3.704871  0.6929742
+## Algeria           5.862884    3.800122     8.797814 2.806875 -1.6492953
+## Argentina         7.304965    6.590678     4.207650 4.992373 -0.1121762
+## Armenia           7.021277    9.681457     2.841530 3.990644  0.9169501
+## Australia         8.463357    8.981274     2.950820 9.918641  1.2315511
+##                     RC2         RC3
+## Afghanistan  1.40781128 -0.26335039
+## Albania      0.35134784  0.15716388
+## Algeria     -0.05470757  0.47965377
+## Argentina    0.13398291  0.03700085
+## Armenia     -0.13275670 -1.22519527
+## Australia    1.13436740 -0.54925387</code></pre>
+</div>
+<div id="repaso" class="section level1">
+<h1>Repaso</h1>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+library(lsr)</code></pre>
+<pre class="r"><code>data = import(&quot;Data-provincias.xlsx&quot;)</code></pre>
+<div id="prueba-t" class="section level2">
+<h2>Prueba T</h2>
+<p>¿Existe alguna diferencia en el promedio del voto (%) por Keiko
+Fujimori (FP) en segunda vuelta según el nivel de IDH (alto/bajo)?</p>
+<pre class="r"><code>tabla1 = data %&gt;% 
+  group_by(IDH_cat) %&gt;% 
+  summarise(Media = mean(FP, na.rm=T),
+            LimSup = ciMean(FP, na.rm=T)[1],
+            LimInf = ciMean(FP, na.rm=T)[2])
+
+tabla1</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   IDH_cat Media LimSup LimInf
+##   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Alto     43.4   37.3   49.5
+## 2 Bajo     31.3   28.6   34.1</code></pre>
+<pre class="r"><code>ggplot(tabla1, aes(x=IDH_cat, y=Media))+
+  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
+  theme_light()+
+  xlab(&quot;Nivel de IDH&quot;)+ylab(&quot;% de voto a Keiko Fujimori&quot;)</code></pre>
+<p><img src="pd8_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>t.test(data$FP ~ data$IDH_cat)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  data$FP by data$IDH_cat
+## t = 3.7185, df = 33.054, p-value = 0.000741
+## alternative hypothesis: true difference in means between group Alto and group Bajo is not equal to 0
+## 95 percent confidence interval:
+##   5.469224 18.682394
+## sample estimates:
+## mean in group Alto mean in group Bajo 
+##           43.42174           31.34593</code></pre>
+</div>
+<div id="anova" class="section level2">
+<h2>Anova</h2>
+<pre class="r"><code>tabla2 = data %&gt;% 
+  group_by(Reg_nat) %&gt;% 
+  summarise(Media = mean(FP, na.rm=T),
+            LimSup = ciMean(FP, na.rm=T)[1],
+            LimInf = ciMean(FP, na.rm=T)[2])
+
+tabla2</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   Reg_nat Media LimSup LimInf
+##   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 COSTA    32.6   28.3   37.0
+## 2 SELVA    52.7   45.7   59.7
+## 3 SIERRA   30.0   26.7   33.3</code></pre>
+<pre class="r"><code>ggplot(tabla2, aes(x=Reg_nat, y=Media))+
+  geom_errorbar(aes(ymin = LimInf, ymax= LimSup),width=0.3)+
+  theme_light()+
+  xlab(&quot;Región natural&quot;)+ylab(&quot;% de voto a Keiko Fujimori&quot;)</code></pre>
+<p><img src="pd8_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>anova=aov(data$FP~data$Reg_nat)
+summary(anova)</code></pre>
+<pre><code>##               Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## data$Reg_nat   2   6763    3382    11.1 2.75e-05 ***
+## Residuals    192  58515     305                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="chi-cuadrado" class="section level2">
+<h2>Chi cuadrado</h2>
+<p>¿Existe alguna diferencia en el voto (%) por Keiko Fujimori (FP) (en
+segunda vuelta según si es de la sierra o no (Sierra_no)?</p>
+<pre class="r"><code>tabla3 = table(data$FP_cat,data$Años_educ)
+tabla3</code></pre>
+<pre><code>##               
+##                De 6 a 8 Más de 7 Menos de 6
+##   De 20% a 50%       32       25         32
+##   Más de 50%         14       25          3
+##   Menos de 20%       26        8         30</code></pre>
+<pre class="r"><code>prop= as.data.frame(prop.table(tabla3,2))
+prop</code></pre>
+<pre><code>##           Var1       Var2       Freq
+## 1 De 20% a 50%   De 6 a 8 0.44444444
+## 2   Más de 50%   De 6 a 8 0.19444444
+## 3 Menos de 20%   De 6 a 8 0.36111111
+## 4 De 20% a 50%   Más de 7 0.43103448
+## 5   Más de 50%   Más de 7 0.43103448
+## 6 Menos de 20%   Más de 7 0.13793103
+## 7 De 20% a 50% Menos de 6 0.49230769
+## 8   Más de 50% Menos de 6 0.04615385
+## 9 Menos de 20% Menos de 6 0.46153846</code></pre>
+<pre class="r"><code>names(prop)=c(&quot;Voto&quot;,&quot;Años_educ&quot;,&quot;Porcentaje&quot;)</code></pre>
+<pre class="r"><code>ggplot(prop, aes(x=Años_educ,y=Porcentaje*100, fill=Voto))+
+  geom_bar(stat=&quot;identity&quot;, position=&quot;stack&quot;)+
+  geom_text(aes(label=paste(round(Porcentaje*100,1),&quot;%&quot;)),
+  position = position_stack(vjust = 0.5))+
+  ylab(&quot;Porcentaje(%)&quot;)+xlab(&quot;Años de educación&quot;)+
+  theme_minimal()</code></pre>
+<p><img src="pd8_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<pre class="r"><code>chisq.test(tabla3)$expected</code></pre>
+<pre><code>##               
+##                De 6 a 8 Más de 7 Menos de 6
+##   De 20% a 50% 32.86154 26.47179   29.66667
+##   Más de 50%   15.50769 12.49231   14.00000
+##   Menos de 20% 23.63077 19.03590   21.33333</code></pre>
+<pre class="r"><code>chisq.test(tabla3)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla3
+## X-squared = 31.757, df = 4, p-value = 2.145e-06</code></pre>
+</div>
+<div id="correlación" class="section level2">
+<h2>Correlación</h2>
+<pre class="r"><code>ggplot(data, aes(x=FP, y=ingresos))+
+  geom_point()+
+  geom_smooth(method=&quot;lm&quot;)+
+  xlab(&quot;Voto por Keiko Fujimori (%)&quot;)+
+  theme_minimal()</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="pd8_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<pre class="r"><code>cor.test(data$FP,data$ingresos)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  data$FP and data$ingresos
+## t = 7.2777, df = 193, p-value = 8.34e-12
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.3460994 0.5675505
+## sample estimates:
+##       cor 
+## 0.4640447</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
