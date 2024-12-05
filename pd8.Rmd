@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 7"
+title: "Práctica dirigida 8"
 output:
   html_document:
     toc: yes
@@ -22,6 +22,7 @@ Curso: SOC294 - Estadística para el análisis sociológico 1
 Semestre 2024 - 2
 
 # Análisis de Componentes principales
+
 ```{r, warning=FALSE,message=FALSE}
 library(rio)
 library(dplyr)
@@ -29,25 +30,35 @@ library(psych)
 library(FactoMineR)
 ```
 
-La base de datos está a nivel país distintas variables que ayudan a crear el indicador de desigualdad de género (DesigualdadGenero). Además, todas las variables han sido escaladas del 0 al 10. Estas variables son
+La base de datos está a nivel país distintas variables que ayudan a
+crear el indicador de desigualdad de género (DesigualdadGenero). Además,
+todas las variables han sido escaladas del 0 al 10. Estas variables son
 
-MLAutonomia: Mide que tanto el sistema legal protege derechos reporductivos de las mujeres
+MLAutonomia: Mide que tanto el sistema legal protege derechos
+reporductivos de las mujeres
 
-MLViolencia: Mide que tanto el sistema legal protege a las mujeres de la violencia
+MLViolencia: Mide que tanto el sistema legal protege a las mujeres de la
+violencia
 
 VozPolítica: Presencia de mujeres en el parlamento
 
-LibertadMov: Porcentaje de mujeres que declaran no sentirse seguras en las calles
+LibertadMov: Porcentaje de mujeres que declaran no sentirse seguras en
+las calles
 
-DesconfianzaSJ: Porcentaje de mujeres que no confian en el sistema de justicia
+DesconfianzaSJ: Porcentaje de mujeres que no confian en el sistema de
+justicia
 
 SecundariaC: Porcentaje de población con secundaria completa
 
 DesempleoMuj: Ratio de desempleo de muejeres frente a hombres
 
-CuentaF: Porcentaje de mujeres que cuentan con una cuenta en el sistema financiero
+CuentaF: Porcentaje de mujeres que cuentan con una cuenta en el sistema
+financiero
 
-Recuerda que solo pueden entrar al análisis variables númerica, también dejaremos por fuera el indicador de desigualdad ya que fue creado a partir de las otras variables. Es decir, utilizaremos desde MLautonomia hasta Cuenta F
+Recuerda que solo pueden entrar al análisis variables númerica, también
+dejaremos por fuera el indicador de desigualdad ya que fue creado a
+partir de las otras variables. Es decir, utilizaremos desde MLautonomia
+hasta Cuenta F
 
 ```{r}
 data0 = import("desigualdad_v2.xlsx")
@@ -57,12 +68,15 @@ data0 = import("desigualdad_v2.xlsx")
 names(data0)
 ```
 
-Le asignamos el id de cada país a la fila, es decir, asignamos los valores de la primera columna como el nombre identificador de la fila. 
+Le asignamos el id de cada país a la fila, es decir, asignamos los
+valores de la primera columna como el nombre identificador de la fila.
+
 ```{r}
 rownames(data0)<-data0[,1]
 ```
 
 Ahora dejaremos por fuera las variables Pais y DesigualdadGenero
+
 ```{r}
 data0 = data0 %>% 
   select(-Pais,-DesigualdadGenero)
@@ -73,13 +87,16 @@ Revisemos que todas las variables sean numéricas
 ```{r}
 str(data0)
 ```
-Ahora revisemos si hay algún valor perdido. Para ello podemos pedir un conteo de todos los perdidos, si sale 0 quiere decir que no hay valores perdidos. Si los hubiera, podemos usar el comando complete.cases.
+
+Ahora revisemos si hay algún valor perdido. Para ello podemos pedir un
+conteo de todos los perdidos, si sale 0 quiere decir que no hay valores
+perdidos. Si los hubiera, podemos usar el comando complete.cases.
 
 ```{r}
 sum(is.na(data0))
 ```
 
-Ya que nos cercioramos de eso, podemos continuar. 
+Ya que nos cercioramos de eso, podemos continuar.
 
 Paso 1: Realizar una matriz de correlación
 
@@ -95,42 +112,57 @@ corrplot(matriz,
 
 Paso 2: ¿Se puede factorizar?
 
-- KMO
+-   KMO
+
 ```{r}
 library(psych)
 psych::KMO(matriz) 
 ```
-Debemos analizar el overall MSA, tenemos que obtener un valor superior a 0.5 para afirmar que se puede aplicar la técnica a este grupo de variables. 
 
-- Test de Bartlet
+Debemos analizar el overall MSA, tenemos que obtener un valor superior a
+0.5 para afirmar que se puede aplicar la técnica a este grupo de
+variables.
 
-Al ser una prueba, el Test de Bartlett tiene una hipótesis nula que es "la matriz de identidad y la matriz de correlación de las variables son iguales". Si el pvalue es menor o igual a 0.05, podemos rechazar que sean iguales. 
+-   Test de Bartlet
+
+Al ser una prueba, el Test de Bartlett tiene una hipótesis nula que es
+"la matriz de identidad y la matriz de correlación de las variables son
+iguales". Si el pvalue es menor o igual a 0.05, podemos rechazar que
+sean iguales.
 
 ```{r}
 cortest.bartlett(matriz,n=nrow(data0))$p.value>0.05  
 ```
 
-Este código solicita solo el pvalue de la prueba y pregunta si el valor supera el 0.05, si el resultado es TRUE quiere decir que el pvalue supera el 0.05. Es decir, para poder afirmar que ambas matrices son distintas debemos esperar que el resultado sea FALSE
+Este código solicita solo el pvalue de la prueba y pregunta si el valor
+supera el 0.05, si el resultado es TRUE quiere decir que el pvalue
+supera el 0.05. Es decir, para poder afirmar que ambas matrices son
+distintas debemos esperar que el resultado sea FALSE
 
-Paso 3: Determinar cuántos factores o variables latentes puede redimensionar la data
+Paso 3: Determinar cuántos factores o variables latentes puede
+redimensionar la data
 
-Por el gráfico de sedimentación 
+Por el gráfico de sedimentación
 
 ```{r}
 fa.parallel(matriz, fm="pa", fa="pc", main = "Scree Plot")
 ```
+
 ¿Cómo se interpreta el gráfico?
 
-Se cuenta los puntos (en este caso triángulos) que están por encima de la linea roja.
-En este caso se propone un factor o variable latente. 
+Se cuenta los puntos (en este caso triángulos) que están por encima de
+la linea roja. En este caso se propone un factor o variable latente.
 
-- Criterio de la varianza
+-   Criterio de la varianza
 
 ```{r}
 eigenf = eigen(matriz)
 eigenf$values
 ```
-El número de fatores que se propone depende de cuántos números son mayores a 1. En este caso son 3 números, por lo tanto se concluye que se podría agrupar en 3 factores.
+
+El número de fatores que se propone depende de cuántos números son
+mayores a 1. En este caso son 3 números, por lo tanto se concluye que se
+podría agrupar en 3 factores.
 
 Se puede obtener la misma conclusión usando el comando PCA
 
@@ -141,18 +173,22 @@ res.pca <- PCA(data0, graph = FALSE)
 eig.val <- get_eig(res.pca)
 eig.val
 ```
+
 Paso 3: Análizar qué variables componen cada variable latente
-Consideremos el número de factores propuesto por la segunda técnica. Si hubieramos optado por realizar un solo factor, deberiamos cambiar lo que sigue luego de nfactors.
+Consideremos el número de factores propuesto por la segunda técnica. Si
+hubieramos optado por realizar un solo factor, deberiamos cambiar lo que
+sigue luego de nfactors.
 
 ```{r}
 pc <- principal(data0, nfactors = 3)
 print(pc$loadings,cutoff = 0.5) #Para ver las variables y cuanto aportan a cada factor
 ```
-- Ver qué variables tiene cada componente
-- Ver la carga, que tanto aporta cada variable al componente. 
+
+-   Ver qué variables tiene cada componente
+-   Ver la carga, que tanto aporta cada variable al componente.
 
 Paso 4: Agregar las variables latentes a la base de datos original
-Recuerda que los factores se agregan en puntuación z. 
+Recuerda que los factores se agregan en puntuación z.
 
 ```{r}
 matriz = as.data.frame(pc$scores) #Guardamos los factores en una base de datos
@@ -174,7 +210,8 @@ data = import("Data-provincias.xlsx")
 
 ## Prueba T
 
-¿Existe alguna diferencia en el promedio del voto (%) por Keiko Fujimori (FP) en segunda vuelta según el nivel de IDH (alto/bajo)?
+¿Existe alguna diferencia en el promedio del voto (%) por Keiko Fujimori
+(FP) en segunda vuelta según el nivel de IDH (alto/bajo)?
 
 ```{r}
 tabla1 = data %>% 
@@ -197,7 +234,7 @@ ggplot(tabla1, aes(x=IDH_cat, y=Media))+
 t.test(data$FP ~ data$IDH_cat)
 ```
 
-## Anova 
+## Anova
 
 ```{r}
 tabla2 = data %>% 
@@ -215,6 +252,7 @@ ggplot(tabla2, aes(x=Reg_nat, y=Media))+
   theme_light()+
   xlab("Región natural")+ylab("% de voto a Keiko Fujimori")
 ```
+
 ```{r}
 anova=aov(data$FP~data$Reg_nat)
 summary(anova)
@@ -222,16 +260,19 @@ summary(anova)
 
 ## Chi cuadrado
 
-¿Existe alguna diferencia en el voto (%) por Keiko Fujimori (FP) (en segunda vuelta según si es de la sierra o no (Sierra_no)?
+¿Existe alguna diferencia en el voto (%) por Keiko Fujimori (FP) (en
+segunda vuelta según si es de la sierra o no (Sierra_no)?
 
 ```{r}
 tabla3 = table(data$FP_cat,data$Años_educ)
 tabla3
 ```
+
 ```{r}
 prop= as.data.frame(prop.table(tabla3,2))
 prop
 ```
+
 ```{r}
 names(prop)=c("Voto","Años_educ","Porcentaje")
 ```
@@ -248,9 +289,11 @@ ggplot(prop, aes(x=Años_educ,y=Porcentaje*100, fill=Voto))+
 ```{r}
 chisq.test(tabla3)$expected
 ```
+
 ```{r}
 chisq.test(tabla3)
 ```
+
 ## Correlación
 
 ```{r}
@@ -264,4 +307,3 @@ ggplot(data, aes(x=FP, y=ingresos))+
 ```{r}
 cor.test(data$FP,data$ingresos)
 ```
-
