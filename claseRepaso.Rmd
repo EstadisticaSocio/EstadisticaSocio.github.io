@@ -151,7 +151,6 @@ ggplot(grafico_t, aes(x=remesas,y=media))+
     ```{r}
     data = data %>% 
       mutate(frec_pago=factor(frec_pago, labels=c("Diario","Semanal","Quincenal","Mensual","No recibio")))
-    table(data$frec_pago)
     ```
 
     ```{r}
@@ -193,6 +192,7 @@ ggplot(grafico_t, aes(x=remesas,y=media))+
 
     ```{r}
     #Importar data otra vez
+    data = import("PD5_enpove2022.sav")
     data_sinNoRecibio = data %>% 
         filter(!is.na(frec_pago)) %>% 
       filter(!(frec_pago==5)) %>% 

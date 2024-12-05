@@ -245,7 +245,7 @@ data2 %>%
            Max = max(maleWork, na.rm = TRUE))
 ```
 
-```{r}
+```{r, warning=FALSE,message=FALSE}
 ggplot(data2, aes(x=tfr, y=maleWork)) +
   geom_point(colour="skyblue") +  xlab("Tasa global de fecundidad, número promedio de hijos por mujer") +  ylab("Participación masculina en la fuerza laboral") +
   ggtitle("Relación entre la tasa de fecundidad y el trabajo femenino") +

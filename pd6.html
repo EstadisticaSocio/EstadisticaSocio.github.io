@@ -342,6 +342,9 @@ div.tocify {
 <li>
   <a href="pd7.html">Práctica dirigida 7</a>
 </li>
+<li>
+  <a href="pd8.html">Práctica dirigida 8</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -619,11 +622,6 @@ masculino?</h3>
   geom_point(colour=&quot;skyblue&quot;) +  xlab(&quot;Tasa global de fecundidad, número promedio de hijos por mujer&quot;) +  ylab(&quot;Participación masculina en la fuerza laboral&quot;) +
   ggtitle(&quot;Relación entre la tasa de fecundidad y el trabajo femenino&quot;) +
   theme_light()+ geom_smooth(method=lm,se=F)</code></pre>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 15 rows containing non-finite outside the scale range
-## (`stat_smooth()`).</code></pre>
-<pre><code>## Warning: Removed 15 rows containing missing values or values outside the scale range
-## (`geom_point()`).</code></pre>
 <p><img src="pd6_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <pre class="r"><code>cor.test(data2$maleWork, data2$tfr)</code></pre>
 <pre><code>## 
